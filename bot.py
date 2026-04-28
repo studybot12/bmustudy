@@ -798,5 +798,16 @@ def main():
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
 
+# ... (весь ваш код выше)
+
+async def main():
+    # Теперь polling живет внутри функции main
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling(drop_pending_updates=True)
+    # Оставляем бота запущенным
+    while True:
+        await asyncio.sleep(1)
+
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
