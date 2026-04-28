@@ -549,8 +549,8 @@ def main():
         allow_reentry=True,
     )
 
-    app.add_handler(conv)
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
+    app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
 
 if __name__ == "__main__":
