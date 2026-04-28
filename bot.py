@@ -27,7 +27,7 @@ TEXTS = {
         "payment_instruction": "💳 *Оплата доступа к «{subject}»*\n\nСтоимость: *{price:,} сум*\n\nПереведите на карту:\n`{card}`\n\nПосле перевода отправьте скриншот подтверждения 👇",
         "screenshot_received": "✅ Скриншот получен! Ваша оплата проверяется.\n\nОбычно это занимает до 30 минут. Вы получите уведомление как только доступ будет открыт.",
         "access_granted": "🎉 *Доступ открыт!*\n\nПредмет *{subject}* теперь доступен в разделе «Мои предметы».",
-        "access_denied": "❌ Оплата не подтверждена. Пожалуйста, свяжитесь с администратором или попробуйте снова.",
+        "access_denied": "❌ Оплата не подтверждена. Пожалуйста, свяжитесь с администратором.",
         "no_subjects": "У вас пока нет купленных предметов.\n\nПерейдите в раздел «Купить доступ» 🛒",
         "subject_menu": "📘 *{subject}*\n\nВыберите режим:",
         "study_materials": "📖 Конспект",
@@ -65,7 +65,7 @@ TEXTS = {
         "payment_instruction": "💳 *Payment for «{subject}»*\n\nPrice: *{price:,} UZS*\n\nTransfer to card:\n`{card}`\n\nAfter payment, send a screenshot 👇",
         "screenshot_received": "✅ Screenshot received! Your payment is being reviewed.\n\nThis usually takes up to 30 minutes. You'll get a notification once access is granted.",
         "access_granted": "🎉 *Access Granted!*\n\n*{subject}* is now available in «My Subjects».",
-        "access_denied": "❌ Payment not confirmed. Please contact the admin or try again.",
+        "access_denied": "❌ Payment not confirmed. Please contact the admin.",
         "no_subjects": "You don't have any subjects yet.\n\nGo to «Buy Access» 🛒",
         "subject_menu": "📘 *{subject}*\n\nChoose a mode:",
         "study_materials": "📖 Study Notes",
@@ -348,7 +348,6 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
 async def send_materials(message, user_id, subject_key):
     info = get_subject_info(subject_key)
     chapters = info.get("chapters", [])
-
     header = f"📘 *{info['name']}*\n{'─' * 30}\n\n"
     await message.edit_text(header + "⏳ Loading...", parse_mode="Markdown")
 
@@ -368,7 +367,6 @@ async def send_materials(message, user_id, subject_key):
 
     keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
     markup = InlineKeyboardMarkup(keyboard)
-
     await message.edit_text(chunks[0], parse_mode="Markdown", reply_markup=markup if len(chunks) == 1 else None)
     for i, chunk in enumerate(chunks[1:], 1):
         is_last = (i == len(chunks) - 1)
@@ -409,19 +407,16 @@ async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     user_id = query.from_user.id
     data = query.data
-
     subject_key = context.user_data.get("flashcard_subject")
     index = context.user_data.get("flashcard_index", 0)
 
     if data == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
-
     if data.startswith("back_subject_"):
         sk = data.split("back_subject_")[1]
         await show_subject_menu(query.message, user_id, sk, edit=True)
         return SUBJECT_MENU
-
     if data == "fc_show":
         context.user_data["flashcard_showing_answer"] = True
         await show_flashcard(query.message, user_id, subject_key, index, True)
@@ -440,7 +435,6 @@ async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.edit_text(t(user_id, "flashcards_done"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
         return SUBJECT_MENU
-
     return FLASHCARD_SESSION
 
 async def start_quiz(message, context, user_id, subject_key, edit=False):
@@ -457,14 +451,9 @@ async def show_quiz_question(message, user_id, context, edit=False):
     index = context.user_data["quiz_index"]
     subject_key = context.user_data["quiz_subject"]
     q = questions[index]
-
-    text = t(user_id, "quiz_start",
-             subject=SUBJECTS[subject_key]["name"],
-             num=index+1, question=q["question"])
-
+    text = t(user_id, "quiz_start", subject=SUBJECTS[subject_key]["name"], num=index+1, question=q["question"])
     keyboard = [[InlineKeyboardButton(opt, callback_data=f"quiz_ans_{i}")] for i, opt in enumerate(q["options"])]
     markup = InlineKeyboardMarkup(keyboard)
-
     if edit:
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
@@ -479,17 +468,14 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
-
     if data.startswith("back_subject_"):
         sk = data.split("back_subject_")[1]
         await show_subject_menu(query.message, user_id, sk, edit=True)
         return SUBJECT_MENU
-
     if data.startswith("quiz_restart_"):
         subject_key = data.split("quiz_restart_")[1]
         await start_quiz(query.message, context, user_id, subject_key, edit=True)
         return QUIZ_SESSION
-
     if data.startswith("quiz_ans_"):
         answer_index = int(data.split("_")[2])
         questions = context.user_data["quiz_questions"]
@@ -498,44 +484,31 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         q = questions[index]
         correct_index = q["correct"]
         is_correct = (answer_index == correct_index)
-
         if is_correct:
             context.user_data["quiz_score"] += 1
             result_text = t(user_id, "correct", explanation=q.get("explanation", ""))
         else:
-            result_text = t(user_id, "wrong",
-                            correct=q["options"][correct_index],
-                            explanation=q.get("explanation", ""))
-
+            result_text = t(user_id, "wrong", correct=q["options"][correct_index], explanation=q.get("explanation", ""))
         next_index = index + 1
         context.user_data["quiz_index"] = next_index
-
         if next_index >= len(questions):
             score = context.user_data["quiz_score"]
-            if score >= 9:
-                grade = t(user_id, "grade_excellent")
-            elif score >= 7:
-                grade = t(user_id, "grade_good")
-            elif score >= 5:
-                grade = t(user_id, "grade_ok")
-            else:
-                grade = t(user_id, "grade_bad")
-
+            if score >= 9: grade = t(user_id, "grade_excellent")
+            elif score >= 7: grade = t(user_id, "grade_good")
+            elif score >= 5: grade = t(user_id, "grade_ok")
+            else: grade = t(user_id, "grade_bad")
             done_text = result_text + "\n\n" + t(user_id, "quiz_done", score=score, grade=grade)
             keyboard = [
                 [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"quiz_restart_{subject_key}")],
                 [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
                 [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
             ]
-            await query.message.edit_text(done_text, parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            await query.message.edit_text(done_text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
             return SUBJECT_MENU
         else:
             keyboard = [[InlineKeyboardButton("➡️ Next Question", callback_data="quiz_next")]]
-            await query.message.edit_text(result_text, parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            await query.message.edit_text(result_text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
             return QUIZ_SESSION
-
     if data == "quiz_next":
         await show_quiz_question(query.message, user_id, context, edit=True)
         return QUIZ_SESSION
@@ -549,10 +522,14 @@ async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     token = os.environ.get("BOT_TOKEN")
     if not token:
-        raise ValueError("BOT_TOKEN environment variable not set!")
-
+        raise ValueError("BOT_TOKEN not set!")
     db.init()
-    app = Application.builder().token(token).build()
+    
+    app = (
+        Application.builder()
+        .token(token)
+        .build()
+    )
 
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
@@ -574,7 +551,7 @@ def main():
 
     app.add_handler(conv)
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
-    app.run_polling(drop_pending_updates=True)
+    app.run_polling(drop_pending_updates=True, close_loop=False)
 
 if __name__ == "__main__":
     main()
