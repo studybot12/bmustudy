@@ -13,7 +13,6 @@ from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# States
 CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT, SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION = range(7)
 
 TEXTS = {
@@ -28,7 +27,7 @@ TEXTS = {
         "payment_instruction": "💳 *Оплата доступа к «{subject}»*\n\nСтоимость: *{price:,} сум*\n\nПереведите на карту:\n`{card}`\n\nПосле перевода отправьте скриншот подтверждения 👇",
         "screenshot_received": "✅ Скриншот получен! Ваша оплата проверяется.\n\nОбычно это занимает до 30 минут. Вы получите уведомление как только доступ будет открыт.",
         "access_granted": "🎉 *Доступ открыт!*\n\nПредмет *{subject}* теперь доступен в разделе «Мои предметы».",
-        "access_denied": "❌ Оплата не подтверждена. Пожалуйста, свяжитесь с @admin или попробуйте снова.",
+        "access_denied": "❌ Оплата не подтверждена. Пожалуйста, свяжитесь с администратором или попробуйте снова.",
         "no_subjects": "У вас пока нет купленных предметов.\n\nПерейдите в раздел «Купить доступ» 🛒",
         "subject_menu": "📘 *{subject}*\n\nВыберите режим:",
         "study_materials": "📖 Конспект",
@@ -46,7 +45,7 @@ TEXTS = {
         "prev_card": "⬅️ Предыдущая",
         "finish_flashcards": "✅ Завершить",
         "flashcards_done": "🎉 Флэшкарты пройдены! Удачи на экзамене!",
-        "help_text": "❓ *Помощь*\n\nПо вопросам оплаты и доступа: @your_username\n\nБот работает 24/7. После оплаты доступ открывается в течение 30 минут.",
+        "help_text": "❓ *Помощь*\n\nПо вопросам оплаты и доступа обратитесь к администратору.\n\nБот работает 24/7. После оплаты доступ открывается в течение 30 минут.",
         "already_has_access": "✅ У вас уже есть доступ к этому предмету!",
         "restart_quiz": "🔄 Новый тест",
         "back_to_subject": "📘 К предмету",
@@ -66,7 +65,7 @@ TEXTS = {
         "payment_instruction": "💳 *Payment for «{subject}»*\n\nPrice: *{price:,} UZS*\n\nTransfer to card:\n`{card}`\n\nAfter payment, send a screenshot 👇",
         "screenshot_received": "✅ Screenshot received! Your payment is being reviewed.\n\nThis usually takes up to 30 minutes. You'll get a notification once access is granted.",
         "access_granted": "🎉 *Access Granted!*\n\n*{subject}* is now available in «My Subjects».",
-        "access_denied": "❌ Payment not confirmed. Please contact @admin or try again.",
+        "access_denied": "❌ Payment not confirmed. Please contact the admin or try again.",
         "no_subjects": "You don't have any subjects yet.\n\nGo to «Buy Access» 🛒",
         "subject_menu": "📘 *{subject}*\n\nChoose a mode:",
         "study_materials": "📖 Study Notes",
@@ -84,7 +83,7 @@ TEXTS = {
         "prev_card": "⬅️ Previous",
         "finish_flashcards": "✅ Finish",
         "flashcards_done": "🎉 Flashcards complete! Good luck on your exam!",
-        "help_text": "❓ *Help*\n\nFor payment & access issues: @your_username\n\nBot runs 24/7. Access is granted within 30 minutes after payment.",
+        "help_text": "❓ *Help*\n\nFor payment & access issues contact the admin.\n\nBot runs 24/7. Access is granted within 30 minutes after payment.",
         "already_has_access": "✅ You already have access to this subject!",
         "restart_quiz": "🔄 New Quiz",
         "back_to_subject": "📘 Back to Subject",
@@ -100,9 +99,6 @@ def t(user_id, key, **kwargs):
     text = TEXTS[lang].get(key, key)
     return text.format(**kwargs) if kwargs else text
 
-
-# ─── /start ───────────────────────────────────────────────────────────────────
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru"),
@@ -115,7 +111,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     return CHOOSING_LANG
 
-
 async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -124,7 +119,6 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     db.upsert_user(user.id, user.username or "", user.first_name or "", lang)
     await show_main_menu(query.message, user.id, edit=True)
     return MAIN_MENU
-
 
 async def show_main_menu(message, user_id, edit=False):
     keyboard = [
@@ -138,9 +132,6 @@ async def show_main_menu(message, user_id, edit=False):
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-
-
-# ─── MAIN MENU ────────────────────────────────────────────────────────────────
 
 async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -185,9 +176,6 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
 
-
-# ─── SUBJECT SELECTION ────────────────────────────────────────────────────────
-
 async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -199,7 +187,6 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return MAIN_MENU
 
     if data.startswith("already_"):
-        subject_key = data.split("_", 1)[1]
         await query.answer(t(user_id, "already_has_access"), show_alert=True)
         return CHOOSING_SUBJECT
 
@@ -220,7 +207,6 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_subject_menu(query.message, user_id, subject_key, edit=True)
         return SUBJECT_MENU
 
-
 async def show_subject_menu(message, user_id, subject_key, edit=False):
     info = SUBJECTS[subject_key]
     keyboard = [
@@ -235,9 +221,6 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
 
-
-# ─── PAYMENT SCREENSHOT ───────────────────────────────────────────────────────
-
 async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = update.effective_user
@@ -250,7 +233,6 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
     info = SUBJECTS[subject_key]
     db.add_pending_payment(user_id, subject_key)
 
-    # Notify admin
     approve_cb = f"approve_{user_id}_{subject_key}"
     deny_cb = f"deny_{user_id}_{subject_key}"
     admin_keyboard = InlineKeyboardMarkup([
@@ -293,9 +275,6 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
     )
     return MAIN_MENU
 
-
-# ─── ADMIN APPROVE/DENY ───────────────────────────────────────────────────────
-
 async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -333,9 +312,6 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown"
         )
 
-
-# ─── SUBJECT MENU HANDLER ─────────────────────────────────────────────────────
-
 async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -369,24 +345,18 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         await start_quiz(query.message, context, user_id, subject_key, edit=True)
         return QUIZ_SESSION
 
-
 async def send_materials(message, user_id, subject_key):
     info = get_subject_info(subject_key)
-    lang = db.get_user_lang(user_id) or "en"
     chapters = info.get("chapters", [])
 
     header = f"📘 *{info['name']}*\n{'─' * 30}\n\n"
-    await message.edit_text(
-        header + "⏳ Loading study notes...",
-        parse_mode="Markdown"
-    )
+    await message.edit_text(header + "⏳ Loading...", parse_mode="Markdown")
 
     full_text = header
     for i, chapter in enumerate(chapters, 1):
         full_text += f"*{i}. {chapter['title']}*\n"
         full_text += chapter['content'] + "\n\n"
 
-    # Telegram message limit is 4096 chars
     chunks = []
     while len(full_text) > 4000:
         split_at = full_text.rfind('\n\n', 0, 4000)
@@ -403,9 +373,6 @@ async def send_materials(message, user_id, subject_key):
     for i, chunk in enumerate(chunks[1:], 1):
         is_last = (i == len(chunks) - 1)
         await message.reply_text(chunk, parse_mode="Markdown", reply_markup=markup if is_last else None)
-
-
-# ─── FLASHCARDS ───────────────────────────────────────────────────────────────
 
 async def show_flashcard(message, user_id, subject_key, index, showing_answer, edit=True):
     cards = get_flashcards(subject_key)
@@ -437,7 +404,6 @@ async def show_flashcard(message, user_id, subject_key, index, showing_answer, e
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
-
 async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -446,7 +412,6 @@ async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     subject_key = context.user_data.get("flashcard_subject")
     index = context.user_data.get("flashcard_index", 0)
-    showing = context.user_data.get("flashcard_showing_answer", False)
 
     if data == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
@@ -478,9 +443,6 @@ async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     return FLASHCARD_SESSION
 
-
-# ─── QUIZ ─────────────────────────────────────────────────────────────────────
-
 async def start_quiz(message, context, user_id, subject_key, edit=False):
     all_q = get_quiz_questions(subject_key)
     questions = random.sample(all_q, min(10, len(all_q)))
@@ -489,7 +451,6 @@ async def start_quiz(message, context, user_id, subject_key, edit=False):
     context.user_data["quiz_score"] = 0
     context.user_data["quiz_subject"] = subject_key
     await show_quiz_question(message, user_id, context, edit=edit)
-
 
 async def show_quiz_question(message, user_id, context, edit=False):
     questions = context.user_data["quiz_questions"]
@@ -501,15 +462,13 @@ async def show_quiz_question(message, user_id, context, edit=False):
              subject=SUBJECTS[subject_key]["name"],
              num=index+1, question=q["question"])
 
-    options = q["options"][:]
-    keyboard = [[InlineKeyboardButton(opt, callback_data=f"quiz_ans_{i}")] for i, opt in enumerate(options)]
+    keyboard = [[InlineKeyboardButton(opt, callback_data=f"quiz_ans_{i}")] for i, opt in enumerate(q["options"])]
     markup = InlineKeyboardMarkup(keyboard)
 
     if edit:
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-
 
 async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -581,15 +540,11 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_quiz_question(query.message, user_id, context, edit=True)
         return QUIZ_SESSION
 
-
-# ─── FALLBACK ─────────────────────────────────────────────────────────────────
-
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
         user_id = update.effective_user.id
         await show_main_menu(update.message, user_id)
     return MAIN_MENU
-
 
 def main():
     token = os.environ.get("BOT_TOKEN")
@@ -619,8 +574,7 @@ def main():
 
     app.add_handler(conv)
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
-    app.run_polling()
-
+    app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
     main()
