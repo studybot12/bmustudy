@@ -20,6 +20,6 @@ async def root():
 
 # Этот блок нужен для запуска сервера
 if __name__ == "__main__":
-    # Railway автоматически передает номер порта в переменную окружения PORT
+    # Railway передает порт в переменную PORT, если её нет — используем 8080
     port = int(os.environ.get("PORT", 8080))
     uvicorn.run(app, host="0.0.0.0", port=port)
