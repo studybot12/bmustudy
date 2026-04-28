@@ -799,22 +799,21 @@ def main():
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
 
-# ... (весь ваш код выше)
-
+# --- ФУНКЦИЯ ЗАПУСКА ДЛЯ RAILWAY ---
 async def main():
-    # 1. Инициализируем приложение бота
-    await app.initialize()
-    # 2. Запускаем само приложение
-    await app.start()
-    # 3. Включаем проверку сообщений (polling)
-    await app.updater.start_polling(drop_pending_updates=True)
+    # Мы используем имя 'application', так как оно создано выше в твоем коде
+    await application.initialize()
+    await application.start()
+    await application.updater.start_polling(drop_pending_updates=True)
     
-    # 4. Критически важно: этот цикл не дает боту выключиться
+    # Этот цикл поддерживает жизнь бота, пока работает сайт
     while True:
         await asyncio.sleep(1)
 
+# Этот блок позволяет запускать файл как обычно, так и через main.py
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        # Для локального запуска или простого запуска бота
+        application.run_polling(drop_pending_updates=True)
     except (KeyboardInterrupt, SystemExit):
         pass
