@@ -802,13 +802,19 @@ def main():
 # ... (весь ваш код выше)
 
 async def main():
-    # Теперь polling живет внутри функции main
+    # 1. Инициализируем приложение бота
     await app.initialize()
+    # 2. Запускаем само приложение
     await app.start()
+    # 3. Включаем проверку сообщений (polling)
     await app.updater.start_polling(drop_pending_updates=True)
-    # Оставляем бота запущенным
+    
+    # 4. Критически важно: этот цикл не дает боту выключиться
     while True:
         await asyncio.sleep(1)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        pass
