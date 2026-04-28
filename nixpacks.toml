@@ -1,0 +1,5 @@
+[phases.install]
+cmds = ["pip install python-telegram-bot"]
+
+[start]
+cmd = "python bot.py"
