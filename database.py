@@ -53,6 +53,8 @@ class Database:
     def _con(self):
         return sqlite3.connect(DB_PATH)
 
+    # ── Used by bot ──────────────────────────────────────────────────────────
+
     def upsert_user(self, user_id, username, first_name, lang):
         with self._con() as con:
             con.execute("""
@@ -99,6 +101,7 @@ class Database:
                         (user_id, subject_key, score, total))
 
     def get_progress(self, user_id, subject_key):
+        """Progress for a single subject (used by bot)."""
         with self._con() as con:
             rows = con.execute("""
                 SELECT score, total FROM quiz_results
@@ -115,6 +118,49 @@ class Database:
             """, (user_id, subject_key)).fetchone()
             cards = cards_row[0] if cards_row else 0
             return {"tests": tests, "avg": avg, "best": best, "cards": cards}
+
+    # ── Used by Mini App API ─────────────────────────────────────────────────
+
+    def ensure_user(self, user_id, username="", first_name=""):
+        """Register user if not exists (called from Mini App)."""
+        with self._con() as con:
+            con.execute("""
+                INSERT INTO users (user_id, username, first_name, lang)
+                VALUES (?, ?, ?, 'en')
+                ON CONFLICT(user_id) DO UPDATE SET
+                    username=excluded.username,
+                    first_name=excluded.first_name
+            """, (user_id, username or "", first_name or ""))
+
+    def get_all_progress(self, user_id):
+        """Progress for all subjects (used by Mini App /api/progress)."""
+        with self._con() as con:
+            rows = con.execute("""
+                SELECT subject_key, score, total FROM quiz_results
+                WHERE user_id=?
+            """, (user_id,)).fetchall()
+
+            by_subject = {}
+            for subject_key, score, total in rows:
+                if subject_key not in by_subject:
+                    by_subject[subject_key] = []
+                by_subject[subject_key].append((score, total))
+
+            result = {}
+            for key, entries in by_subject.items():
+                tests = len(entries)
+                avg = int(sum(s/t*100 for s, t in entries) / tests)
+                best = int(max(s/t*100 for s, t in entries))
+                cards_row = con.execute("""
+                    SELECT cards_viewed FROM flashcard_progress
+                    WHERE user_id=? AND subject_key=?
+                """, (user_id, key)).fetchone()
+                cards = cards_row[0] if cards_row else 0
+                result[key] = {"tests": tests, "avg": avg, "best": best, "cards": cards}
+
+            return result
+
+    # ── Promo & admin ────────────────────────────────────────────────────────
 
     def increment_cards(self, user_id, subject_key):
         with self._con() as con:
