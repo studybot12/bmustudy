@@ -316,4 +316,81 @@ class Database:
                 result.append({"user_id": u[0], "username": u[1], "first_name": u[2], "subjects": subjects})
             return result
 
+    # ── XP / Streak / Leaderboard ─────────────────────────────────────────────
+ 
+    def get_or_create_xp(self, user_id):
+        with self._con() as con:
+            row = con.execute(
+                "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
+                (user_id,)
+            ).fetchone()
+            if not row:
+                con.execute(
+                    "INSERT OR IGNORE INTO user_xp (user_id, xp, level, streak, last_activity) VALUES (?, 0, 1, 0, date('now'))",
+                    (user_id,)
+                )
+                return {"xp": 0, "level": 1, "streak": 0, "last_activity": None}
+            return {"xp": row[0], "level": row[1], "streak": row[2], "last_activity": row[3]}
+ 
+    def add_xp(self, user_id, amount):
+        from datetime import date, timedelta
+        today = date.today()
+        with self._con() as con:
+            row = con.execute(
+                "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
+                (user_id,)
+            ).fetchone()
+            if not row:
+                con.execute(
+                    "INSERT OR IGNORE INTO user_xp (user_id, xp, level, streak, last_activity) VALUES (?, ?, 1, 1, ?)",
+                    (user_id, amount, today)
+                )
+                return {"xp": amount, "level": 1, "streak": 1, "leveled_up": False, "bonus": 0}
+ 
+            xp, level, streak, last_act = row
+            bonus = 0
+            if last_act:
+                try:
+                    last_date = date.fromisoformat(str(last_act))
+                    if last_date == today:
+                        new_streak = streak
+                    elif last_date == today - timedelta(days=1):
+                        new_streak = streak + 1
+                        if new_streak >= 7:
+                            bonus = 50
+                        elif new_streak >= 3:
+                            bonus = 20
+                    else:
+                        new_streak = 1
+                except Exception:
+                    new_streak = 1
+            else:
+                new_streak = 1
+ 
+            total_xp = xp + amount + bonus
+            thresholds = [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+            new_level = 1
+            for i, th in enumerate(thresholds):
+                if total_xp >= th:
+                    new_level = i + 1
+            new_level = min(new_level, 8)
+            leveled_up = new_level > level
+ 
+            con.execute(
+                "UPDATE user_xp SET xp=?, level=?, streak=?, last_activity=? WHERE user_id=?",
+                (total_xp, new_level, new_streak, today, user_id)
+            )
+            return {"xp": total_xp, "level": new_level, "streak": new_streak,
+                    "leveled_up": leveled_up, "bonus": bonus}
+ 
+    def get_leaderboard(self, limit=10):
+        with self._con() as con:
+            rows = con.execute("""
+                SELECT u.user_id, u.first_name, u.username, x.xp, x.level, x.streak
+                FROM users u JOIN user_xp x ON u.user_id = x.user_id
+                ORDER BY x.xp DESC LIMIT ?
+            """, (limit,)).fetchall()
+            return [{"user_id": r[0], "first_name": r[1], "username": r[2],
+                     "xp": r[3], "level": r[4], "streak": r[5]} for r in rows]
+ 
 db = Database()
