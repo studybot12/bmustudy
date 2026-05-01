@@ -52,6 +52,23 @@ class Database:
                 discount INTEGER,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+            CREATE TABLE IF NOT EXISTS bookmarks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                subject_key TEXT,
+                question_text TEXT,
+                correct_answer TEXT,
+                explanation TEXT,
+                saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS ai_chat_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                subject_key TEXT,
+                role TEXT,
+                message TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
         """)
         con.commit()
         con.close()
@@ -191,6 +208,83 @@ class Database:
                 "INSERT OR IGNORE INTO trial_used (user_id, subject_key) VALUES (?, ?)",
                 (user_id, subject_key)
             )
+
+    # ── Bookmarks ────────────────────────────────────────────────────────────
+
+    def add_bookmark(self, user_id, subject_key, question_text, correct_answer, explanation):
+        with self._con() as con:
+            con.execute("""
+                INSERT INTO bookmarks (user_id, subject_key, question_text, correct_answer, explanation)
+                VALUES (?, ?, ?, ?, ?)
+            """, (user_id, subject_key, question_text, correct_answer, explanation))
+
+    def get_bookmarks(self, user_id, subject_key=None):
+        with self._con() as con:
+            if subject_key:
+                rows = con.execute("""
+                    SELECT id, subject_key, question_text, correct_answer, explanation, saved_at
+                    FROM bookmarks WHERE user_id=? AND subject_key=? ORDER BY saved_at DESC
+                """, (user_id, subject_key)).fetchall()
+            else:
+                rows = con.execute("""
+                    SELECT id, subject_key, question_text, correct_answer, explanation, saved_at
+                    FROM bookmarks WHERE user_id=? ORDER BY saved_at DESC LIMIT 20
+                """, (user_id,)).fetchall()
+            return [{"id": r[0], "subject_key": r[1], "question": r[2],
+                     "answer": r[3], "explanation": r[4], "saved_at": r[5]} for r in rows]
+
+    def delete_bookmark(self, bookmark_id, user_id):
+        with self._con() as con:
+            con.execute("DELETE FROM bookmarks WHERE id=? AND user_id=?", (bookmark_id, user_id))
+
+    def bookmark_exists(self, user_id, question_text):
+        with self._con() as con:
+            row = con.execute(
+                "SELECT 1 FROM bookmarks WHERE user_id=? AND question_text=?",
+                (user_id, question_text)
+            ).fetchone()
+            return row is not None
+
+    # ── AI Chat History ──────────────────────────────────────────────────────
+
+    def save_ai_message(self, user_id, subject_key, role, message):
+        with self._con() as con:
+            con.execute("""
+                INSERT INTO ai_chat_history (user_id, subject_key, role, message)
+                VALUES (?, ?, ?, ?)
+            """, (user_id, subject_key, role, message))
+
+    def get_ai_history(self, user_id, subject_key, limit=10):
+        with self._con() as con:
+            rows = con.execute("""
+                SELECT role, message FROM ai_chat_history
+                WHERE user_id=? AND subject_key=?
+                ORDER BY created_at DESC LIMIT ?
+            """, (user_id, subject_key, limit)).fetchall()
+            return [{"role": r[0], "content": r[1]} for r in reversed(rows)]
+
+    def clear_ai_history(self, user_id, subject_key):
+        with self._con() as con:
+            con.execute("DELETE FROM ai_chat_history WHERE user_id=? AND subject_key=?",
+                        (user_id, subject_key))
+
+    # ── Quiz History with dates ──────────────────────────────────────────────
+
+    def get_quiz_history(self, user_id, subject_key=None, limit=10):
+        with self._con() as con:
+            if subject_key:
+                rows = con.execute("""
+                    SELECT subject_key, score, total, taken_at FROM quiz_results
+                    WHERE user_id=? AND subject_key=?
+                    ORDER BY taken_at DESC LIMIT ?
+                """, (user_id, subject_key, limit)).fetchall()
+            else:
+                rows = con.execute("""
+                    SELECT subject_key, score, total, taken_at FROM quiz_results
+                    WHERE user_id=?
+                    ORDER BY taken_at DESC LIMIT ?
+                """, (user_id, limit)).fetchall()
+            return [{"subject_key": r[0], "score": r[1], "total": r[2], "taken_at": r[3]} for r in rows]
 
     def add_promo(self, code, discount):
         with self._con() as con:

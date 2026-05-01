@@ -8,8 +8,13 @@ from telegram.ext import (
     ContextTypes, filters, ConversationHandler
 )
 from database import db
-from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions
+from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary
 from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
 
 logging.basicConfig(level=logging.INFO)
 SUBJECT_PHOTOS = {
@@ -22,7 +27,8 @@ SUBJECT_PHOTOS = {
 logger = logging.getLogger(__name__)
 
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
- SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION) = range(8)
+ SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
+ AI_CHAT_SESSION, BOOKMARKS_SESSION) = range(10)
 
 FREE_QUESTIONS = 3
 QUIZ_QUESTIONS_COUNT = 20
@@ -78,6 +84,35 @@ TEXTS = {
         "promo_invalid": "❌ Неверный промокод. Попробуйте ещё раз или нажмите Назад.",
         "enter_promo": "🎁 У меня есть промокод",
         "stats_title": "📈 *Статистика бота*\n\n👥 Всего студентов: *{users}*\n💰 Оплаченных доступов: *{paid}*\n💵 Выручка: *{revenue:,} сум*\n\n📘 По предметам:",
+        # AI Chat
+        "ai_chat": "🤖 ИИ-преподаватель",
+        "ai_chat_intro": "🤖 *ИИ-преподаватель — {subject}*\n\nЗадайте любой вопрос по предмету. Я объясню, приведу примеры и помогу разобраться!\n\n_Введите вопрос:_",
+        "ai_thinking": "⏳ Думаю...",
+        "ai_clear": "🗑 Очистить историю",
+        "ai_history_cleared": "✅ История чата очищена.",
+        "ai_unavailable": "⚠️ ИИ-чат временно недоступен. Установите пакет `anthropic` и добавьте `ANTHROPIC_API_KEY`.",
+        # Quiz history
+        "quiz_history": "📋 История тестов",
+        "quiz_history_empty": "📋 Вы ещё не проходили тесты.\n\nНачните прямо сейчас! ✏️",
+        "quiz_history_title": "📋 *История тестов — {subject}*\n\n",
+        "quiz_history_all": "📋 *Все тесты*\n\n",
+        # Bookmarks
+        "bookmarks": "🔖 Закладки",
+        "bookmark_saved": "🔖 Вопрос добавлен в закладки!",
+        "bookmark_exists": "✅ Уже в закладках.",
+        "bookmarks_empty": "🔖 Закладок пока нет.\n\nВо время теста нажимайте 🔖, чтобы сохранить сложный вопрос.",
+        "bookmarks_title": "🔖 *Мои закладки*\n\n",
+        "bookmark_delete": "🗑 Удалить",
+        "bookmark_deleted": "✅ Закладка удалена.",
+        # Language change
+        "change_lang": "🌐 Сменить язык",
+        # Cheatsheet
+        "cheatsheet": "📝 Мини-конспект",
+        "cheatsheet_title": "📝 *Мини-конспект: {subject}*\n\n",
+        # Glossary
+        "glossary": "📖 Глоссарий",
+        "glossary_intro": "📖 *Глоссарий — {subject}*\n\nВведите термин для поиска:",
+        "glossary_not_found": "❌ Термин не найден. Попробуйте другое слово.",
     },
     "en": {
         "welcome": "👋 Hello! Welcome to *Study Hub BMU*\n\nChoose your language:",
@@ -129,6 +164,35 @@ TEXTS = {
         "promo_invalid": "❌ Invalid promo code. Try again or press Back.",
         "enter_promo": "🎁 I have a promo code",
         "stats_title": "📈 *Bot Statistics*\n\n👥 Total students: *{users}*\n💰 Paid accesses: *{paid}*\n💵 Revenue: *{revenue:,} UZS*\n\n📘 By subject:",
+        # AI Chat
+        "ai_chat": "🤖 AI Tutor",
+        "ai_chat_intro": "🤖 *AI Tutor — {subject}*\n\nAsk any question about the subject. I'll explain, give examples, and help you understand!\n\n_Enter your question:_",
+        "ai_thinking": "⏳ Thinking...",
+        "ai_clear": "🗑 Clear history",
+        "ai_history_cleared": "✅ Chat history cleared.",
+        "ai_unavailable": "⚠️ AI chat is temporarily unavailable. Install `anthropic` package and add `ANTHROPIC_API_KEY`.",
+        # Quiz history
+        "quiz_history": "📋 Test History",
+        "quiz_history_empty": "📋 You haven't taken any tests yet.\n\nStart now! ✏️",
+        "quiz_history_title": "📋 *Test History — {subject}*\n\n",
+        "quiz_history_all": "📋 *All Tests*\n\n",
+        # Bookmarks
+        "bookmarks": "🔖 Bookmarks",
+        "bookmark_saved": "🔖 Question saved to bookmarks!",
+        "bookmark_exists": "✅ Already bookmarked.",
+        "bookmarks_empty": "🔖 No bookmarks yet.\n\nDuring a quiz, press 🔖 to save a tricky question.",
+        "bookmarks_title": "🔖 *My Bookmarks*\n\n",
+        "bookmark_delete": "🗑 Delete",
+        "bookmark_deleted": "✅ Bookmark deleted.",
+        # Language change
+        "change_lang": "🌐 Change Language",
+        # Cheatsheet
+        "cheatsheet": "📝 Cheat Sheet",
+        "cheatsheet_title": "📝 *Cheat Sheet: {subject}*\n\n",
+        # Glossary
+        "glossary": "📖 Glossary",
+        "glossary_intro": "📖 *Glossary — {subject}*\n\nEnter a term to search:",
+        "glossary_not_found": "❌ Term not found. Try another word.",
     }
 }
 
@@ -166,6 +230,8 @@ async def show_main_menu(message, user_id, edit=False):
         [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
         [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
         [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
+        [InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks"),
+         InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang")],
         [InlineKeyboardButton(t(user_id, "help"), callback_data="menu_help")],
     ]
     markup = InlineKeyboardMarkup(keyboard)
@@ -266,6 +332,20 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.edit_text(t(user_id, "help_text"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
         return MAIN_MENU
+
+    elif action == "menu_change_lang":
+        keyboard = [
+            [InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru"),
+             InlineKeyboardButton("🇬🇧 English", callback_data="lang_en")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
+        ]
+        await query.message.edit_text("🌐 Выберите язык / Choose language:",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return MAIN_MENU
+
+    elif action == "menu_bookmarks":
+        await show_bookmarks(query.message, user_id, edit=True)
+        return BOOKMARKS_SESSION
 
     elif action == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
@@ -383,10 +463,14 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_subject_menu(message, user_id, subject_key, edit=False):
     info = SUBJECTS[subject_key]
     keyboard = [
-        [InlineKeyboardButton(t(user_id, "study_materials"), callback_data=f"materials_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "flashcards"), callback_data=f"flashcards_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "quiz"), callback_data=f"quiz_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "study_materials"), callback_data=f"materials_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "cheatsheet"), callback_data=f"cheatsheet_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "flashcards"), callback_data=f"flashcards_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "glossary"), callback_data=f"glossary_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "quiz"), callback_data=f"quiz_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "ai_chat"), callback_data=f"aichat_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
     ]
     text = t(user_id, "subject_menu", subject=info["name"])
@@ -556,6 +640,71 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         subject_key = data.split("_", 1)[1]
         await send_materials(query.message, user_id, subject_key)
         return SUBJECT_MENU
+
+    if data.startswith("cheatsheet_"):
+        subject_key = data.split("_", 1)[1]
+        sheet = get_cheatsheet(subject_key)
+        text = t(user_id, "cheatsheet_title", subject=SUBJECTS[subject_key]["name"]) + sheet
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return SUBJECT_MENU
+
+    if data.startswith("glossary_"):
+        subject_key = data.split("_", 1)[1]
+        context.user_data["glossary_subject"] = subject_key
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(
+            t(user_id, "glossary_intro", subject=SUBJECTS[subject_key]["name"]),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        context.user_data["awaiting_glossary"] = True
+        return SUBJECT_MENU
+
+    if data.startswith("history_"):
+        subject_key = data.split("_", 1)[1]
+        history = db.get_quiz_history(user_id, subject_key)
+        if not history:
+            text = t(user_id, "quiz_history_empty")
+        else:
+            text = t(user_id, "quiz_history_title", subject=SUBJECTS[subject_key]["name"])
+            for i, h in enumerate(history, 1):
+                pct = int(h["score"] / h["total"] * 100)
+                date = h["taken_at"][:10] if h["taken_at"] else "—"
+                emoji = "🌟" if pct >= 90 else "👍" if pct >= 70 else "📚" if pct >= 50 else "💪"
+                text += f"{emoji} {date}: *{h['score']}/{h['total']}* ({pct}%)\n"
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return SUBJECT_MENU
+
+    if data.startswith("aichat_"):
+        subject_key = data.split("_", 1)[1]
+        context.user_data["ai_subject"] = subject_key
+        context.user_data["in_ai_chat"] = True
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "ai_clear"), callback_data=f"ai_clear_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+        ]
+        await query.message.edit_text(
+            t(user_id, "ai_chat_intro", subject=SUBJECTS[subject_key]["name"]),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return AI_CHAT_SESSION
+
+    if data.startswith("ai_clear_"):
+        subject_key = data.split("ai_clear_")[1]
+        db.clear_ai_history(user_id, subject_key)
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "ai_clear"), callback_data=f"ai_clear_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+        ]
+        await query.answer(t(user_id, "ai_history_cleared"), show_alert=False)
+        await query.message.edit_text(
+            t(user_id, "ai_chat_intro", subject=SUBJECTS[subject_key]["name"]),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return AI_CHAT_SESSION
 
     if data.startswith("flashcards_"):
         subject_key = data.split("_", 1)[1]
@@ -727,6 +876,12 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             result_text = t(user_id, "wrong", correct=q["options"][correct_index],
                             explanation=q.get("explanation", ""))
+        # Bookmark button for wrong answers
+        bookmark_btn = []
+        if not is_correct:
+            already = db.bookmark_exists(user_id, q["question"])
+            bm_label = t(user_id, "bookmark_exists") if already else "🔖 " + ("Сохранить" if (db.get_user_lang(user_id) or "en") == "ru" else "Bookmark")
+            bookmark_btn = [InlineKeyboardButton(bm_label, callback_data=f"bookmark_quiz_{index}")]
         next_index = index + 1
         context.user_data["quiz_index"] = next_index
         if next_index >= total:
@@ -747,10 +902,24 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                           reply_markup=InlineKeyboardMarkup(keyboard))
             return SUBJECT_MENU
         else:
-            keyboard = [[InlineKeyboardButton("➡️ Next Question", callback_data="quiz_next")]]
+            next_row = [InlineKeyboardButton("➡️ Next Question", callback_data="quiz_next")]
+            keyboard = [bookmark_btn, next_row] if bookmark_btn else [[next_row[0]]]
             await query.message.edit_text(result_text, parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(keyboard))
             return QUIZ_SESSION
+    if data.startswith("bookmark_quiz_"):
+        q_index = int(data.split("bookmark_quiz_")[1])
+        questions = context.user_data.get("quiz_questions", [])
+        subject_key = context.user_data.get("quiz_subject")
+        if q_index < len(questions):
+            q = questions[q_index]
+            if not db.bookmark_exists(user_id, q["question"]):
+                db.add_bookmark(user_id, subject_key, q["question"],
+                                q["options"][q["correct"]], q.get("explanation", ""))
+                await query.answer(t(user_id, "bookmark_saved"))
+            else:
+                await query.answer(t(user_id, "bookmark_exists"))
+        return QUIZ_SESSION
     if data == "quiz_next":
         await show_quiz_question(query.message, user_id, context, edit=True)
         return QUIZ_SESSION
@@ -817,9 +986,136 @@ async def trial_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return TRIAL_SESSION
 
 
+# ── AI CHAT ───────────────────────────────────────────────────────────────────
+
+async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    text = update.message.text.strip()
+    subject_key = context.user_data.get("ai_subject")
+
+    if not subject_key:
+        await show_main_menu(update.message, user_id)
+        return MAIN_MENU
+
+    if not ANTHROPIC_AVAILABLE or not os.environ.get("ANTHROPIC_API_KEY"):
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await update.message.reply_text(t(user_id, "ai_unavailable"), parse_mode="Markdown",
+                                        reply_markup=InlineKeyboardMarkup(keyboard))
+        return AI_CHAT_SESSION
+
+    thinking_msg = await update.message.reply_text(t(user_id, "ai_thinking"))
+
+    subject_name = SUBJECTS[subject_key]["name"]
+    history = db.get_ai_history(user_id, subject_key, limit=10)
+    db.save_ai_message(user_id, subject_key, "user", text)
+
+    lang = db.get_user_lang(user_id) or "en"
+    system_prompt = (
+        f"You are a helpful tutor for the subject '{subject_name}' at British Management University. "
+        f"Answer only questions related to this subject. Be concise but thorough. "
+        f"Use {'Russian' if lang == 'ru' else 'English'} language. "
+        f"Format answers clearly with bullet points or numbered lists when appropriate."
+    )
+
+    messages = history + [{"role": "user", "content": text}]
+
+    try:
+        client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+        response = client.messages.create(
+            model="claude-opus-4-5",
+            max_tokens=1000,
+            system=system_prompt,
+            messages=messages
+        )
+        ai_reply = response.content[0].text
+        db.save_ai_message(user_id, subject_key, "assistant", ai_reply)
+
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "ai_clear"), callback_data=f"ai_clear_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+        ]
+        await thinking_msg.delete()
+        await update.message.reply_text(f"🤖 {ai_reply}", parse_mode="Markdown",
+                                        reply_markup=InlineKeyboardMarkup(keyboard))
+    except Exception as e:
+        logger.error(f"AI chat error: {e}")
+        await thinking_msg.edit_text("⚠️ Ошибка ИИ. Попробуйте позже." if lang == "ru" else "⚠️ AI error. Try again later.")
+
+    return AI_CHAT_SESSION
+
+
+# ── BOOKMARKS ─────────────────────────────────────────────────────────────────
+
+async def show_bookmarks(message, user_id, edit=False):
+    bookmarks = db.get_bookmarks(user_id)
+    if not bookmarks:
+        text = t(user_id, "bookmarks_empty")
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+    else:
+        text = t(user_id, "bookmarks_title")
+        keyboard = []
+        for b in bookmarks[:10]:
+            subj_name = SUBJECTS.get(b["subject_key"], {}).get("name", b["subject_key"])
+            short_q = b["question"][:50] + "…" if len(b["question"]) > 50 else b["question"]
+            text += f"📌 *{subj_name}*\n_{short_q}_\n✅ {b['answer']}\n\n"
+            keyboard.append([InlineKeyboardButton(
+                f"🗑 {short_q[:30]}…" if len(b["question"]) > 30 else f"🗑 {b['question']}",
+                callback_data=f"del_bookmark_{b['id']}"
+            )])
+        keyboard.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+    markup = InlineKeyboardMarkup(keyboard)
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+
+async def bookmarks_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    user_id = query.from_user.id
+    data = query.data
+
+    if data == "back_main":
+        await show_main_menu(query.message, user_id, edit=True)
+        return MAIN_MENU
+
+    if data.startswith("del_bookmark_"):
+        bookmark_id = int(data.split("del_bookmark_")[1])
+        db.delete_bookmark(bookmark_id, user_id)
+        await query.answer(t(user_id, "bookmark_deleted"))
+        await show_bookmarks(query.message, user_id, edit=True)
+        return BOOKMARKS_SESSION
+
+    return BOOKMARKS_SESSION
+
+
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
         user_id = update.effective_user.id
+
+        # Handle glossary search
+        if context.user_data.get("awaiting_glossary"):
+            subject_key = context.user_data.get("glossary_subject")
+            term = update.message.text.strip().lower()
+            glossary = get_glossary(subject_key)
+            result = None
+            for entry in glossary:
+                if term in entry["term"].lower():
+                    result = entry
+                    break
+            context.user_data["awaiting_glossary"] = False
+            keyboard = [
+                [InlineKeyboardButton(t(user_id, "glossary"), callback_data=f"glossary_{subject_key}")],
+                [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+            ]
+            if result:
+                text = f"📖 *{result['term']}*\n\n{result['definition']}"
+            else:
+                text = t(user_id, "glossary_not_found")
+            await update.message.reply_text(text, parse_mode="Markdown",
+                                            reply_markup=InlineKeyboardMarkup(keyboard))
+            return SUBJECT_MENU
+
         await show_main_menu(update.message, user_id)
     return MAIN_MENU
 
@@ -846,6 +1142,11 @@ def main():
             QUIZ_SESSION: [CallbackQueryHandler(quiz_handler)],
             FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler)],
             TRIAL_SESSION: [CallbackQueryHandler(trial_handler)],
+            AI_CHAT_SESSION: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ai_chat_message_handler),
+                CallbackQueryHandler(subject_menu_handler),
+            ],
+            BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler)],
         },
         fallbacks=[CommandHandler("start", start), MessageHandler(filters.ALL, fallback)],
         allow_reentry=True,

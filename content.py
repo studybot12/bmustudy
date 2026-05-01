@@ -888,3 +888,107 @@ def get_flashcards(subject_key):
 
 def get_quiz_questions(subject_key):
     return QUIZ_QUESTIONS.get(subject_key, [])
+
+
+# ─── CHEAT SHEETS ─────────────────────────────────────────────────────────────
+
+CHEATSHEETS = {
+    "f1": (
+        "🔑 *5 ключевых тем F1:*\n\n"
+        "1️⃣ *Стейкхолдеры* — Матрица Менделоу: Power vs Interest\n"
+        "2️⃣ *PESTEL* — Political, Economic, Social, Tech, Environmental, Legal\n"
+        "3️⃣ *Структуры орг.* — Функциональная / Дивизиональная / Матричная\n"
+        "4️⃣ *Мотивация* — Маслоу (пирамида), Герцберг (гигиена vs мотиваторы), МакГрегор X/Y\n"
+        "5️⃣ *Корп. управление* — Агентская проблема, НЕД, Кодекс Кэдбери\n\n"
+        "📌 *Помни:* ACCA этика = Integrity, Objectivity, Competence, Confidentiality, Behaviour"
+    ),
+    "f3": (
+        "🔑 *5 ключевых тем F3:*\n\n"
+        "1️⃣ *Двойная запись* — Каждая операция = Дебет + Кредит (Assets = Liabilities + Equity)\n"
+        "2️⃣ *Финотчётность* — P&L (доходы-расходы), Баланс (активы-обязательства), Cash Flow\n"
+        "3️⃣ *Корректировки* — Начисления, предоплаты, амортизация (прямая vs убывающий остаток)\n"
+        "4️⃣ *Консолидация* — Гудвилл = Цена покупки − Чистые активы дочки\n"
+        "5️⃣ *Ratios* — Liquidity (Current ratio), Profitability (GP%), Gearing (Debt/Equity)\n\n"
+        "📌 *Помни:* Выручка признаётся по принципу начислений, не по оплате!"
+    ),
+    "fm": (
+        "🔑 *5 ключевых тем Financial Markets:*\n\n"
+        "1️⃣ *Рынки* — Первичный (IPO) vs Вторичный (торги), Денежный vs Капитальный\n"
+        "2️⃣ *Облигации* — Цена обратно к доходности; Duration = чувствительность к ставке\n"
+        "3️⃣ *Акции* — Дивидендная модель (Gordon): P = D₁ / (r − g)\n"
+        "4️⃣ *Риск* — Систематический (весь рынок) vs Несистематический (компания); Beta = β\n"
+        "5️⃣ *CAPM* — Требуемая доходность = Rf + β(Rm − Rf)\n\n"
+        "📌 *Помни:* Диверсификация убирает несистематический риск, но не систематический!"
+    ),
+    "macro": (
+        "🔑 *5 ключевых тем Macroeconomics:*\n\n"
+        "1️⃣ *ВВП* — C + I + G + (X−M); Реальный ВВП скорректирован на инфляцию\n"
+        "2️⃣ *Инфляция* — Demand-pull (избыток спроса) vs Cost-push (рост затрат)\n"
+        "3️⃣ *Безработица* — Фрикционная / Структурная / Циклическая\n"
+        "4️⃣ *Политика* — Фискальная (налоги + расходы) vs Монетарная (ставки + QE)\n"
+        "5️⃣ *Торговля* — Сравнительное преимущество = наименьшие альтернативные издержки\n\n"
+        "📌 *Помни:* Кривая Филлипса: инфляция ↑ = безработица ↓ (в краткосроке)"
+    ),
+}
+
+# ─── GLOSSARY ─────────────────────────────────────────────────────────────────
+
+GLOSSARY = {
+    "f1": [
+        {"term": "Stakeholder", "definition": "Any individual or group affected by the organisation's activities. Internal: employees, managers. External: customers, suppliers, government."},
+        {"term": "Mendelow's Matrix", "definition": "A tool mapping stakeholders by Power (influence) and Interest. High Power + High Interest = Manage Closely."},
+        {"term": "PESTEL", "definition": "Framework for analysing the macro-environment: Political, Economic, Social, Technological, Environmental, Legal."},
+        {"term": "Porter's Five Forces", "definition": "Industry analysis: Threat of entry, Supplier power, Buyer power, Threat of substitutes, Competitive rivalry."},
+        {"term": "Corporate Governance", "definition": "The system by which organisations are directed and controlled (Cadbury Report definition)."},
+        {"term": "Agency Problem", "definition": "Conflict of interest when managers (agents) act in their own interest rather than shareholders' (principals') interest."},
+        {"term": "NED", "definition": "Non-Executive Director — an independent board member not involved in daily management, providing oversight."},
+        {"term": "Maslow", "definition": "Hierarchy of needs: Physiological → Safety → Social → Esteem → Self-actualisation. Lower needs must be met first."},
+        {"term": "Herzberg", "definition": "Two-Factor Theory: Hygiene factors prevent dissatisfaction; Motivators (achievement, recognition) create satisfaction."},
+        {"term": "Span of Control", "definition": "The number of subordinates directly managed by one manager. Wide span = flat structure; Narrow span = tall structure."},
+    ],
+    "f3": [
+        {"term": "Double Entry", "definition": "Every transaction has two sides: a debit and a credit. Total debits must always equal total credits."},
+        {"term": "Accruals Concept", "definition": "Revenue and expenses are recognised when earned/incurred, not when cash is received/paid."},
+        {"term": "Depreciation", "definition": "Systematic allocation of a fixed asset's cost over its useful life. Methods: Straight-line (equal charge) or Reducing balance (% of net book value)."},
+        {"term": "Goodwill", "definition": "The premium paid when acquiring a company above the fair value of its net assets. Goodwill = Purchase Price − Fair Value of Net Assets."},
+        {"term": "Current Ratio", "definition": "Liquidity ratio = Current Assets ÷ Current Liabilities. Ideal ~2:1. Measures ability to pay short-term debts."},
+        {"term": "Gross Profit Margin", "definition": "Profitability ratio = (Gross Profit ÷ Revenue) × 100%. Shows how much profit is made before overheads."},
+        {"term": "Gearing", "definition": "Ratio measuring financial risk = Debt ÷ (Debt + Equity). High gearing = more financial risk."},
+        {"term": "Prepayment", "definition": "Expense paid in advance for a future period. Shown as a current asset on the balance sheet."},
+        {"term": "Accrual", "definition": "Expense incurred but not yet paid. Shown as a current liability on the balance sheet."},
+        {"term": "Consolidated Accounts", "definition": "Financial statements combining a parent company and all its subsidiaries as if they were a single entity."},
+    ],
+    "fm": [
+        {"term": "IPO", "definition": "Initial Public Offering — a company's first sale of shares to the public. Takes place in the primary market."},
+        {"term": "Duration", "definition": "Measures a bond's sensitivity to interest rate changes. Longer duration = greater price sensitivity."},
+        {"term": "CAPM", "definition": "Capital Asset Pricing Model: Required Return = Rf + β(Rm − Rf). Links expected return to systematic risk (beta)."},
+        {"term": "Beta (β)", "definition": "Measures a stock's systematic risk relative to the market. β=1 moves with market; β>1 more volatile; β<1 less volatile."},
+        {"term": "Systematic Risk", "definition": "Market-wide risk that cannot be diversified away (e.g., recessions, interest rate changes). Measured by beta."},
+        {"term": "Diversification", "definition": "Spreading investments to reduce unsystematic risk. A well-diversified portfolio eliminates company-specific risk."},
+        {"term": "Yield", "definition": "The return on a bond. Bond price and yield move inversely — when price rises, yield falls, and vice versa."},
+        {"term": "Financial Intermediary", "definition": "Institution (bank, pension fund, insurer) that channels funds from savers to borrowers."},
+        {"term": "Gordon Growth Model", "definition": "Share valuation: P = D₁ ÷ (r − g). Where D₁ = next dividend, r = required return, g = constant growth rate."},
+        {"term": "Money Market", "definition": "Market for short-term borrowing/lending (under 1 year). Instruments: Treasury bills, commercial paper, certificates of deposit."},
+    ],
+    "macro": [
+        {"term": "GDP", "definition": "Gross Domestic Product — total value of goods and services produced in a country in a year. Expenditure method: C + I + G + (X−M)."},
+        {"term": "Real GDP", "definition": "GDP adjusted for inflation, allowing comparison of output over time without price distortions."},
+        {"term": "Demand-Pull Inflation", "definition": "Inflation caused by excess aggregate demand — 'too much money chasing too few goods'."},
+        {"term": "Cost-Push Inflation", "definition": "Inflation caused by rising production costs (e.g., oil prices, wages), shifting SRAS left."},
+        {"term": "Phillips Curve", "definition": "Shows the short-run inverse relationship between inflation and unemployment."},
+        {"term": "Quantitative Easing (QE)", "definition": "Central bank creates money to buy financial assets (mainly government bonds), expanding money supply."},
+        {"term": "Fiscal Policy", "definition": "Government use of taxation and spending to influence the economy. Expansionary = higher spending/lower taxes."},
+        {"term": "Monetary Policy", "definition": "Central bank control of interest rates and money supply to manage inflation and growth."},
+        {"term": "Comparative Advantage", "definition": "A country should specialise in producing goods where its opportunity cost is lowest, then trade."},
+        {"term": "Crowding Out", "definition": "When government borrowing raises interest rates, reducing private sector investment."},
+        {"term": "Automatic Stabilisers", "definition": "Built-in mechanisms (unemployment benefits, progressive taxes) that dampen economic cycles without new policy."},
+        {"term": "Structural Unemployment", "definition": "Long-term unemployment caused by skills mismatch due to industry decline or technological change."},
+    ],
+}
+
+
+def get_cheatsheet(subject_key):
+    return CHEATSHEETS.get(subject_key, "📝 Мини-конспект пока не добавлен для этого предмета.")
+
+def get_glossary(subject_key):
+    return GLOSSARY.get(subject_key, [])
