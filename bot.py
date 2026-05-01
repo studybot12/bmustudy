@@ -11,10 +11,10 @@ from database import db
 from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary
 from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
 try:
-    import anthropic
-    ANTHROPIC_AVAILABLE = True
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
 except ImportError:
-    ANTHROPIC_AVAILABLE = False
+    GEMINI_AVAILABLE = False
 
 logging.basicConfig(level=logging.INFO)
 SUBJECT_PHOTOS = {
@@ -997,7 +997,7 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
         await show_main_menu(update.message, user_id)
         return MAIN_MENU
 
-    if not ANTHROPIC_AVAILABLE or not os.environ.get("ANTHROPIC_API_KEY"):
+    if not GEMINI_AVAILABLE or not os.environ.get("GEMINI_API_KEY"):
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
         await update.message.reply_text(t(user_id, "ai_unavailable"), parse_mode="Markdown",
                                         reply_markup=InlineKeyboardMarkup(keyboard))
@@ -1020,14 +1020,18 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
     messages = history + [{"role": "user", "content": text}]
 
     try:
-        client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-        response = client.messages.create(
-            model="claude-opus-4-5",
-            max_tokens=1000,
-            system=system_prompt,
-            messages=messages
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+        gemini_history = [
+            {"role": "user" if m["role"] == "user" else "model", "parts": [m["content"]]}
+            for m in history
+        ]
+        model_client = genai.GenerativeModel(
+            model_name="gemini-2.5-flash",
+            system_instruction=system_prompt
         )
-        ai_reply = response.content[0].text
+        chat = model_client.start_chat(history=gemini_history)
+        response = chat.send_message(text)
+        ai_reply = response.text
         db.save_ai_message(user_id, subject_key, "assistant", ai_reply)
 
         keyboard = [
