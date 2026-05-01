@@ -610,8 +610,13 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
+        go_btn_label = "📘 Перейти к предмету" if student_lang == "ru" else "📘 Go to Subject"
+        student_keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton(go_btn_label, callback_data=f"study_{subject_key}")]
+        ])
         try:
-            await context.bot.send_message(student_id, msg, parse_mode="Markdown")
+            await context.bot.send_message(student_id, msg, parse_mode="Markdown",
+                                           reply_markup=student_keyboard)
         except:
             pass
         await query.message.edit_caption(
@@ -898,6 +903,8 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         q = questions[index]
         correct_index = q["correct"]
         is_correct = (answer_index == correct_index)
+        context.user_data["last_answer_correct"] = is_correct
+        context.user_data["last_q_index"] = index
         if is_correct:
             context.user_data["quiz_score"] += 1
             result_text = t(user_id, "correct", explanation=q.get("explanation", ""))
@@ -924,12 +931,13 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             xp_gain = max(10, int(score / total * 50))
             xp_result = db.add_xp(user_id, xp_gain)
             xp_notification = f"\n\n⚡ *+{xp_gain} XP*"
-            if xp_result.get("bonus"):
-                xp_notification += f" 🔥 +{xp_result['bonus']} streak bonus!"
-            if xp_result.get("leveled_up"):
-                xp_notification += f"\n🎉 Level up! Now level {xp_result['level']}!"
-            xp_notification = locals().get("xp_notification", "")
-            done_text = result_text + "\n\n" + t(user_id, "quiz_done", score=score, total=total, grade=grade) + xp_notification
+            if xp_result.get("level_up"):
+                xp_notification += f"\n🎉 *Новый уровень {xp_result['level']}!*" if (db.get_user_lang(user_id) or "en") == "ru" else f"\n🎉 *Level up! Level {xp_result['level']}!*"
+            done_text = (
+                result_text + "\n\n" +
+                t(user_id, "quiz_done", score=score, total=total, grade=grade) +
+                xp_notification
+            )
             keyboard = [
                 [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"quiz_restart_{subject_key}")],
                 [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
@@ -956,6 +964,25 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await query.answer(t(user_id, "bookmark_saved"))
             else:
                 await query.answer(t(user_id, "bookmark_exists"))
+        # Redraw same message but with bookmark button updated (already saved)
+        q = questions[q_index] if q_index < len(questions) else None
+        if q:
+            is_correct_prev = context.user_data.get("last_answer_correct", True)
+            if is_correct_prev:
+                result_text = t(user_id, "correct", explanation=q.get("explanation", ""))
+            else:
+                correct_index = q["correct"]
+                result_text = t(user_id, "wrong", correct=q["options"][correct_index],
+                                explanation=q.get("explanation", ""))
+            lang = db.get_user_lang(user_id) or "en"
+            bm_label = "✅ Сохранено" if lang == "ru" else "✅ Saved"
+            next_row = [InlineKeyboardButton("➡️ " + ("Следующий" if lang == "ru" else "Next Question"), callback_data="quiz_next")]
+            keyboard = [[InlineKeyboardButton(bm_label, callback_data="noop")], next_row]
+            await query.message.edit_text(result_text, parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+        return QUIZ_SESSION
+    if data == "noop":
+        await query.answer()
         return QUIZ_SESSION
     if data == "quiz_next":
         await show_quiz_question(query.message, user_id, context, edit=True)
