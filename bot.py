@@ -284,17 +284,55 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
 
+    if data == "back_to_buy_list":
+        # Back from payment photo screen - send new message with buy list
+        subjects = db.get_user_subjects(user_id)
+        buttons = []
+        for key, info in SUBJECTS.items():
+            if key in subjects:
+                buttons.append([InlineKeyboardButton(f"✅ {info["name"]}", callback_data=f"already_{key}")])
+            else:
+                buttons.append([InlineKeyboardButton(f"🛒 {info["name"]}", callback_data=f"buy_{key}")])
+        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+        try:
+            await query.message.delete()
+        except Exception:
+            pass
+        await query.message.chat.send_message(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
+                                              reply_markup=InlineKeyboardMarkup(buttons))
+        return CHOOSING_SUBJECT
+
+    if data == "menu_buy_access":
+        subjects = db.get_user_subjects(user_id)
+        buttons = []
+        for key, info in SUBJECTS.items():
+            if key in subjects:
+                buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
+            else:
+                buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
+        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+        await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(buttons))
+        return CHOOSING_SUBJECT
+
     if data.startswith("already_"):
         await query.answer(t(user_id, "already_has_access"), show_alert=True)
         return CHOOSING_SUBJECT
 
     if data.startswith("trial_"):
         subject_key = data.split("_", 1)[1]
+        # Check if trial already used for this subject
+        if db.has_used_trial(user_id, subject_key):
+            lang = db.get_user_lang(user_id) or "en"
+            msg = "❌ Вы уже использовали пробный тест для этого предмета." if lang == "ru" else "❌ You have already used the free trial for this subject."
+            await query.answer(msg, show_alert=True)
+            return CHOOSING_SUBJECT
         context.user_data["trial_subject"] = subject_key
         context.user_data["trial_index"] = 0
         context.user_data["trial_score"] = 0
         all_q = get_quiz_questions(subject_key)
         context.user_data["trial_questions"] = random.sample(all_q, min(FREE_QUESTIONS, len(all_q)))
+        db.mark_trial_used(user_id, subject_key)
         await show_trial_question(query.message, user_id, context, edit=True)
         return TRIAL_SESSION
 
@@ -307,7 +345,7 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                  subject=info["name"], price=PRICE_PER_SUBJECT, card=CARD_NUMBER)
         keyboard = [
             [InlineKeyboardButton(t(user_id, "enter_promo"), callback_data=f"promo_{subject_key}")],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
+            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_to_buy_list")]
         ]
         markup = InlineKeyboardMarkup(keyboard)
         photo_url = SUBJECT_PHOTOS.get(subject_key)

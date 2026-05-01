@@ -41,6 +41,12 @@ class Database:
                 cards_viewed INTEGER DEFAULT 0,
                 PRIMARY KEY (user_id, subject_key)
             );
+            CREATE TABLE IF NOT EXISTS trial_used (
+                user_id INTEGER,
+                subject_key TEXT,
+                used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (user_id, subject_key)
+            );
             CREATE TABLE IF NOT EXISTS promo_codes (
                 code TEXT PRIMARY KEY,
                 discount INTEGER,
@@ -170,6 +176,21 @@ class Database:
                 ON CONFLICT(user_id, subject_key) DO UPDATE SET
                 cards_viewed = cards_viewed + 1
             """, (user_id, subject_key))
+
+    def has_used_trial(self, user_id, subject_key):
+        with self._con() as con:
+            row = con.execute(
+                "SELECT 1 FROM trial_used WHERE user_id=? AND subject_key=?",
+                (user_id, subject_key)
+            ).fetchone()
+            return row is not None
+
+    def mark_trial_used(self, user_id, subject_key):
+        with self._con() as con:
+            con.execute(
+                "INSERT OR IGNORE INTO trial_used (user_id, subject_key) VALUES (?, ?)",
+                (user_id, subject_key)
+            )
 
     def add_promo(self, code, discount):
         with self._con() as con:
