@@ -309,8 +309,22 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton(t(user_id, "enter_promo"), callback_data=f"promo_{subject_key}")],
             [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
         ]
-        await query.message.edit_text(text, parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        markup = InlineKeyboardMarkup(keyboard)
+        photo_url = SUBJECT_PHOTOS.get(subject_key)
+        try:
+            await query.message.delete()
+        except Exception:
+            pass
+        if photo_url:
+            try:
+                await query.message.chat.send_photo(
+                    photo=photo_url, caption=text,
+                    parse_mode="Markdown", reply_markup=markup
+                )
+                return PAYMENT_SCREENSHOT
+            except Exception:
+                pass
+        await query.message.chat.send_message(text, parse_mode="Markdown", reply_markup=markup)
         return PAYMENT_SCREENSHOT
 
     if data.startswith("promo_"):
@@ -339,27 +353,10 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
     ]
     text = t(user_id, "subject_menu", subject=info["name"])
     markup = InlineKeyboardMarkup(keyboard)
-    photo_url = SUBJECT_PHOTOS.get(subject_key)
-
     if edit:
-        try:
-            await message.delete()
-        except Exception:
-            pass
-
-    if photo_url:
-        try:
-            await message.chat.send_photo(
-                photo=photo_url,
-                caption=text,
-                parse_mode="Markdown",
-                reply_markup=markup
-            )
-            return
-        except Exception:
-            pass
-
-    await message.chat.send_message(text, parse_mode="Markdown", reply_markup=markup)
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
 # ── PAYMENT ───────────────────────────────────────────────────────────────────
