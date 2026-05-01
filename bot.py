@@ -111,6 +111,15 @@ TEXTS = {
         "cheatsheet_title": "📝 *Мини-конспект: {subject}*\n\n",
         # Glossary
         "glossary": "📖 Глоссарий",
+        # XP / Streak / Leaderboard
+        "leaderboard": "🏆 Лидерборд",
+        "my_rank": "📊 Мой рейтинг",
+        "xp_earned": "⚡ +{xp} XP заработано!",
+        "level_up": "🎉 *Новый уровень!* Вы достигли уровня *{level}*!",
+        "streak_bonus": "🔥 Бонус за серию +{bonus} XP!",
+        "leaderboard_title": "🏆 *Лидерборд — BMU Study Hub*\n\n",
+        "my_stats": "⚡ *Мои достижения*\n\n🏅 Уровень: *{level}* {badge}\n⚡ XP: *{xp}*\n🔥 Серия: *{streak}* дней\n\n{progress_bar}\nДо следующего уровня: *{xp_needed}* XP",
+
         "glossary_intro": "📖 *Глоссарий — {subject}*\n\nВведите термин для поиска:",
         "glossary_not_found": "❌ Термин не найден. Попробуйте другое слово.",
     },
@@ -191,6 +200,15 @@ TEXTS = {
         "cheatsheet_title": "📝 *Cheat Sheet: {subject}*\n\n",
         # Glossary
         "glossary": "📖 Glossary",
+        # XP / Streak / Leaderboard
+        "leaderboard": "🏆 Leaderboard",
+        "my_rank": "📊 My Rank",
+        "xp_earned": "⚡ +{xp} XP earned!",
+        "level_up": "🎉 *Level Up!* You reached level *{level}*!",
+        "streak_bonus": "🔥 Streak bonus +{bonus} XP!",
+        "leaderboard_title": "🏆 *Leaderboard — BMU Study Hub*\n\n",
+        "my_stats": "⚡ *My Achievements*\n\n🏅 Level: *{level}* {badge}\n⚡ XP: *{xp}*\n🔥 Streak: *{streak}* days\n\n{progress_bar}\nTo next level: *{xp_needed}* XP",
+
         "glossary_intro": "📖 *Glossary — {subject}*\n\nEnter a term to search:",
         "glossary_not_found": "❌ Term not found. Try another word.",
     }
@@ -232,6 +250,8 @@ async def show_main_menu(message, user_id, edit=False):
         [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
         [InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks"),
          InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang")],
+        [InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard"),
+         InlineKeyboardButton(t(user_id, "my_rank"), callback_data="menu_my_rank")],
         [InlineKeyboardButton(t(user_id, "help"), callback_data="menu_help")],
     ]
     markup = InlineKeyboardMarkup(keyboard)
@@ -341,6 +361,14 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         await query.message.edit_text("🌐 Выберите язык / Choose language:",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
+        return MAIN_MENU
+
+    elif action == "menu_leaderboard":
+        await show_leaderboard(query.message, user_id, edit=True)
+        return MAIN_MENU
+
+    elif action == "menu_my_rank":
+        await show_my_rank(query.message, user_id, edit=True)
         return MAIN_MENU
 
     elif action == "menu_bookmarks":
@@ -892,7 +920,16 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif pct >= 50: grade = t(user_id, "grade_ok")
             else: grade = t(user_id, "grade_bad")
             db.save_quiz_result(user_id, subject_key, score, total)
-            done_text = result_text + "\n\n" + t(user_id, "quiz_done", score=score, total=total, grade=grade)
+            # XP reward
+            xp_gain = max(10, int(score / total * 50))
+            xp_result = db.add_xp(user_id, xp_gain)
+            xp_notification = f"\n\n⚡ *+{xp_gain} XP*"
+            if xp_result.get("bonus"):
+                xp_notification += f" 🔥 +{xp_result['bonus']} streak bonus!"
+            if xp_result.get("leveled_up"):
+                xp_notification += f"\n🎉 Level up! Now level {xp_result['level']}!"
+            xp_notification = locals().get("xp_notification", "")
+            done_text = result_text + "\n\n" + t(user_id, "quiz_done", score=score, total=total, grade=grade) + xp_notification
             keyboard = [
                 [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"quiz_restart_{subject_key}")],
                 [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
@@ -1092,6 +1129,69 @@ async def bookmarks_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     return BOOKMARKS_SESSION
 
+
+
+def xp_badge(level):
+    badges = {1: "🌱", 2: "📗", 3: "⭐", 4: "🌟", 5: "💫", 6: "🔥", 7: "💎", 8: "👑"}
+    return badges.get(level, "🌱")
+
+def xp_progress_bar(xp, level):
+    thresholds = [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+    if level >= len(thresholds):
+        return "▓▓▓▓▓▓▓▓▓▓ MAX"
+    current = thresholds[level - 1]
+    next_th = thresholds[level]
+    filled = int((xp - current) / (next_th - current) * 10)
+    filled = max(0, min(10, filled))
+    bar = "▓" * filled + "░" * (10 - filled)
+    return f"[{bar}]"
+
+async def show_leaderboard(message, user_id, edit=False):
+    leaders = db.get_leaderboard(10)
+    lang = db.get_user_lang(user_id) or "en"
+    title = TEXTS[lang]["leaderboard_title"]
+    text = title
+    medals = ["🥇", "🥈", "🥉"]
+    for i, u in enumerate(leaders):
+        medal = medals[i] if i < 3 else f"{i+1}."
+        name = u["first_name"] or "Student"
+        badge = xp_badge(u["level"])
+        highlight = " ←" if u["user_id"] == user_id else ""
+        text += f"{medal} {badge} *{name}* — {u['xp']} XP 🔥{u['streak']}{highlight}\n"
+    if not leaders:
+        text += "No data yet. Be the first!" if lang == "en" else "Пока нет данных. Будь первым!"
+    keyboard = [
+        [InlineKeyboardButton(TEXTS[lang]["my_rank"], callback_data="menu_my_rank")],
+        [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")]
+    ]
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+
+async def show_my_rank(message, user_id, edit=False):
+    lang = db.get_user_lang(user_id) or "en"
+    data = db.get_or_create_xp(user_id)
+    xp = data["xp"]
+    level = data["level"]
+    streak = data["streak"]
+    thresholds = [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+    next_th = thresholds[min(level, len(thresholds)-1)]
+    xp_needed = max(0, next_th - xp)
+    badge = xp_badge(level)
+    bar = xp_progress_bar(xp, level)
+    text = TEXTS[lang]["my_stats"].format(
+        level=level, badge=badge, xp=xp, streak=streak,
+        progress_bar=bar, xp_needed=xp_needed
+    )
+    keyboard = [
+        [InlineKeyboardButton(TEXTS[lang]["leaderboard"], callback_data="menu_leaderboard")],
+        [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")]
+    ]
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
