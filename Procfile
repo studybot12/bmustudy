@@ -1,1 +1,1 @@
-web: pip install python-telegram-bot fastapi uvicorn --upgrade && uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000} & python bot.py
+web: pip install python-telegram-bot --upgrade && python bot.py
