@@ -12,6 +12,13 @@ from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questio
 from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
 
 logging.basicConfig(level=logging.INFO)
+SUBJECT_PHOTOS = {
+    "f1": "https://raw.githubusercontent.com/studybot12/bmustudy/main/f1.png",
+    "f3": "https://raw.githubusercontent.com/studybot12/bmustudy/main/f3.png",
+    "fm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/fm.png",
+    "macro": "https://raw.githubusercontent.com/studybot12/bmustudy/main/macro.png",
+}
+
 logger = logging.getLogger(__name__)
 
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
@@ -331,10 +338,18 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
     ]
     text = t(user_id, "subject_menu", subject=info["name"])
+    markup = InlineKeyboardMarkup(keyboard)
+    photo_url = SUBJECT_PHOTOS.get(subject_key)
     if edit:
-        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
-        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        if photo_url:
+            try:
+                await message.reply_photo(photo=photo_url, caption=text, parse_mode="Markdown", reply_markup=markup)
+            except Exception:
+                await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+        else:
+            await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
 # ── PAYMENT ───────────────────────────────────────────────────────────────────
