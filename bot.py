@@ -109,8 +109,6 @@ TEXTS = {
         # Cheatsheet
         "cheatsheet": "📝 Шпаргалка",
         "cheatsheet_title": "📝 *Шпаргалка*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
-        # Glossary
-        "glossary": "📖 Глоссарий",
         # XP / Streak / Leaderboard
         "leaderboard": "🏆 Лидерборд",
         "my_rank": "⚡ Мой рейтинг",
@@ -129,15 +127,6 @@ TEXTS = {
         "tf_done": "🏁 *True/False завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Результат: *{score}/{total}*\n{grade}",
         "tf_true": "✅ Верно",
         "tf_false": "❌ Неверно",
-        # Exam plan
-        "exam_plan": "📅 План подготовки",
-        "exam_date_ask": "📅 *Предэкзаменационный режим*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nВведите дату экзамена в формате:\n*ДД.ММ.ГГГГ*\n\n_Например: 25.06.2025_",
-        "exam_date_invalid": "❌ Неверный формат. Введите дату как *ДД.ММ.ГГГГ*\n\nПример: *25.06.2025*",
-        "exam_date_past": "❌ Дата уже прошла. Введите будущую дату.",
-        "exam_plan_title": "📅 *План подготовки к экзамену*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📆 Экзамен: *{date}*\n⏳ Дней осталось: *{days}*\n\n",
-        "exam_plan_generating": "⏳ Составляю план...",
-        "exam_plan_exists": "📅 *Ваш план подготовки*\n_{subject}_\n━━━━━━━━━━━━━━━\n📆 Экзамен: *{date}*\n⏳ Осталось дней: *{days}*\n\n{plan}",
-        "exam_plan_new": "🔄 Новый план",
         # Videos
         "videos": "🎬 Видео",
         "videos_title": "🎬 *Видео по предмету*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
@@ -224,9 +213,6 @@ TEXTS = {
         "change_lang": "🌐 Language",
         # Cheatsheet
         "cheatsheet": "📝 Cheat Sheet",
-        "cheatsheet_title": "📝 *Cheat Sheet*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
-        # Glossary
-        "glossary": "📖 Glossary",
         # XP / Streak / Leaderboard
         "leaderboard": "🏆 Leaderboard",
         "my_rank": "⚡ My Rank",
@@ -245,15 +231,6 @@ TEXTS = {
         "tf_done": "🏁 *True/False Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Score: *{score}/{total}*\n{grade}",
         "tf_true": "✅ True",
         "tf_false": "❌ False",
-        # Exam plan
-        "exam_plan": "📅 Study Plan",
-        "exam_date_ask": "📅 *Exam Preparation Mode*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nEnter your exam date:\n*DD.MM.YYYY*\n\n_Example: 25.06.2025_",
-        "exam_date_invalid": "❌ Invalid format. Enter date as *DD.MM.YYYY*\n\nExample: *25.06.2025*",
-        "exam_date_past": "❌ That date is in the past. Enter a future date.",
-        "exam_plan_title": "📅 *Exam Study Plan*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📆 Exam: *{date}*\n⏳ Days left: *{days}*\n\n",
-        "exam_plan_generating": "⏳ Generating your plan...",
-        "exam_plan_exists": "📅 *Your Study Plan*\n_{subject}_\n━━━━━━━━━━━━━━━\n📆 Exam: *{date}*\n⏳ Days left: *{days}*\n\n{plan}",
-        "exam_plan_new": "🔄 New Plan",
         # Videos
         "videos": "🎬 Videos",
         "videos_title": "🎬 *Video Lessons*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
@@ -1435,93 +1412,6 @@ async def show_tf_question(message, user_id, context, edit=False):
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-
-def _generate_exam_plan(subject_key, days_left, lang):
-    """Generate a study plan based on days until exam."""
-    topics = {
-        "f1": ["Business Organisations & Stakeholders", "Corporate Governance", "Organisational Structure",
-               "Motivation Theories", "Leadership & Management", "Recruitment & HR", "PESTEL & Porter's 5 Forces",
-               "Information Systems", "Ethics & Sustainability"],
-        "f3": ["Double Entry & Accounting Equation", "Ledger Accounts & Trial Balance", "Accruals & Prepayments",
-               "Depreciation Methods", "Bad Debts & Provisions", "Financial Statements (P&L, Balance Sheet)",
-               "Cash Flow Statements", "Consolidation & Goodwill", "Ratio Analysis"],
-        "fm": ["Financial Markets Overview", "Money & Capital Markets", "Bond Valuation & Duration",
-               "Equity & Share Valuation", "Risk & Return", "CAPM & Beta", "Derivatives Introduction",
-               "Financial Intermediaries", "Regulation"],
-        "macro": ["GDP & Measurement", "Economic Growth", "Inflation Types & Causes",
-                  "Unemployment Types", "Fiscal Policy", "Monetary Policy & QE",
-                  "International Trade & Comparative Advantage", "Balance of Payments", "Phillips Curve"],
-    }
-    subject_topics = topics.get(subject_key, ["Topic 1", "Topic 2", "Topic 3"])
-
-    if lang == "ru":
-        if days_left <= 3:
-            plan = "⚡ *Экспресс-план (мало времени!)*\n\n"
-            plan += "📌 День 1: Шпаргалки + флэшкарты по всем темам\n"
-            plan += "📌 День 2: Тест MCQ + True/False — все предметы\n"
-            if days_left == 3:
-                plan += "📌 День 3: Повтор слабых тем + отдых\n"
-        elif days_left <= 7:
-            plan = "📅 *Недельный план*\n\n"
-            per_day = max(1, len(subject_topics) // days_left)
-            for i in range(days_left):
-                start = i * per_day
-                day_topics = subject_topics[start:start + per_day]
-                if day_topics:
-                    plan += f"📌 День {i+1}: {', '.join(day_topics)}\n"
-                else:
-                    plan += f"📌 День {i+1}: Повтор + тест\n"
-        elif days_left <= 30:
-            plan = "📅 *Двухнедельный план*\n\n"
-            week1 = subject_topics[:len(subject_topics)//2]
-            week2 = subject_topics[len(subject_topics)//2:]
-            plan += f"🗓 *Неделя 1:* {', '.join(week1)}\n"
-            plan += f"🗓 *Неделя 2:* {', '.join(week2)}\n"
-            plan += f"🗓 *Финальные дни:* Тесты + повтор ошибок\n"
-        else:
-            plan = "📅 *Долгосрочный план*\n\n"
-            chunk = max(1, len(subject_topics) // 4)
-            plan += f"📚 *Месяц 1:* {', '.join(subject_topics[:chunk])}\n"
-            plan += f"📚 *Месяц 2:* {', '.join(subject_topics[chunk:chunk*2])}\n"
-            plan += f"📚 *Месяц 3:* {', '.join(subject_topics[chunk*2:chunk*3])}\n"
-            plan += f"📚 *Финал:* Тесты, флэшкарты, повтор слабых тем\n"
-        plan += "\n💡 *Совет:* Каждый день проходи тест и флэшкарты!\n"
-        plan += "🎯 Используй ИИ-преподавателя для сложных тем."
-    else:
-        if days_left <= 3:
-            plan = "⚡ *Express Plan (limited time!)*\n\n"
-            plan += "📌 Day 1: Cheat sheets + flashcards on all topics\n"
-            plan += "📌 Day 2: MCQ test + True/False — full review\n"
-            if days_left == 3:
-                plan += "📌 Day 3: Revise weak areas + rest\n"
-        elif days_left <= 7:
-            plan = "📅 *One-Week Plan*\n\n"
-            per_day = max(1, len(subject_topics) // days_left)
-            for i in range(days_left):
-                start = i * per_day
-                day_topics = subject_topics[start:start + per_day]
-                if day_topics:
-                    plan += f"📌 Day {i+1}: {', '.join(day_topics)}\n"
-                else:
-                    plan += f"📌 Day {i+1}: Revision + practice test\n"
-        elif days_left <= 30:
-            plan = "📅 *Two-Week Plan*\n\n"
-            week1 = subject_topics[:len(subject_topics)//2]
-            week2 = subject_topics[len(subject_topics)//2:]
-            plan += f"🗓 *Week 1:* {', '.join(week1)}\n"
-            plan += f"🗓 *Week 2:* {', '.join(week2)}\n"
-            plan += f"🗓 *Final Days:* Practice tests + review mistakes\n"
-        else:
-            plan = "📅 *Long-Term Plan*\n\n"
-            chunk = max(1, len(subject_topics) // 4)
-            plan += f"📚 *Month 1:* {', '.join(subject_topics[:chunk])}\n"
-            plan += f"📚 *Month 2:* {', '.join(subject_topics[chunk:chunk*2])}\n"
-            plan += f"📚 *Month 3:* {', '.join(subject_topics[chunk*2:chunk*3])}\n"
-            plan += f"📚 *Final:* Practice tests, flashcards, weak area review\n"
-        plan += "\n💡 *Tip:* Do a quiz and flashcards every day!\n"
-        plan += "🎯 Use the AI Tutor for difficult topics."
-    return plan
-
 
 async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
