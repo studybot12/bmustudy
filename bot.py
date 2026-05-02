@@ -11,7 +11,8 @@ from database import db
 from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos
 from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
 try:
-    import google.generativeai as genai
+    from google import genai as genai_client
+    from google.genai import types as genai_types
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
@@ -470,6 +471,7 @@ async def admin_giveaccess(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
+async def add_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         return
     args = context.args
@@ -1522,17 +1524,20 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
     messages = history + [{"role": "user", "content": text}]
 
     try:
-        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-        gemini_history = [
-            {"role": "user" if m["role"] == "user" else "model", "parts": [m["content"]]}
-            for m in history
-        ]
-        model_client = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
-            system_instruction=system_prompt
+        client = genai_client.Client(api_key=os.environ["GEMINI_API_KEY"])
+
+        # Build conversation contents from history + current message
+        contents = []
+        for m in history:
+            role = "user" if m["role"] == "user" else "model"
+            contents.append(genai_types.Content(role=role, parts=[genai_types.Part(text=m["content"])]))
+        contents.append(genai_types.Content(role="user", parts=[genai_types.Part(text=text)]))
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contents,
+            config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
         )
-        chat = model_client.start_chat(history=gemini_history)
-        response = chat.send_message(text)
         ai_reply = response.text
         db.save_ai_message(user_id, subject_key, "assistant", ai_reply)
 
