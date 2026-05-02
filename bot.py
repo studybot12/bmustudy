@@ -39,9 +39,9 @@ TEXTS = {
     "ru": {
         "welcome": "✨ *Добро пожаловать в BMU Study Hub!*\n\n🎓 Умная подготовка к экзаменам\n📚 Конспекты · Тесты · Флэшкарты · ИИ\n\n━━━━━━━━━━━━━━━\n🌐 Выберите язык:",
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nЧто будем делать сегодня?",
-        "my_subjects": "📚 Мои предметы",
+        "my_subjects": "💎 Мои курсы",
         "buy_access": "💳 Купить доступ",
-        "trial_quiz": "🎯 Попробовать бесплатно",
+        "trial_quiz": "🆓 Демо-тест",
         "help": "💬 Поддержка",
         "choose_subject_buy": "🛒 *Купить доступ*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
         "choose_subject_study": "📚 *Мои предметы*\n\n━━━━━━━━━━━━━━━\nВыберите предмет для изучения:",
@@ -167,9 +167,9 @@ TEXTS = {
         "bundle_selected": "✅ Выбрано: {subjects}",
         "bundle_need_more": "❗ Выберите ещё {n} предмет(а)",
         # AI Humanizer
-        "humanizer": "✍️ AI Humanizer",
+        "humanizer": "🆓 AI Humanizer",
         "humanizer_intro": (
-            "✍️ *AI Humanizer*\n_{subject}_\n\n"
+            "✍️ *AI Humanizer*\n\n"
             "━━━━━━━━━━━━━━━\n"
             "Вставьте ваше эссе — ИИ перепишет его в более живом, человеческом стиле:\n"
             "• Уберёт шаблонные AI-фразы\n"
@@ -184,7 +184,7 @@ TEXTS = {
         "humanizer_too_long": "❗ Текст слишком длинный. Максимум 3000 символов.",
         "humanizer_too_short": "❗ Текст слишком короткий. Минимум 50 символов.",
         # AI Detector
-        "detector": "🔍 AI Detector",
+        "detector": "🆓 AI Detector",
         "detector_intro": (
             "🔍 *AI Detector*\n_{subject}_\n\n"
             "━━━━━━━━━━━━━━━\n"
@@ -205,9 +205,9 @@ TEXTS = {
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nWhat shall we study today?",
-        "my_subjects": "📚 My Subjects",
+        "my_subjects": "💎 My Courses",
         "buy_access": "💳 Buy Access",
-        "trial_quiz": "🎯 Try for Free",
+        "trial_quiz": "🆓 Demo Test",
         "help": "💬 Support",
         "choose_subject_buy": "🛒 *Buy Access*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
         "choose_subject_study": "📚 *My Subjects*\n\n━━━━━━━━━━━━━━━\nChoose a subject to study:",
@@ -333,9 +333,9 @@ TEXTS = {
         "bundle_selected": "✅ Selected: {subjects}",
         "bundle_need_more": "❗ Select {n} more subject(s)",
         # AI Humanizer
-        "humanizer": "✍️ AI Humanizer",
+        "humanizer": "🆓 AI Humanizer",
         "humanizer_intro": (
-            "✍️ *AI Humanizer*\n_{subject}_\n\n"
+            "✍️ *AI Humanizer*\n\n"
             "━━━━━━━━━━━━━━━\n"
             "Paste your essay — AI will rewrite it in a more natural, human style:\n"
             "• Removes typical AI phrases\n"
@@ -350,7 +350,7 @@ TEXTS = {
         "humanizer_too_long": "❗ Text is too long. Maximum 3000 characters.",
         "humanizer_too_short": "❗ Text is too short. Minimum 50 characters.",
         # AI Detector
-        "detector": "🔍 AI Detector",
+        "detector": "🆓 AI Detector",
         "detector_intro": (
             "🔍 *AI Detector*\n_{subject}_\n\n"
             "━━━━━━━━━━━━━━━\n"
@@ -401,14 +401,15 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def show_main_menu(message, user_id, edit=False):
     keyboard = [
+        [InlineKeyboardButton(t(user_id, "humanizer"), callback_data="menu_humanizer"),
+         InlineKeyboardButton(t(user_id, "detector"), callback_data="menu_detector")],
+        [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial"),
+         InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard")],
         [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
         [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access"),
          InlineKeyboardButton(t(user_id, "bundle"), callback_data="menu_bundle")],
-        [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
         [InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks"),
          InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang")],
-        [InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard"),
-         InlineKeyboardButton(t(user_id, "my_rank"), callback_data="menu_my_rank")],
         [InlineKeyboardButton(t(user_id, "help"), callback_data="menu_help")],
     ]
     markup = InlineKeyboardMarkup(keyboard)
@@ -618,6 +619,22 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["bundle_selected"] = []
         await show_bundle_subject_select(query.message, user_id, context, edit=True)
         return CHOOSING_SUBJECT
+
+    elif action == "menu_humanizer":
+        context.user_data["humanizer_subject"] = "global"
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+        intro = t(user_id, "humanizer_intro")
+        await query.message.edit_text(intro, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return HUMANIZER_SESSION
+
+    elif action == "menu_detector":
+        context.user_data["detector_subject"] = "global"
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+        intro = t(user_id, "detector_intro")
+        await query.message.edit_text(intro, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return DETECTOR_SESSION
 
     elif action == "menu_help":
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
