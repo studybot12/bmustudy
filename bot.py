@@ -1855,7 +1855,9 @@ async def humanizer_message_handler(update: Update, context: ContextTypes.DEFAUL
         await show_main_menu(update.message, user_id)
         return MAIN_MENU
 
-    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+    back_cb = "back_main" if subject_key == "global" else f"back_subject_{subject_key}"
+    again_cb = "menu_humanizer" if subject_key == "global" else f"humanizer_{subject_key}"
+    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
 
     if len(text) < 50:
         await update.message.reply_text(t(user_id, "humanizer_too_short"), parse_mode="Markdown",
@@ -1899,8 +1901,8 @@ async def humanizer_message_handler(update: Update, context: ContextTypes.DEFAUL
         result = response.text
         await thinking_msg.delete()
         keyboard = [
-            [InlineKeyboardButton(t(user_id, "humanizer_try_again"), callback_data=f"humanizer_{subject_key}")],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+            [InlineKeyboardButton(t(user_id, "humanizer_try_again"), callback_data=again_cb)],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
         ]
         # Send result — try markdown, fall back to plain
         result_text = t(user_id, "humanizer_result", result=result)
@@ -1933,7 +1935,9 @@ async def detector_message_handler(update: Update, context: ContextTypes.DEFAULT
         await show_main_menu(update.message, user_id)
         return MAIN_MENU
 
-    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+    back_cb = "back_main" if subject_key == "global" else f"back_subject_{subject_key}"
+    again_cb = "menu_detector" if subject_key == "global" else f"detector_{subject_key}"
+    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
 
     if len(text) < 50:
         await update.message.reply_text(t(user_id, "detector_too_short"), parse_mode="Markdown",
@@ -1992,8 +1996,8 @@ async def detector_message_handler(update: Update, context: ContextTypes.DEFAULT
         result = response.text
         await thinking_msg.delete()
         keyboard = [
-            [InlineKeyboardButton(t(user_id, "detector_try_again"), callback_data=f"detector_{subject_key}")],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+            [InlineKeyboardButton(t(user_id, "detector_try_again"), callback_data=again_cb)],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
         ]
         result_text = t(user_id, "detector_result", result=result)
         try:
@@ -2426,10 +2430,12 @@ def main():
             ],
             HUMANIZER_SESSION: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, humanizer_message_handler),
+                CallbackQueryHandler(main_menu_handler, pattern="^(menu_humanizer|menu_detector|back_main)$"),
                 CallbackQueryHandler(subject_menu_handler),
             ],
             DETECTOR_SESSION: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, detector_message_handler),
+                CallbackQueryHandler(main_menu_handler, pattern="^(menu_humanizer|menu_detector|back_main)$"),
                 CallbackQueryHandler(subject_menu_handler),
             ],
         },
