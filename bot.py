@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
  AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT,
- HUMANIZER_SESSION, DETECTOR_SESSION) = range(14)
+ HUMANIZER_SESSION, DETECTOR_SESSION, ONBOARDING) = range(15)
 
 FREE_QUESTIONS = 3
 QUIZ_QUESTIONS_COUNT = 20
@@ -38,6 +38,38 @@ QUIZ_QUESTIONS_COUNT = 20
 TEXTS = {
     "ru": {
         "welcome": "✨ *Добро пожаловать в BMU Study Hub!*\n\n🎓 Умная подготовка к экзаменам\n📚 Конспекты · Тесты · Флэшкарты · ИИ\n\n━━━━━━━━━━━━━━━\n🌐 Выберите язык:",
+        # Onboarding
+        "onboarding_skip": "Пропустить →",
+        "onboarding_next": "Далее →",
+        "onboarding_start": "Начать →",
+        "onboarding_1": (
+            "👋 *Привет, {name}!*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Добро пожаловать в *BMU Study Hub* —\n"
+            "твой личный помощник для подготовки к экзаменам.\n\n"
+            "За 20 секунд покажу что умею 👇\n\n"
+            "_1 из 3_"
+        ),
+        "onboarding_2": (
+            "🎓 *Что есть в боте:*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "✏️ MCQ тесты и ⚡ True/False\n"
+            "📖 Теории по каждой теме\n"
+            "🃏 Флэшкарты для запоминания\n"
+            "🎬 Видео с объяснениями\n"
+            "🤖 ИИ-преподаватель 24/7\n"
+            "📊 Прогресс и статистика\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "🆓 *Бесплатно:* AI Humanizer · AI Detector · Демо-тест\n\n"
+            "_2 из 3_"
+        ),
+        "onboarding_3": (
+            "🚀 *Готов начать?*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Попробуй прямо сейчас — бесплатно,\n"
+            "без регистрации и оплаты 👇\n\n"
+            "_3 из 3_"
+        ),
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nЧто будем делать сегодня?",
         "my_subjects": "💎 Мои курсы",
         "buy_access": "💳 Купить доступ",
@@ -226,6 +258,38 @@ TEXTS = {
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
+        # Onboarding
+        "onboarding_skip": "Skip →",
+        "onboarding_next": "Next →",
+        "onboarding_start": "Let's go →",
+        "onboarding_1": (
+            "👋 *Hey, {name}!*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Welcome to *BMU Study Hub* —\n"
+            "your personal exam preparation assistant.\n\n"
+            "Let me show you around in 20 seconds 👇\n\n"
+            "_1 of 3_"
+        ),
+        "onboarding_2": (
+            "🎓 *What's inside:*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "✏️ MCQ Tests and ⚡ True/False\n"
+            "📖 Theories for every topic\n"
+            "🃏 Flashcards for memorisation\n"
+            "🎬 Video explanations\n"
+            "🤖 AI Tutor available 24/7\n"
+            "📊 Progress and statistics\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "🆓 *Free:* AI Humanizer · AI Detector · Demo Test\n\n"
+            "_2 of 3_"
+        ),
+        "onboarding_3": (
+            "🚀 *Ready to start?*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Try it right now — free,\n"
+            "no registration or payment needed 👇\n\n"
+            "_3 of 3_"
+        ),
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nWhat shall we study today?",
         "my_subjects": "💎 My Courses",
         "buy_access": "💳 Buy Access",
@@ -423,6 +487,13 @@ def t(user_id, key, **kwargs):
 # ── /start ────────────────────────────────────────────────────────────────────
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    # Если пользователь уже есть в БД — сразу в меню
+    existing_lang = db.get_user_lang(user.id)
+    if existing_lang:
+        await show_main_menu(update.message, user.id)
+        return MAIN_MENU
+    # Новый пользователь — выбор языка
     keyboard = [
         [InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru"),
          InlineKeyboardButton("🇬🇧 English", callback_data="lang_en")]
@@ -440,8 +511,55 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = query.data.split("_")[1]
     user = query.from_user
     db.upsert_user(user.id, user.username or "", user.first_name or "", lang)
-    await show_main_menu(query.message, user.id, edit=True)
+    # Запускаем онбординг
+    name = user.first_name or ("друг" if lang == "ru" else "friend")
+    context.user_data["onboarding_name"] = name
+    text = TEXTS[lang]["onboarding_1"].format(name=name)
+    keyboard = [
+        [InlineKeyboardButton(TEXTS[lang]["onboarding_next"], callback_data="onboard_2"),
+         InlineKeyboardButton(TEXTS[lang]["onboarding_skip"], callback_data="onboard_skip")]
+    ]
+    await query.message.edit_text(text, parse_mode="Markdown",
+                                  reply_markup=InlineKeyboardMarkup(keyboard))
+    return ONBOARDING
+
+async def onboarding_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    user_id = query.from_user.id
+    lang = db.get_user_lang(user_id) or "ru"
+    action = query.data
+
+    if action == "onboard_2":
+        text = TEXTS[lang]["onboarding_2"]
+        keyboard = [
+            [InlineKeyboardButton(TEXTS[lang]["onboarding_next"], callback_data="onboard_3"),
+             InlineKeyboardButton(TEXTS[lang]["onboarding_skip"], callback_data="onboard_skip")]
+        ]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return ONBOARDING
+
+    elif action == "onboard_3":
+        text = TEXTS[lang]["onboarding_3"]
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "humanizer"), callback_data="menu_humanizer"),
+             InlineKeyboardButton(t(user_id, "detector"), callback_data="menu_detector")],
+            [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
+            [InlineKeyboardButton(TEXTS[lang]["onboarding_start"], callback_data="onboard_skip")],
+        ]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return ONBOARDING
+
+    elif action == "onboard_skip":
+        await show_main_menu(query.message, user_id, edit=True)
+        return MAIN_MENU
+
+    # Если нажал кнопку действия прямо из онбординга
     return MAIN_MENU
+
+
 
 async def show_main_menu(message, user_id, edit=False):
     keyboard = [
@@ -2284,6 +2402,8 @@ def main():
         entry_points=[CommandHandler("start", start)],
         states={
             CHOOSING_LANG: [CallbackQueryHandler(set_language, pattern="^lang_")],
+            ONBOARDING: [CallbackQueryHandler(onboarding_handler, pattern="^onboard_"),
+                         CallbackQueryHandler(main_menu_handler)],
             MAIN_MENU: [CallbackQueryHandler(main_menu_handler)],
             CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler)],
             PAYMENT_SCREENSHOT: [
