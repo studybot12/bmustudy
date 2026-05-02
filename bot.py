@@ -44,7 +44,16 @@ TEXTS = {
         "trial_quiz": "🆓 Демо-тест",
         "help": "💬 Поддержка",
         "choose_subject_buy": "🛒 *Купить доступ*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
-        "choose_subject_study": "📚 *Мои предметы*\n\n━━━━━━━━━━━━━━━\nВыберите предмет для изучения:",
+        "choose_subject_study": (
+            "💎 *Мои курсы*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "📦 *В каждом курсе:*\n"
+            "✏️ MCQ Тесты  ⚡ True/False\n"
+            "📖 Теории  🃏 Флэшкарты\n"
+            "🤖 ИИ-преподаватель  📊 Прогресс\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Выберите предмет:"
+        ),
         "choose_trial_subject": "🎯 *Пробный режим — бесплатно*\n\n━━━━━━━━━━━━━━━\nВыберите предмет\n_без оплаты_",
         "trial_choose_type": "🎯 *Пробный режим: {subject}*\n\n━━━━━━━━━━━━━━━\nЧто хотите попробовать?",
         "trial_type_mcq": "✏️ MCQ Тест (3 вопроса)",
@@ -59,7 +68,23 @@ TEXTS = {
         "screenshot_received": "✅ *Скриншот получен!*\n\n⏳ Ваша оплата на проверке\n🕐 Обычно до *30 минут*\n\n━━━━━━━━━━━━━━━\n🔔 Вы получите уведомление как только доступ откроется.",
         "access_granted": "🎉 *Поздравляем! Доступ открыт!*\n\n━━━━━━━━━━━━━━━\n📘 Предмет *{subject}* теперь доступен!\n\n✨ Удачи в учёбе!",
         "access_denied": "❌ *Оплата не подтверждена*\n\n━━━━━━━━━━━━━━━\nПожалуйста, свяжитесь с администратором.",
-        "no_subjects": "📭 *Предметов пока нет*\n\n━━━━━━━━━━━━━━━\nПриобретите доступ чтобы начать учиться 👇",
+        "no_subjects": (
+            "💎 *Мои курсы*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "У вас пока нет активных курсов.\n\n"
+            "📦 *Что входит в каждый курс:*\n\n"
+            "✏️ *MCQ Тесты* — 20 вопросов с объяснениями\n"
+            "⚡ *True / False* — быстрая проверка знаний\n"
+            "📖 *Теории* — весь материал по предмету\n"
+            "🃏 *Флэшкарты* — запоминай термины легко\n"
+            "📝 *Шпаргалка* — ключевые формулы и факты\n"
+            "📖 *Глоссарий* — поиск по терминам\n"
+            "🤖 *ИИ-преподаватель* — задай любой вопрос\n"
+            "📅 *План подготовки* — персональный по дате экзамена\n"
+            "📊 *Прогресс и история* — следи за ростом\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "👇 Выберите предмет и начните подготовку прямо сейчас!"
+        ),
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Выберите режим обучения:_",
         "study_materials": "📖 Теории",
         "flashcards": "🃏 Флэшкарты",
@@ -210,7 +235,16 @@ TEXTS = {
         "trial_quiz": "🆓 Demo Test",
         "help": "💬 Support",
         "choose_subject_buy": "🛒 *Buy Access*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
-        "choose_subject_study": "📚 *My Subjects*\n\n━━━━━━━━━━━━━━━\nChoose a subject to study:",
+        "choose_subject_study": (
+            "💎 *My Courses*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "📦 *Every course includes:*\n"
+            "✏️ MCQ Tests  ⚡ True/False\n"
+            "📖 Theories  🃏 Flashcards\n"
+            "🤖 AI Tutor  📊 Progress\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "Choose a subject:"
+        ),
         "choose_trial_subject": "🎯 *Free Trial*\n\n━━━━━━━━━━━━━━━\nChoose a subject\n_no payment needed_",
         "trial_choose_type": "🎯 *Free Trial: {subject}*\n\n━━━━━━━━━━━━━━━\nWhat would you like to try?",
         "trial_type_mcq": "✏️ MCQ Test (3 questions)",
@@ -225,7 +259,23 @@ TEXTS = {
         "screenshot_received": "✅ *Screenshot received!*\n\n⏳ Your payment is under review\n🕐 Usually within *30 minutes*\n\n━━━━━━━━━━━━━━━\n🔔 You'll get a notification once access is granted.",
         "access_granted": "🎉 *Congratulations! Access Granted!*\n\n━━━━━━━━━━━━━━━\n📘 *{subject}* is now available!\n\n✨ Good luck with your studies!",
         "access_denied": "❌ *Payment Not Confirmed*\n\n━━━━━━━━━━━━━━━\nPlease contact the administrator.",
-        "no_subjects": "📭 *No subjects yet*\n\n━━━━━━━━━━━━━━━\nPurchase access to start learning 👇",
+        "no_subjects": (
+            "💎 *My Courses*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "You don't have any active courses yet.\n\n"
+            "📦 *What's included in every course:*\n\n"
+            "✏️ *MCQ Tests* — 20 questions with explanations\n"
+            "⚡ *True / False* — quick knowledge checks\n"
+            "📖 *Theories* — full study material\n"
+            "🃏 *Flashcards* — memorise terms with ease\n"
+            "📝 *Cheat Sheet* — key formulas and facts\n"
+            "📖 *Glossary* — instant term search\n"
+            "🤖 *AI Tutor* — ask anything, get explained\n"
+            "📅 *Study Plan* — personalised by exam date\n"
+            "📊 *Progress & History* — track your growth\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "👇 Choose a subject and start preparing now!"
+        ),
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Choose a study mode:_",
         "study_materials": "📖 Theories",
         "flashcards": "🃏 Flashcards",
