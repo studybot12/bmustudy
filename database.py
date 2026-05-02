@@ -320,6 +320,7 @@ class Database:
  
     def get_or_create_xp(self, user_id):
         with self._con() as con:
+            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             row = con.execute(
                 "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
                 (user_id,)
@@ -336,6 +337,7 @@ class Database:
         from datetime import date, timedelta
         today = date.today()
         with self._con() as con:
+            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             row = con.execute(
                 "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
                 (user_id,)
@@ -385,6 +387,7 @@ class Database:
  
     def get_leaderboard(self, limit=10):
         with self._con() as con:
+            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             rows = con.execute("""
                 SELECT u.user_id, u.first_name, u.username, x.xp, x.level, x.streak
                 FROM users u JOIN user_xp x ON u.user_id = x.user_id
