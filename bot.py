@@ -8,7 +8,7 @@ from telegram.ext import (
     ContextTypes, filters, ConversationHandler
 )
 from database import db
-from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary
+from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos
 from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
 try:
     import google.generativeai as genai
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
- AI_CHAT_SESSION, BOOKMARKS_SESSION) = range(10)
+ AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT) = range(12)
 
 FREE_QUESTIONS = 3
 QUIZ_QUESTIONS_COUNT = 20
@@ -121,6 +121,34 @@ TEXTS = {
         "my_stats": "⚡ *Мои достижения*\n\n━━━━━━━━━━━━━━━\n🏅 Уровень: *{level}* {badge}\n⚡ XP: *{xp}*\n🔥 Серия: *{streak}* дней\n\n{progress_bar}\n_До следующего уровня: *{xp_needed}* XP_",
         "glossary_intro": "📖 *Глоссарий*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nВведите термин для поиска:",
         "glossary_not_found": "❌ Термин не найден. Попробуйте другое слово.",
+        # True/False
+        "true_false": "✅❌ True / False",
+        "tf_question": "⚡ *True / False*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📌 Вопрос *{num}* из *{total}*\n\n_{statement}_",
+        "tf_correct": "✅ *Верно!*\n\n💡 {explanation}",
+        "tf_wrong": "❌ *Неверно!*\n\nПравильный ответ: *{correct}*\n💡 {explanation}",
+        "tf_done": "🏁 *True/False завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Результат: *{score}/{total}*\n{grade}",
+        "tf_true": "✅ Верно",
+        "tf_false": "❌ Неверно",
+        # Exam plan
+        "exam_plan": "📅 План подготовки",
+        "exam_date_ask": "📅 *Предэкзаменационный режим*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nВведите дату экзамена в формате:\n*ДД.ММ.ГГГГ*\n\n_Например: 25.06.2025_",
+        "exam_date_invalid": "❌ Неверный формат. Введите дату как *ДД.ММ.ГГГГ*\n\nПример: *25.06.2025*",
+        "exam_date_past": "❌ Дата уже прошла. Введите будущую дату.",
+        "exam_plan_title": "📅 *План подготовки к экзамену*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📆 Экзамен: *{date}*\n⏳ Дней осталось: *{days}*\n\n",
+        "exam_plan_generating": "⏳ Составляю план...",
+        "exam_plan_exists": "📅 *Ваш план подготовки*\n_{subject}_\n━━━━━━━━━━━━━━━\n📆 Экзамен: *{date}*\n⏳ Осталось дней: *{days}*\n\n{plan}",
+        "exam_plan_new": "🔄 Новый план",
+        # Videos
+        "videos": "🎬 Видео",
+        "videos_title": "🎬 *Видео по предмету*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
+        # Comparison
+        "quiz_comparison": "📈 Прогресс +{delta}% по сравнению с прошлым разом!",
+        "quiz_regression": "📉 В прошлый раз было лучше на {delta}%. Не сдавайся!",
+        "quiz_same": "➡️ Такой же результат как в прошлый раз.",
+        # Bundle
+        "bundle": "🎓 Все предметы (-20%)",
+        "bundle_text": "🎓 *Пакет «Все предметы»*\n\n━━━━━━━━━━━━━━━\n📚 Включает все {count} предмета\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум* (скидка 20%!)\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
+        "bundle_already": "✅ У вас уже есть доступ ко всем предметам!",
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
@@ -209,6 +237,34 @@ TEXTS = {
         "my_stats": "⚡ *My Achievements*\n\n━━━━━━━━━━━━━━━\n🏅 Level: *{level}* {badge}\n⚡ XP: *{xp}*\n🔥 Streak: *{streak}* days\n\n{progress_bar}\n_To next level: *{xp_needed}* XP_",
         "glossary_intro": "📖 *Glossary*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nEnter a term to search:",
         "glossary_not_found": "❌ Term not found. Try another word.",
+        # True/False
+        "true_false": "✅❌ True / False",
+        "tf_question": "⚡ *True / False*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📌 Statement *{num}* of *{total}*\n\n_{statement}_",
+        "tf_correct": "✅ *Correct!*\n\n💡 {explanation}",
+        "tf_wrong": "❌ *Wrong!*\n\nCorrect answer: *{correct}*\n💡 {explanation}",
+        "tf_done": "🏁 *True/False Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Score: *{score}/{total}*\n{grade}",
+        "tf_true": "✅ True",
+        "tf_false": "❌ False",
+        # Exam plan
+        "exam_plan": "📅 Study Plan",
+        "exam_date_ask": "📅 *Exam Preparation Mode*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nEnter your exam date:\n*DD.MM.YYYY*\n\n_Example: 25.06.2025_",
+        "exam_date_invalid": "❌ Invalid format. Enter date as *DD.MM.YYYY*\n\nExample: *25.06.2025*",
+        "exam_date_past": "❌ That date is in the past. Enter a future date.",
+        "exam_plan_title": "📅 *Exam Study Plan*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n📆 Exam: *{date}*\n⏳ Days left: *{days}*\n\n",
+        "exam_plan_generating": "⏳ Generating your plan...",
+        "exam_plan_exists": "📅 *Your Study Plan*\n_{subject}_\n━━━━━━━━━━━━━━━\n📆 Exam: *{date}*\n⏳ Days left: *{days}*\n\n{plan}",
+        "exam_plan_new": "🔄 New Plan",
+        # Videos
+        "videos": "🎬 Videos",
+        "videos_title": "🎬 *Video Lessons*\n_{subject}_\n\n━━━━━━━━━━━━━━━\n",
+        # Comparison
+        "quiz_comparison": "📈 Progress +{delta}% compared to last time!",
+        "quiz_regression": "📉 Last time was {delta}% better. Keep going!",
+        "quiz_same": "➡️ Same result as last time.",
+        # Bundle
+        "bundle": "🎓 All Subjects (-20%)",
+        "bundle_text": "🎓 *All Subjects Bundle*\n\n━━━━━━━━━━━━━━━\n📚 Includes all {count} subjects\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS* (20% off!)\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
+        "bundle_already": "✅ You already have access to all subjects!",
     }
 }
 
@@ -244,7 +300,8 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_main_menu(message, user_id, edit=False):
     keyboard = [
         [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
-        [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
+        [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access"),
+         InlineKeyboardButton(t(user_id, "bundle"), callback_data="menu_bundle")],
         [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
         [InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks"),
          InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang")],
@@ -344,6 +401,25 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(buttons))
         return CHOOSING_SUBJECT
+
+    elif action == "menu_bundle":
+        subjects = db.get_user_subjects(user_id)
+        all_keys = list(SUBJECTS.keys())
+        if all(k in subjects for k in all_keys):
+            await query.answer(t(user_id, "bundle_already"), show_alert=True)
+            return MAIN_MENU
+        count = len(all_keys)
+        full_price = PRICE_PER_SUBJECT * count
+        bundle_price = int(full_price * 0.8)
+        save = full_price - bundle_price
+        text = t(user_id, "bundle_text", count=count, full_price=full_price,
+                 bundle_price=bundle_price, save=save, card=CARD_NUMBER)
+        context.user_data["pending_subject"] = "bundle"
+        context.user_data["promo_discount"] = 0
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return PAYMENT_SCREENSHOT
 
     elif action == "menu_help":
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
@@ -503,10 +579,13 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         [InlineKeyboardButton(t(user_id, "flashcards"), callback_data=f"flashcards_{subject_key}"),
          InlineKeyboardButton(t(user_id, "glossary"), callback_data=f"glossary_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "quiz"), callback_data=f"quiz_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}")],
+         InlineKeyboardButton(t(user_id, "true_false"), callback_data=f"tf_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "exam_plan"), callback_data=f"examplan_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "ai_chat"), callback_data=f"aichat_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
+         InlineKeyboardButton(t(user_id, "videos"), callback_data=f"videos_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
     ]
     text = t(user_id, "subject_menu", subject=info["name"])
     markup = InlineKeyboardMarkup(keyboard)
@@ -549,8 +628,15 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return MAIN_MENU
 
     discount = context.user_data.get("promo_discount", 0)
-    final_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
-    info = SUBJECTS[subject_key]
+    if subject_key == "bundle":
+        count = len(SUBJECTS)
+        full_price = PRICE_PER_SUBJECT * count
+        final_price = int(full_price * 0.8)
+        subject_display = "🎓 Пакет ВСЕ ПРЕДМЕТЫ"
+    else:
+        final_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
+        info = SUBJECTS[subject_key]
+        subject_display = info["name"]
     db.add_pending_payment(user_id, subject_key)
 
     approve_cb = f"approve_{user_id}_{subject_key}"
@@ -565,7 +651,7 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
     admin_text = (f"💰 *Новая оплата*\n\n"
                   f"👤 {name} ({username})\n"
                   f"🆔 `{user_id}`\n"
-                  f"📘 Предмет: *{info['name']}*\n"
+                  f"📘 Предмет: *{subject_display}*\n"
                   f"💵 Сумма: {final_price:,} сум{promo_text}")
 
     try:
@@ -610,13 +696,20 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action = parts[0]
     student_id = int(parts[1])
     subject_key = parts[2]
-    info = SUBJECTS[subject_key]
 
     if action == "approve":
-        db.grant_access(student_id, subject_key)
-        db.remove_pending(student_id, subject_key)
-        student_lang = db.get_user_lang(student_id) or "en"
-        msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
+        if subject_key == "bundle":
+            for key in SUBJECTS:
+                db.grant_access(student_id, key)
+            db.remove_pending(student_id, subject_key)
+            student_lang = db.get_user_lang(student_id) or "en"
+            msg = "🎉 *Доступ ко всем предметам открыт!*\n\nТеперь вам доступны все предметы в разделе «Мои предметы»." if student_lang == "ru" else "🎉 *Full Access Granted!*\n\nAll subjects are now available in 'My Subjects'."
+        else:
+            info = SUBJECTS[subject_key]
+            db.grant_access(student_id, subject_key)
+            db.remove_pending(student_id, subject_key)
+            student_lang = db.get_user_lang(student_id) or "en"
+            msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
         start_hint = "\n\n▶️ Нажмите /start чтобы открыть предмет" if student_lang == "ru" else "\n\n▶️ Press /start to access your subject"
         try:
             await context.bot.send_message(student_id, msg + start_hint, parse_mode="Markdown")
@@ -626,6 +719,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
         )
     elif action == "deny":
+        subject_key = parts[2]
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_denied"]
@@ -741,6 +835,76 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
         )
         return AI_CHAT_SESSION
+
+    if data.startswith("tf_"):
+        subject_key = data.split("tf_")[1]
+        questions = get_true_false(subject_key)
+        if not questions:
+            await query.answer("Нет вопросов" if (db.get_user_lang(user_id) or "en") == "ru" else "No questions", show_alert=True)
+            return SUBJECT_MENU
+        shuffled = random.sample(questions, min(10, len(questions)))
+        context.user_data["tf_questions"] = shuffled
+        context.user_data["tf_index"] = 0
+        context.user_data["tf_score"] = 0
+        context.user_data["tf_subject"] = subject_key
+        await show_tf_question(query.message, user_id, context, edit=True)
+        return TF_SESSION
+
+    if data.startswith("videos_"):
+        subject_key = data.split("videos_")[1]
+        videos = get_videos(subject_key)
+        text = t(user_id, "videos_title", subject=SUBJECTS[subject_key]["name"])
+        for v in videos:
+            text += f"▶️ [{v['title']}]({v['url']})\n"
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard),
+                                      disable_web_page_preview=True)
+        return SUBJECT_MENU
+
+    if data.startswith("examplan_"):
+        subject_key = data.split("examplan_")[1]
+        # Check if plan already exists
+        existing = db.get_exam_plan(user_id, subject_key)
+        if existing:
+            from datetime import date
+            try:
+                exam_dt = datetime.strptime(existing["exam_date"], "%d.%m.%Y").date()
+                days_left = (exam_dt - date.today()).days
+                if days_left > 0:
+                    text = t(user_id, "exam_plan_exists",
+                             subject=SUBJECTS[subject_key]["name"],
+                             date=existing["exam_date"],
+                             days=days_left,
+                             plan=existing["plan_text"])
+                    keyboard = [
+                        [InlineKeyboardButton(t(user_id, "exam_plan_new"), callback_data=f"examplan_new_{subject_key}")],
+                        [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+                    ]
+                    await query.message.edit_text(text, parse_mode="Markdown",
+                                                  reply_markup=InlineKeyboardMarkup(keyboard))
+                    return SUBJECT_MENU
+            except Exception:
+                pass
+        context.user_data["examplan_subject"] = subject_key
+        context.user_data["awaiting_exam_date"] = True
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(
+            t(user_id, "exam_date_ask", subject=SUBJECTS[subject_key]["name"]),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return EXAM_DATE_INPUT
+
+    if data.startswith("examplan_new_"):
+        subject_key = data.split("examplan_new_")[1]
+        context.user_data["examplan_subject"] = subject_key
+        context.user_data["awaiting_exam_date"] = True
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+        await query.message.edit_text(
+            t(user_id, "exam_date_ask", subject=SUBJECTS[subject_key]["name"]),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return EXAM_DATE_INPUT
 
     if data.startswith("flashcards_"):
         subject_key = data.split("_", 1)[1]
@@ -933,6 +1097,20 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif pct >= 50: grade = t(user_id, "grade_ok")
             else: grade = t(user_id, "grade_bad")
             db.save_quiz_result(user_id, subject_key, score, total)
+            # Compare with previous result
+            last_two = db.get_last_two_results(user_id, subject_key)
+            comparison_text = ""
+            if len(last_two) >= 2:
+                curr_pct = int(last_two[0][0] / last_two[0][1] * 100)
+                prev_pct = int(last_two[1][0] / last_two[1][1] * 100)
+                delta = abs(curr_pct - prev_pct)
+                lang = db.get_user_lang(user_id) or "en"
+                if curr_pct > prev_pct:
+                    comparison_text = "\n" + t(user_id, "quiz_comparison", delta=delta)
+                elif curr_pct < prev_pct:
+                    comparison_text = "\n" + t(user_id, "quiz_regression", delta=delta)
+                else:
+                    comparison_text = "\n" + t(user_id, "quiz_same")
             # XP reward
             xp_gain = max(10, int(score / total * 50))
             xp_result = db.add_xp(user_id, xp_gain)
@@ -942,6 +1120,7 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             done_text = (
                 result_text + "\n\n" +
                 t(user_id, "quiz_done", score=score, total=total, grade=grade) +
+                comparison_text +
                 xp_notification
             )
             keyboard = [
@@ -1236,9 +1415,228 @@ async def show_my_rank(message, user_id, edit=False):
 
 
 
+# ── TRUE / FALSE ──────────────────────────────────────────────────────────────
+
+async def show_tf_question(message, user_id, context, edit=False):
+    questions = context.user_data["tf_questions"]
+    index = context.user_data["tf_index"]
+    subject_key = context.user_data["tf_subject"]
+    total = len(questions)
+    q = questions[index]
+    text = t(user_id, "tf_question", subject=SUBJECTS[subject_key]["name"],
+             num=index+1, total=total, statement=q["statement"])
+    keyboard = [
+        [InlineKeyboardButton(t(user_id, "tf_true"), callback_data="tf_ans_true"),
+         InlineKeyboardButton(t(user_id, "tf_false"), callback_data="tf_ans_false")],
+        [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+    ]
+    markup = InlineKeyboardMarkup(keyboard)
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+
+def _generate_exam_plan(subject_key, days_left, lang):
+    """Generate a study plan based on days until exam."""
+    topics = {
+        "f1": ["Business Organisations & Stakeholders", "Corporate Governance", "Organisational Structure",
+               "Motivation Theories", "Leadership & Management", "Recruitment & HR", "PESTEL & Porter's 5 Forces",
+               "Information Systems", "Ethics & Sustainability"],
+        "f3": ["Double Entry & Accounting Equation", "Ledger Accounts & Trial Balance", "Accruals & Prepayments",
+               "Depreciation Methods", "Bad Debts & Provisions", "Financial Statements (P&L, Balance Sheet)",
+               "Cash Flow Statements", "Consolidation & Goodwill", "Ratio Analysis"],
+        "fm": ["Financial Markets Overview", "Money & Capital Markets", "Bond Valuation & Duration",
+               "Equity & Share Valuation", "Risk & Return", "CAPM & Beta", "Derivatives Introduction",
+               "Financial Intermediaries", "Regulation"],
+        "macro": ["GDP & Measurement", "Economic Growth", "Inflation Types & Causes",
+                  "Unemployment Types", "Fiscal Policy", "Monetary Policy & QE",
+                  "International Trade & Comparative Advantage", "Balance of Payments", "Phillips Curve"],
+    }
+    subject_topics = topics.get(subject_key, ["Topic 1", "Topic 2", "Topic 3"])
+
+    if lang == "ru":
+        if days_left <= 3:
+            plan = "⚡ *Экспресс-план (мало времени!)*\n\n"
+            plan += "📌 День 1: Шпаргалки + флэшкарты по всем темам\n"
+            plan += "📌 День 2: Тест MCQ + True/False — все предметы\n"
+            if days_left == 3:
+                plan += "📌 День 3: Повтор слабых тем + отдых\n"
+        elif days_left <= 7:
+            plan = "📅 *Недельный план*\n\n"
+            per_day = max(1, len(subject_topics) // days_left)
+            for i in range(days_left):
+                start = i * per_day
+                day_topics = subject_topics[start:start + per_day]
+                if day_topics:
+                    plan += f"📌 День {i+1}: {', '.join(day_topics)}\n"
+                else:
+                    plan += f"📌 День {i+1}: Повтор + тест\n"
+        elif days_left <= 30:
+            plan = "📅 *Двухнедельный план*\n\n"
+            week1 = subject_topics[:len(subject_topics)//2]
+            week2 = subject_topics[len(subject_topics)//2:]
+            plan += f"🗓 *Неделя 1:* {', '.join(week1)}\n"
+            plan += f"🗓 *Неделя 2:* {', '.join(week2)}\n"
+            plan += f"🗓 *Финальные дни:* Тесты + повтор ошибок\n"
+        else:
+            plan = "📅 *Долгосрочный план*\n\n"
+            chunk = max(1, len(subject_topics) // 4)
+            plan += f"📚 *Месяц 1:* {', '.join(subject_topics[:chunk])}\n"
+            plan += f"📚 *Месяц 2:* {', '.join(subject_topics[chunk:chunk*2])}\n"
+            plan += f"📚 *Месяц 3:* {', '.join(subject_topics[chunk*2:chunk*3])}\n"
+            plan += f"📚 *Финал:* Тесты, флэшкарты, повтор слабых тем\n"
+        plan += "\n💡 *Совет:* Каждый день проходи тест и флэшкарты!\n"
+        plan += "🎯 Используй ИИ-преподавателя для сложных тем."
+    else:
+        if days_left <= 3:
+            plan = "⚡ *Express Plan (limited time!)*\n\n"
+            plan += "📌 Day 1: Cheat sheets + flashcards on all topics\n"
+            plan += "📌 Day 2: MCQ test + True/False — full review\n"
+            if days_left == 3:
+                plan += "📌 Day 3: Revise weak areas + rest\n"
+        elif days_left <= 7:
+            plan = "📅 *One-Week Plan*\n\n"
+            per_day = max(1, len(subject_topics) // days_left)
+            for i in range(days_left):
+                start = i * per_day
+                day_topics = subject_topics[start:start + per_day]
+                if day_topics:
+                    plan += f"📌 Day {i+1}: {', '.join(day_topics)}\n"
+                else:
+                    plan += f"📌 Day {i+1}: Revision + practice test\n"
+        elif days_left <= 30:
+            plan = "📅 *Two-Week Plan*\n\n"
+            week1 = subject_topics[:len(subject_topics)//2]
+            week2 = subject_topics[len(subject_topics)//2:]
+            plan += f"🗓 *Week 1:* {', '.join(week1)}\n"
+            plan += f"🗓 *Week 2:* {', '.join(week2)}\n"
+            plan += f"🗓 *Final Days:* Practice tests + review mistakes\n"
+        else:
+            plan = "📅 *Long-Term Plan*\n\n"
+            chunk = max(1, len(subject_topics) // 4)
+            plan += f"📚 *Month 1:* {', '.join(subject_topics[:chunk])}\n"
+            plan += f"📚 *Month 2:* {', '.join(subject_topics[chunk:chunk*2])}\n"
+            plan += f"📚 *Month 3:* {', '.join(subject_topics[chunk*2:chunk*3])}\n"
+            plan += f"📚 *Final:* Practice tests, flashcards, weak area review\n"
+        plan += "\n💡 *Tip:* Do a quiz and flashcards every day!\n"
+        plan += "🎯 Use the AI Tutor for difficult topics."
+    return plan
+
+
+async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    user_id = query.from_user.id
+    data = query.data
+
+    if data == "back_main":
+        await show_main_menu(query.message, user_id, edit=True)
+        return MAIN_MENU
+    if data.startswith("back_subject_"):
+        sk = data.split("back_subject_")[1]
+        await show_subject_menu(query.message, user_id, sk, edit=True)
+        return SUBJECT_MENU
+
+    if data in ("tf_ans_true", "tf_ans_false"):
+        questions = context.user_data["tf_questions"]
+        index = context.user_data["tf_index"]
+        subject_key = context.user_data["tf_subject"]
+        total = len(questions)
+        q = questions[index]
+        user_answer = (data == "tf_ans_true")
+        is_correct = (user_answer == q["answer"])
+        if is_correct:
+            context.user_data["tf_score"] += 1
+            result_text = t(user_id, "tf_correct", explanation=q["explanation"])
+        else:
+            correct_str = ("✅ Верно" if q["answer"] else "❌ Неверно") if (db.get_user_lang(user_id) or "en") == "ru" else ("✅ True" if q["answer"] else "❌ False")
+            result_text = t(user_id, "tf_wrong", correct=correct_str, explanation=q["explanation"])
+        next_index = index + 1
+        context.user_data["tf_index"] = next_index
+        if next_index >= total:
+            score = context.user_data["tf_score"]
+            pct = int(score / total * 100)
+            if pct >= 90: grade = t(user_id, "grade_excellent")
+            elif pct >= 70: grade = t(user_id, "grade_good")
+            elif pct >= 50: grade = t(user_id, "grade_ok")
+            else: grade = t(user_id, "grade_bad")
+            xp_gain = max(5, int(score / total * 30))
+            db.add_xp(user_id, xp_gain)
+            done = result_text + "\n\n" + t(user_id, "tf_done", score=score, total=total, grade=grade)
+            done += f"\n\n⚡ *+{xp_gain} XP*"
+            keyboard = [
+                [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"tf_{subject_key}")],
+                [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
+            ]
+            await query.message.edit_text(done, parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            return SUBJECT_MENU
+        else:
+            lang = db.get_user_lang(user_id) or "en"
+            next_btn = "➡️ Следующий" if lang == "ru" else "➡️ Next"
+            keyboard = [[InlineKeyboardButton(next_btn, callback_data="tf_next")]]
+            await query.message.edit_text(result_text, parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            return TF_SESSION
+
+    if data == "tf_next":
+        await show_tf_question(query.message, user_id, context, edit=True)
+        return TF_SESSION
+
+    if data.startswith("tf_"):
+        # Restart TF for subject
+        subject_key = data.split("tf_")[1]
+        questions = get_true_false(subject_key)
+        shuffled = random.sample(questions, min(10, len(questions)))
+        context.user_data["tf_questions"] = shuffled
+        context.user_data["tf_index"] = 0
+        context.user_data["tf_score"] = 0
+        context.user_data["tf_subject"] = subject_key
+        await show_tf_question(query.message, user_id, context, edit=True)
+        return TF_SESSION
+
+    return TF_SESSION
+
+
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
         user_id = update.effective_user.id
+
+        # Handle exam date input
+        if context.user_data.get("awaiting_exam_date"):
+            subject_key = context.user_data.get("examplan_subject")
+            date_str = update.message.text.strip()
+            context.user_data["awaiting_exam_date"] = False
+            from datetime import date
+            try:
+                exam_dt = datetime.strptime(date_str, "%d.%m.%Y").date()
+                if exam_dt <= date.today():
+                    keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+                    await update.message.reply_text(t(user_id, "exam_date_past"), parse_mode="Markdown",
+                                                   reply_markup=InlineKeyboardMarkup(keyboard))
+                    return EXAM_DATE_INPUT
+                days_left = (exam_dt - date.today()).days
+                # Generate plan based on days
+                wait_msg = await update.message.reply_text(t(user_id, "exam_plan_generating"))
+                subject_name = SUBJECTS[subject_key]["name"]
+                lang = db.get_user_lang(user_id) or "en"
+                plan = _generate_exam_plan(subject_key, days_left, lang)
+                db.save_exam_plan(user_id, subject_key, date_str, plan)
+                await wait_msg.delete()
+                text = t(user_id, "exam_plan_title", subject=subject_name, date=date_str, days=days_left) + plan
+                keyboard = [
+                    [InlineKeyboardButton(t(user_id, "exam_plan_new"), callback_data=f"examplan_new_{subject_key}")],
+                    [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+                ]
+                await update.message.reply_text(text, parse_mode="Markdown",
+                                               reply_markup=InlineKeyboardMarkup(keyboard))
+                return SUBJECT_MENU
+            except ValueError:
+                keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+                await update.message.reply_text(t(user_id, "exam_date_invalid"), parse_mode="Markdown",
+                                               reply_markup=InlineKeyboardMarkup(keyboard))
+                context.user_data["awaiting_exam_date"] = True
+                return EXAM_DATE_INPUT
 
         # Handle glossary search
         if context.user_data.get("awaiting_glossary"):
@@ -1294,6 +1692,11 @@ def main():
                 CallbackQueryHandler(subject_menu_handler),
             ],
             BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler)],
+            TF_SESSION: [CallbackQueryHandler(tf_handler)],
+            EXAM_DATE_INPUT: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, fallback),
+                CallbackQueryHandler(subject_menu_handler),
+            ],
         },
         fallbacks=[CommandHandler("start", start), MessageHandler(filters.ALL, fallback)],
         allow_reentry=True,

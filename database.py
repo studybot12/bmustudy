@@ -69,6 +69,14 @@ class Database:
                 message TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+            CREATE TABLE IF NOT EXISTS exam_plans (
+                user_id INTEGER,
+                subject_key TEXT,
+                exam_date TEXT,
+                plan_text TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (user_id, subject_key)
+            );
         """)
         con.commit()
         con.close()
@@ -396,4 +404,32 @@ class Database:
             return [{"user_id": r[0], "first_name": r[1], "username": r[2],
                      "xp": r[3], "level": r[4], "streak": r[5]} for r in rows]
  
+    # ── Exam Plan ─────────────────────────────────────────────────────────────
+
+    def save_exam_plan(self, user_id, subject_key, exam_date, plan_text):
+        with self._con() as con:
+            con.execute("""
+                INSERT OR REPLACE INTO exam_plans (user_id, subject_key, exam_date, plan_text)
+                VALUES (?, ?, ?, ?)
+            """, (user_id, subject_key, exam_date, plan_text))
+
+    def get_exam_plan(self, user_id, subject_key):
+        with self._con() as con:
+            row = con.execute(
+                "SELECT exam_date, plan_text FROM exam_plans WHERE user_id=? AND subject_key=?",
+                (user_id, subject_key)
+            ).fetchone()
+            return {"exam_date": row[0], "plan_text": row[1]} if row else None
+
+    # ── Last quiz comparison ───────────────────────────────────────────────────
+
+    def get_last_two_results(self, user_id, subject_key):
+        with self._con() as con:
+            rows = con.execute("""
+                SELECT score, total FROM quiz_results
+                WHERE user_id=? AND subject_key=?
+                ORDER BY taken_at DESC LIMIT 2
+            """, (user_id, subject_key)).fetchall()
+            return rows  # [(latest_score, latest_total), (prev_score, prev_total)]
+
 db = Database()

@@ -992,3 +992,101 @@ def get_cheatsheet(subject_key):
 
 def get_glossary(subject_key):
     return GLOSSARY.get(subject_key, [])
+
+
+# ─── TRUE / FALSE QUESTIONS ───────────────────────────────────────────────────
+
+TRUE_FALSE = {
+    "f1": [
+        {"statement": "A sole trader has unlimited liability for business debts.", "answer": True, "explanation": "Sole traders are personally liable for all debts — their personal assets can be seized."},
+        {"statement": "Non-Executive Directors (NEDs) are involved in the day-to-day management of a company.", "answer": False, "explanation": "NEDs provide independent oversight but do not manage daily operations."},
+        {"statement": "In Mendelow's Matrix, stakeholders with high power and high interest should be 'kept informed'.", "answer": False, "explanation": "High power + high interest = 'Manage closely'. 'Keep informed' applies to low power + high interest."},
+        {"statement": "The agency problem arises when managers act in their own interest rather than shareholders'.", "answer": True, "explanation": "The agent (manager) may pursue personal goals conflicting with the principal (shareholder)."},
+        {"statement": "A matrix structure combines functional and divisional reporting lines.", "answer": True, "explanation": "Employees report to both a functional manager and a project/divisional manager."},
+        {"statement": "Herzberg's hygiene factors motivate employees when present.", "answer": False, "explanation": "Hygiene factors (salary, conditions) only prevent dissatisfaction — they do not motivate. Motivators do."},
+        {"statement": "PESTEL stands for Political, Economic, Social, Technological, Environmental, Legal.", "answer": True, "explanation": "PESTEL is the standard macro-environment analysis framework."},
+        {"statement": "A wide span of control creates a taller organisational hierarchy.", "answer": False, "explanation": "Wide span = fewer management layers = flatter structure. Narrow span = taller hierarchy."},
+        {"statement": "Porter's Five Forces includes 'threat of new entrants' as one of the forces.", "answer": True, "explanation": "The five forces: rivalry, supplier power, buyer power, threat of substitutes, threat of new entrants."},
+        {"statement": "Corporate governance refers to the day-to-day operational management of a company.", "answer": False, "explanation": "Corporate governance is the system of direction and control — not daily operations."},
+        {"statement": "Maslow's hierarchy places safety needs above self-actualisation.", "answer": True, "explanation": "Safety is the second level from the bottom; self-actualisation is the top of the pyramid."},
+        {"statement": "A public limited company (PLC) can offer shares to the general public.", "answer": True, "explanation": "PLCs are listed on stock exchanges and can sell shares publicly, unlike private limited companies."},
+    ],
+    "f3": [
+        {"statement": "In double-entry bookkeeping, every debit must have a corresponding credit.", "answer": True, "explanation": "The fundamental rule: total debits = total credits for every transaction."},
+        {"statement": "Revenue is recognised when cash is received under the accruals concept.", "answer": False, "explanation": "Under accruals, revenue is recognised when earned, regardless of when cash is received."},
+        {"statement": "Straight-line depreciation charges an equal amount each year.", "answer": True, "explanation": "Straight-line = (Cost − Residual Value) ÷ Useful Life. Same charge every year."},
+        {"statement": "A current ratio above 2:1 always indicates a healthy business.", "answer": False, "explanation": "A very high ratio may indicate inefficient use of assets or excess inventory. Context matters."},
+        {"statement": "Goodwill is calculated as Purchase Price minus Fair Value of Net Assets.", "answer": True, "explanation": "Goodwill represents the premium paid above the identifiable net assets of an acquired company."},
+        {"statement": "A prepayment is shown as a current liability on the balance sheet.", "answer": False, "explanation": "A prepayment (payment in advance) is a current asset, not a liability."},
+        {"statement": "Gross profit is calculated before deducting overhead expenses.", "answer": True, "explanation": "Gross Profit = Revenue − Cost of Sales. Overheads are deducted to get operating/net profit."},
+        {"statement": "Reducing balance depreciation results in equal charges over the asset's life.", "answer": False, "explanation": "Reducing balance applies a fixed % to the net book value, producing higher charges early on."},
+        {"statement": "A trial balance proves that all transactions have been recorded correctly.", "answer": False, "explanation": "A balanced trial balance only confirms debits = credits. Errors like omissions or wrong accounts are not caught."},
+        {"statement": "In consolidated accounts, intra-group transactions must be eliminated.", "answer": True, "explanation": "Sales between parent and subsidiary are eliminated to avoid double-counting in the group accounts."},
+        {"statement": "Gearing measures the proportion of debt financing relative to total capital.", "answer": True, "explanation": "High gearing = high debt = higher financial risk for the business."},
+        {"statement": "An accrual represents an expense paid in advance for a future period.", "answer": False, "explanation": "An accrual is an expense incurred but not yet paid. Prepayment is paid in advance."},
+    ],
+    "fm": [
+        {"statement": "When interest rates rise, bond prices fall.", "answer": True, "explanation": "Bond prices and yields move inversely. Higher rates make existing bonds less attractive, reducing their price."},
+        {"statement": "A beta of less than 1 means a stock is more volatile than the market.", "answer": False, "explanation": "Beta < 1 means less volatile than the market. Beta > 1 means more volatile."},
+        {"statement": "Systematic risk can be eliminated through diversification.", "answer": False, "explanation": "Only unsystematic (company-specific) risk can be diversified away. Systematic risk affects the whole market."},
+        {"statement": "The primary market is where existing securities are traded between investors.", "answer": False, "explanation": "The primary market is for new issues (IPOs). The secondary market is where existing securities are traded."},
+        {"statement": "CAPM calculates expected return as: Rf + β(Rm − Rf).", "answer": True, "explanation": "This is the Capital Asset Pricing Model formula. Rf = risk-free rate, Rm = market return, β = beta."},
+        {"statement": "Duration measures a bond's sensitivity to changes in interest rates.", "answer": True, "explanation": "Longer duration = greater price sensitivity to rate changes."},
+        {"statement": "A money market instrument typically has a maturity of over 5 years.", "answer": False, "explanation": "Money market instruments are short-term, typically under 1 year (e.g., T-bills, commercial paper)."},
+        {"statement": "Diversification can completely eliminate all investment risk.", "answer": False, "explanation": "Diversification eliminates unsystematic risk but not systematic (market) risk."},
+        {"statement": "In the Gordon Growth Model, a higher required return leads to a higher share price.", "answer": False, "explanation": "P = D₁ / (r − g). A higher required return (r) reduces the share price."},
+        {"statement": "Financial intermediaries help channel funds from savers to borrowers.", "answer": True, "explanation": "Banks, pension funds, and insurers are intermediaries that facilitate capital allocation."},
+    ],
+    "macro": [
+        {"statement": "Real GDP adjusts nominal GDP for the effects of inflation.", "answer": True, "explanation": "Real GDP removes price changes, allowing true comparison of economic output over time."},
+        {"statement": "Demand-pull inflation is caused by rising production costs.", "answer": False, "explanation": "Cost-push inflation is caused by rising costs. Demand-pull comes from excess aggregate demand."},
+        {"statement": "The Phillips Curve shows a short-run trade-off between inflation and unemployment.", "answer": True, "explanation": "As unemployment falls (economy booms), inflation tends to rise in the short run."},
+        {"statement": "Quantitative easing involves raising interest rates to control inflation.", "answer": False, "explanation": "QE involves the central bank buying assets to expand money supply — it is expansionary, not contractionary."},
+        {"statement": "Fiscal policy is controlled by the central bank.", "answer": False, "explanation": "Fiscal policy (taxation and spending) is controlled by the government. The central bank controls monetary policy."},
+        {"statement": "A country with a comparative advantage produces a good at a lower opportunity cost.", "answer": True, "explanation": "Comparative advantage means producing where opportunity cost is lowest — the basis for international trade."},
+        {"statement": "Structural unemployment is caused by a lack of aggregate demand in the economy.", "answer": False, "explanation": "Structural unemployment results from skills mismatch or industry decline. Cyclical unemployment is demand-related."},
+        {"statement": "Automatic stabilisers reduce the need for discretionary fiscal policy.", "answer": True, "explanation": "Benefits and progressive taxes automatically dampen booms and recessions without new policy decisions."},
+        {"statement": "Crowding out occurs when government borrowing reduces private investment.", "answer": True, "explanation": "Government borrowing can push up interest rates, making it more expensive for businesses to borrow and invest."},
+        {"statement": "GDP using the expenditure method is: C + I + G + (X − M).", "answer": True, "explanation": "Consumption + Investment + Government spending + Net exports = GDP by expenditure approach."},
+    ],
+}
+
+# ─── VIDEO LINKS ──────────────────────────────────────────────────────────────
+
+VIDEOS = {
+    "f1": [
+        {"title": "Stakeholders & Mendelow's Matrix", "url": "https://youtu.be/placeholder_f1_1", "topic": "stakeholders"},
+        {"title": "Corporate Governance Explained", "url": "https://youtu.be/placeholder_f1_2", "topic": "governance"},
+        {"title": "Motivation Theories (Maslow, Herzberg, McGregor)", "url": "https://youtu.be/placeholder_f1_3", "topic": "motivation"},
+        {"title": "PESTEL & Porter's Five Forces", "url": "https://youtu.be/placeholder_f1_4", "topic": "strategy"},
+        {"title": "Organisational Structures", "url": "https://youtu.be/placeholder_f1_5", "topic": "structure"},
+    ],
+    "f3": [
+        {"title": "Double Entry Bookkeeping Basics", "url": "https://youtu.be/placeholder_f3_1", "topic": "double entry"},
+        {"title": "Financial Statements Explained", "url": "https://youtu.be/placeholder_f3_2", "topic": "statements"},
+        {"title": "Depreciation Methods", "url": "https://youtu.be/placeholder_f3_3", "topic": "depreciation"},
+        {"title": "Consolidation & Goodwill", "url": "https://youtu.be/placeholder_f3_4", "topic": "consolidation"},
+        {"title": "Ratio Analysis", "url": "https://youtu.be/placeholder_f3_5", "topic": "ratios"},
+    ],
+    "fm": [
+        {"title": "How Bonds Work", "url": "https://youtu.be/placeholder_fm_1", "topic": "bonds"},
+        {"title": "CAPM & Beta Explained", "url": "https://youtu.be/placeholder_fm_2", "topic": "capm"},
+        {"title": "Stock Markets & IPOs", "url": "https://youtu.be/placeholder_fm_3", "topic": "stocks"},
+        {"title": "Risk & Diversification", "url": "https://youtu.be/placeholder_fm_4", "topic": "risk"},
+        {"title": "Financial Intermediaries", "url": "https://youtu.be/placeholder_fm_5", "topic": "intermediaries"},
+    ],
+    "macro": [
+        {"title": "GDP & Economic Growth", "url": "https://youtu.be/placeholder_macro_1", "topic": "gdp"},
+        {"title": "Inflation Types Explained", "url": "https://youtu.be/placeholder_macro_2", "topic": "inflation"},
+        {"title": "Fiscal vs Monetary Policy", "url": "https://youtu.be/placeholder_macro_3", "topic": "policy"},
+        {"title": "Phillips Curve & Trade-offs", "url": "https://youtu.be/placeholder_macro_4", "topic": "phillips"},
+        {"title": "International Trade & Comparative Advantage", "url": "https://youtu.be/placeholder_macro_5", "topic": "trade"},
+    ],
+}
+
+
+def get_true_false(subject_key):
+    return TRUE_FALSE.get(subject_key, [])
+
+def get_videos(subject_key):
+    return VIDEOS.get(subject_key, [])
