@@ -905,6 +905,10 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         index = context.user_data["quiz_index"]
         subject_key = context.user_data["quiz_subject"]
         total = len(questions)
+        # Safety check — prevent IndexError on last question
+        if index >= total:
+            await query.answer()
+            return QUIZ_SESSION
         q = questions[index]
         correct_index = q["correct"]
         is_correct = (answer_index == correct_index)
