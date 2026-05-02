@@ -931,7 +931,7 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             xp_gain = max(10, int(score / total * 50))
             xp_result = db.add_xp(user_id, xp_gain)
             xp_notification = f"\n\n⚡ *+{xp_gain} XP*"
-            if xp_result.get("level_up"):
+            if xp_result.get("leveled_up"):
                 xp_notification += f"\n🎉 *Новый уровень {xp_result['level']}!*" if (db.get_user_lang(user_id) or "en") == "ru" else f"\n🎉 *Level up! Level {xp_result['level']}!*"
             done_text = (
                 result_text + "\n\n" +
@@ -1191,10 +1191,14 @@ async def show_leaderboard(message, user_id, edit=False):
         [InlineKeyboardButton(TEXTS[lang]["my_rank"], callback_data="menu_my_rank")],
         [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")]
     ]
+    markup = InlineKeyboardMarkup(keyboard)
     if edit:
-        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        try:
+            await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+        except Exception:
+            await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
-        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 async def show_my_rank(message, user_id, edit=False):
     lang = db.get_user_lang(user_id) or "en"
@@ -1215,10 +1219,45 @@ async def show_my_rank(message, user_id, edit=False):
         [InlineKeyboardButton(TEXTS[lang]["leaderboard"], callback_data="menu_leaderboard")],
         [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")]
     ]
+    markup = InlineKeyboardMarkup(keyboard)
     if edit:
-        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        try:
+            await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+        except Exception:
+            await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
-        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+
+
+async def access_granted_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handles study_KEY button from access granted notification message."""
+    query = update.callback_query
+    await query.answer()
+    user_id = query.from_user.id
+    data = query.data
+    if data.startswith("study_"):
+        subject_key = data.split("_", 1)[1]
+        context.user_data["current_subject"] = subject_key
+        info = SUBJECTS.get(subject_key, {})
+        photo_url = SUBJECT_PHOTOS.get(subject_key)
+        lang = db.get_user_lang(user_id) or "en"
+        keyboard = [
+            [InlineKeyboardButton(TEXTS[lang]["study_materials"], callback_data=f"materials_{subject_key}"),
+             InlineKeyboardButton(TEXTS[lang]["cheatsheet"], callback_data=f"cheatsheet_{subject_key}")],
+            [InlineKeyboardButton(TEXTS[lang]["flashcards"], callback_data=f"flashcards_{subject_key}"),
+             InlineKeyboardButton(TEXTS[lang]["glossary"], callback_data=f"glossary_{subject_key}")],
+            [InlineKeyboardButton(TEXTS[lang]["quiz"], callback_data=f"quiz_{subject_key}"),
+             InlineKeyboardButton(TEXTS[lang]["quiz_history"], callback_data=f"history_{subject_key}")],
+            [InlineKeyboardButton(TEXTS[lang]["ai_chat"], callback_data=f"aichat_{subject_key}"),
+             InlineKeyboardButton(TEXTS[lang]["progress"], callback_data=f"progress_{subject_key}")],
+            [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")],
+        ]
+        text = TEXTS[lang]["subject_menu"].format(subject=info.get("name", subject_key))
+        markup = InlineKeyboardMarkup(keyboard)
+        try:
+            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+        except Exception:
+            pass
 
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
@@ -1284,6 +1323,7 @@ def main():
     )
 
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
+    app.add_handler(CallbackQueryHandler(access_granted_handler, pattern="^study_"))
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
