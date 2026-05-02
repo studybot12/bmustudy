@@ -842,8 +842,8 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                       reply_markup=InlineKeyboardMarkup(keyboard))
         return MAIN_MENU
 
-    elif data in ("lang_ru", "lang_en"):
-        new_lang = data.split("_")[1]
+    elif action in ("lang_ru", "lang_en"):
+        new_lang = action.split("_")[1]
         user = query.from_user
         db.upsert_user(user.id, user.username or "", user.first_name or "", new_lang)
         confirm = "✅ Язык изменён на *Русский*" if new_lang == "ru" else "✅ Language changed to *English*"
