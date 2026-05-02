@@ -338,102 +338,236 @@ MATERIALS = {
         "name": "Macroeconomics",
         "chapters": [
             {
-                "title": "National Income & GDP",
+                "title": "Лекция 1 — Введение в макроэкономику",
                 "content": (
-                    "🔹 *GDP (Gross Domestic Product)* = total value of goods & services produced in a country in a year\n\n"
-                    "🔹 *3 approaches to measure GDP:*\n"
-                    "• *Expenditure:* GDP = C + I + G + (X − M)\n"
-                    "  C = Consumption, I = Investment, G = Government spending, X = Exports, M = Imports\n"
-                    "• *Income:* sum of all factor incomes (wages, profits, rent, interest)\n"
-                    "• *Output:* sum of value added at each stage of production\n\n"
-                    "🔹 *Nominal GDP* — at current prices\n"
-                    "🔹 *Real GDP* — adjusted for inflation (better measure of growth)\n\n"
-                    "🔹 *GNP* = GDP + net income from abroad\n"
-                    "🔹 *Business cycle:* Expansion → Peak → Recession → Trough → Recovery"
+                    "🔹 *Что изучает макроэкономика?*\n"
+                    "Изучение экономики в целом: ВВП, безработица, инфляция, экономический рост, деловые циклы, политика.\n\n"
+                    "🔹 *Ключевые макроэкономические переменные:*\n"
+                    "• ВВП — совокупный выпуск экономики\n"
+                    "• Уровень безработицы — доля рабочей силы без работы\n"
+                    "• Инфляция — устойчивый рост общего уровня цен\n\n"
+                    "🔹 *Два источника долгосрочного роста:*\n"
+                    "• Рост населения\n"
+                    "• Рост средней производительности труда\n\n"
+                    "🔹 *Краткосрочные колебания:* Деловые циклы — Подъём → Пик → Рецессия → Дно → Восстановление\n\n"
+                    "🔹 *Ключевые макроэкономические вопросы:*\n"
+                    "• Что вызывает рецессии? Что такое стимулирование экономики?\n"
+                    "• Почему стоимость жизни постоянно растёт?\n"
+                    "• Почему одни страны бедные? Какая политика помогает росту?\n"
+                    "• Что такое торговый дефицит?\n\n"
+                    "🔹 *Макроэкономическая политика:* Монетарная (центральный банк) + Фискальная (правительство)"
                 )
             },
             {
-                "title": "Inflation",
+                "title": "Лекция 2 — Измерение ВВП",
                 "content": (
-                    "🔹 *Inflation* = sustained rise in the general price level\n\n"
-                    "🔹 *Measured by:* CPI (Consumer Price Index), RPI\n\n"
-                    "🔹 *Types of inflation:*\n"
-                    "• *Demand-pull* — too much demand chasing too few goods (economy overheating)\n"
-                    "• *Cost-push* — rising production costs (wages, oil) passed to consumers\n"
-                    "• *Built-in (wage-price spiral)* — expectations drive higher wages → higher prices\n\n"
-                    "🔹 *Effects of inflation:*\n"
-                    "• Erodes purchasing power\n"
-                    "• Redistributes wealth (debtors gain, creditors lose)\n"
-                    "• Creates uncertainty, reduces investment\n\n"
-                    "🔹 *Deflation* — falling prices; can cause recession (consumers delay spending)\n\n"
-                    "🔹 *Central bank inflation target:* typically 2% (UK, US, Eurozone)"
+                    "🔹 *ВВП (Валовой Внутренний Продукт)* — измеряет совокупный доход И совокупные расходы\n"
+                    "• Каждый доллар покупателя = доллар дохода продавца\n"
+                    "• Доходы = Расходы для всей экономики\n\n"
+                    "🔹 *Метод расходов:* ВВП = C + I + G + NX\n"
+                    "• C = Потребление (домохозяйства)\n"
+                    "• I = Инвестиции (бизнес — оборудование, здания, запасы)\n"
+                    "• G = Государственные закупки\n"
+                    "• NX = Чистый экспорт = Экспорт − Импорт\n\n"
+                    "🔹 *Кругооборот доходов:* Домохозяйства владеют факторами → продают фирмам → получают доход → покупают товары\n\n"
+                    "🔹 *Номинальный ВВП* — в текущих ценах\n"
+                    "🔹 *Реальный ВВП* — в ценах базового года (устраняет инфляцию)\n"
+                    "🔹 *Дефлятор ВВП* = (Номинальный / Реальный) × 100\n\n"
+                    "🔹 *ВВП на душу населения* = ВВП ÷ население — средний уровень жизни\n\n"
+                    "🔹 *Что ВВП НЕ измеряет:* досуг, качество окружающей среды, распределение доходов"
                 )
             },
             {
-                "title": "Unemployment",
+                "title": "Лекция 3 — ИПЦ и безработица",
                 "content": (
-                    "🔹 *Unemployment* = people willing & able to work but cannot find a job\n\n"
-                    "🔹 *Types:*\n"
-                    "• *Frictional* — between jobs, short-term (normal in economy)\n"
-                    "• *Structural* — skills mismatch, industry decline (long-term)\n"
-                    "• *Cyclical (demand-deficient)* — recession reduces demand for workers\n"
-                    "• *Seasonal* — work varies by season\n"
-                    "• *Classical (real wage)* — wages above equilibrium\n\n"
-                    "🔹 *Natural rate of unemployment (NAIRU)* — level consistent with stable inflation\n\n"
-                    "🔹 *Phillips Curve* — inverse short-run relationship between inflation and unemployment\n\n"
-                    "🔹 *Costs of unemployment:* lost output, tax revenue falls, government spending rises, social costs"
+                    "🔹 *ИПЦ (Индекс потребительских цен)* — измеряет стоимость фиксированной корзины товаров\n\n"
+                    "🔹 *Расчёт ИПЦ:*\n"
+                    "1. Фиксируем корзину (что покупает типичный потребитель)\n"
+                    "2. Находим цены всех товаров в корзине\n"
+                    "3. ИПЦ = (Стоимость в текущем году / Стоимость в базовом году) × 100\n"
+                    "4. Инфляция = (ИПЦ₂ − ИПЦ₁) / ИПЦ₁ × 100%\n\n"
+                    "🔹 *ИПЦ vs Дефлятор ВВП:*\n"
+                    "• ИПЦ — фиксированная корзина; дефлятор — текущий выпуск\n"
+                    "• ИПЦ включает импорт; дефлятор — нет\n\n"
+                    "🔹 *Проблемы ИПЦ:* смещение замещения, смещение новых товаров, смещение качества → ИПЦ завышает инфляцию\n\n"
+                    "🔹 *Безработица:* Рабочая сила = Занятые + Безработные\n"
+                    "• Уровень безработицы = (Безработные / Рабочая сила) × 100%\n\n"
+                    "🔹 *Виды безработицы:*\n"
+                    "• Фрикционная — смена работы (нормальная, кратковременная)\n"
+                    "• Структурная — несоответствие навыков, упадок отраслей\n"
+                    "• Циклическая — вызвана рецессией (дефицит спроса)\n\n"
+                    "🔹 *Естественный уровень безработицы (NAIRU)* — фрикционная + структурная"
                 )
             },
             {
-                "title": "Monetary & Fiscal Policy",
+                "title": "Лекция 4 — Производство и экономический рост",
                 "content": (
-                    "🔹 *Monetary policy* — central bank controls money supply & interest rates\n"
-                    "• Raise rates → less borrowing → less spending → lower inflation\n"
-                    "• Lower rates → more borrowing → more spending → stimulus\n"
-                    "• *Quantitative Easing (QE)* — central bank buys assets to inject money\n\n"
-                    "🔹 *Fiscal policy* — government uses taxation and spending\n"
-                    "• *Expansionary:* increase spending or cut taxes (boost economy)\n"
-                    "• *Contractionary:* cut spending or raise taxes (reduce inflation/debt)\n\n"
-                    "🔹 *Automatic stabilisers* — benefits & taxes that respond automatically to economic cycle\n\n"
-                    "🔹 *Budget deficit* = government spending > tax revenue\n"
-                    "🔹 *National debt* = accumulated government borrowing over time\n\n"
-                    "🔹 *Crowding out* — government borrowing may raise interest rates & reduce private investment"
+                    "🔹 *Почему уровень жизни различается:*\n"
+                    "• Разница между богатыми и бедными странами — до 10 раз по среднему доходу\n"
+                    "• Реальный ВВП на душу в США растёт ~2% в год\n\n"
+                    "🔹 *Производительность (Y/L)* = выпуск на одного работника — КЛЮЧЕВОЙ фактор уровня жизни\n\n"
+                    "🔹 *4 фактора производительности:*\n"
+                    "• Физический капитал (K/L) — машины, оборудование на одного работника\n"
+                    "• Человеческий капитал (H/L) — образование, навыки, опыт\n"
+                    "• Природные ресурсы (N/L) — земля, полезные ископаемые\n"
+                    "• Технологические знания (A) — ноу-хау, инновации\n\n"
+                    "🔹 *Производственная функция:* Y = A × F(L, K, H, N)\n\n"
+                    "🔹 *Убывающая отдача* — добавление капитала даёт всё меньший прирост\n"
+                    "🔹 *Эффект догоняющего развития* — бедные страны растут быстрее (могут перенимать технологии)\n\n"
+                    "🔹 *Политика для роста:*\n"
+                    "• Стимулировать сбережения и инвестиции\n"
+                    "• Привлекать иностранные инвестиции\n"
+                    "• Образование населения\n"
+                    "• Защита прав собственности и политическая стабильность\n"
+                    "• Свободная торговля (политика открытой экономики)"
                 )
             },
             {
-                "title": "International Trade & Exchange Rates",
+                "title": "Лекция 5 — Денежная система",
                 "content": (
-                    "🔹 *Comparative advantage* — country should specialise where opportunity cost is lowest\n\n"
-                    "🔹 *Balance of payments:*\n"
-                    "• Current account — trade in goods & services, income, transfers\n"
-                    "• Capital account — investment flows\n"
-                    "• Financial account — changes in foreign assets/liabilities\n\n"
-                    "🔹 *Exchange rate systems:*\n"
-                    "• Fixed — pegged to another currency\n"
-                    "• Floating — determined by market supply & demand\n"
-                    "• Managed float — mainly market, with occasional intervention\n\n"
-                    "🔹 *Effects of currency depreciation:*\n"
-                    "• Exports cheaper → demand for exports rises\n"
-                    "• Imports more expensive → import demand falls\n"
-                    "• May worsen inflation\n\n"
-                    "🔹 *Trade barriers:* tariffs, quotas, subsidies, embargoes"
+                    "🔹 *Деньги* = активы, которые регулярно используются для покупки товаров\n\n"
+                    "🔹 *3 функции денег:*\n"
+                    "• Средство обмена — покупатели отдают продавцам\n"
+                    "• Единица счёта — мерило цен и долгов\n"
+                    "• Средство накопления — сохраняет покупательную способность во времени\n\n"
+                    "🔹 *Виды денег:*\n"
+                    "• Товарные деньги — с внутренней стоимостью (золото)\n"
+                    "• Фиатные деньги — ценность по декрету правительства (доллар, сум)\n\n"
+                    "🔹 *Денежная масса:*\n"
+                    "• M1 = Наличные + депозиты до востребования + дорожные чеки\n"
+                    "• M2 = M1 + сберегательные депозиты + фонды денежного рынка\n\n"
+                    "🔹 *Федеральная резервная система (ФРС)* — центральный банк США\n"
+                    "• Совет управляющих (7 членов, срок 14 лет)\n"
+                    "• FOMC — проводит монетарную политику через операции на открытом рынке\n\n"
+                    "🔹 *Банковское резервирование с частичным покрытием:* банки держат только часть депозитов\n"
+                    "🔹 *Денежный мультипликатор* = 1 / Норма резервирования\n"
+                    "  Если норма = 10%, мультипликатор = 10\n\n"
+                    "🔹 *Инструменты ФРС:* ОМО, нормы резервирования, учётная ставка, % на резервы"
                 )
             },
             {
-                "title": "Economic Growth & Development",
+                "title": "Лекция 6 — Сбережения, инвестиции и финансовая система",
                 "content": (
-                    "🔹 *Economic growth* = increase in real GDP over time\n\n"
-                    "🔹 *Sources of growth:*\n"
-                    "• More labour / capital inputs\n"
-                    "• Technological progress\n"
-                    "• Improved institutions & governance\n\n"
-                    "🔹 *AD/AS model:*\n"
-                    "• *AD* (Aggregate Demand) = C + I + G + NX\n"
-                    "• *SRAS* — upward sloping; can shift with cost changes\n"
-                    "• *LRAS* — vertical at full employment (supply-side constraints)\n\n"
-                    "🔹 *Supply-side policies:* education, deregulation, privatisation, reduce income tax\n\n"
-                    "🔹 *Sustainable development* — growth that meets present needs without compromising future generations\n\n"
-                    "🔹 *HDI (Human Development Index)* = income + education + life expectancy"
+                    "🔹 *Финансовая система* — соединяет сберегателей и заёмщиков\n\n"
+                    "🔹 *Финансовые рынки (прямые):*\n"
+                    "• Рынок облигаций — долговые расписки с основным долгом, сроком, процентной ставкой\n"
+                    "• Фондовый рынок — доля в собственности компании\n\n"
+                    "🔹 *Характеристики облигаций:*\n"
+                    "• Срок: краткосрочные vs долгосрочные (длиннее = рискованнее = выше %)\n"
+                    "• Кредитный риск: вероятность дефолта (мусорные облигации = высокая доходность)\n\n"
+                    "🔹 *Финансовые посредники (косвенные):* банки, взаимные фонды, пенсионные фонды\n\n"
+                    "🔹 *Три вида сбережений:*\n"
+                    "• Частные сбережения = Y − T − C\n"
+                    "• Государственные сбережения = T − G (профицит/дефицит бюджета)\n"
+                    "• Национальные сбережения = Частные + Государственные = Y − C − G\n\n"
+                    "🔹 *Инвестиции = Национальные сбережения* (в закрытой экономике)\n\n"
+                    "🔹 *Рынок заёмных средств:*\n"
+                    "• Предложение = сбережения; Спрос = инвестиции\n"
+                    "• Реальная процентная ставка уравновешивает рынок\n\n"
+                    "🔹 *Дефицит бюджета* → сдвигает предложение влево → повышает ставку → вытесняет инвестиции"
+                )
+            },
+            {
+                "title": "Лекция 7 — Совокупный спрос и предложение (AD-AS)",
+                "content": (
+                    "🔹 *3 факта об экономических колебаниях:*\n"
+                    "1. Колебания нерегулярны и непредсказуемы\n"
+                    "2. Большинство макроэкономических показателей колеблются вместе\n"
+                    "3. При падении выпуска растёт безработица\n\n"
+                    "🔹 *Классическая дихотомия:* реальные переменные (выпуск) vs номинальные (деньги, цены)\n"
+                    "• Деньги нейтральны в долгосрочном периоде\n\n"
+                    "🔹 *Кривая AD (совокупного спроса)* — нисходящая:\n"
+                    "• Эффект богатства — P↑ → реальное богатство↓ → C↓\n"
+                    "• Эффект процентной ставки — P↑ → спрос на деньги↑ → ставка↑ → I↓\n"
+                    "• Эффект валютного курса — P↑ → валюта дорожает → NX↓\n\n"
+                    "🔹 *AD сдвигается вправо:* рост C, I, G или NX (налоговые послабления, рост госрасходов)\n\n"
+                    "🔹 *SRAS (краткосрочное AS)* — восходящая (цены жёсткие в краткосроке)\n"
+                    "• Сдвиг вправо: снижение издержек, позитивные шоки предложения\n\n"
+                    "🔹 *LRAS (долгосрочное AS)* — вертикальная при естественном уровне выпуска\n\n"
+                    "🔹 *Равновесие:* шок → краткосрочный эффект → экономика самокорректируется к LRAS"
+                )
+            },
+            {
+                "title": "Лекция 8 — Фискальная политика",
+                "content": (
+                    "🔹 *Фискальная политика* = использование правительством расходов (G) и налогов (T)\n\n"
+                    "🔹 *Влияние на AD:*\n"
+                    "• G↑ или T↓ → AD сдвигается вправо (стимулирующая)\n"
+                    "• G↓ или T↑ → AD сдвигается влево (сдерживающая)\n\n"
+                    "🔹 *Эффект мультипликатора:* первоначальные расходы → доход → больше расходов → больший общий сдвиг AD\n"
+                    "  Мультипликатор = 1 / (1 − MPC), где MPC = предельная склонность к потреблению\n\n"
+                    "🔹 *Эффект вытеснения:* G↑ → рост займов → ставка↑ → I↓ (частично нейтрализует мультипликатор)\n\n"
+                    "🔹 *Бюджетные термины:*\n"
+                    "• Дефицит бюджета: G > T за год\n"
+                    "• Профицит бюджета: T > G за год\n"
+                    "• Государственный долг: накопленная сумма всех дефицитов\n\n"
+                    "🔹 *Финансирование дефицита:* продажа казначейских облигаций (T-bills, notes, bonds)\n\n"
+                    "🔹 *Виды налогов:* подоходный, налог на зарплату, корпоративный, акцизный\n\n"
+                    "🔹 *Автоматические стабилизаторы:* пособия по безработице, прогрессивный налог — сглаживают цикл без новых решений"
+                )
+            },
+            {
+                "title": "Лекция 9 — Монетарная политика",
+                "content": (
+                    "🔹 *Центральный банк* — отвечает за монетарную политику и стабильность финансовой системы\n"
+                    "• США: ФРС | Великобритания: Банк Англии | ЕС: ЕЦБ\n\n"
+                    "🔹 *Инструменты ФРС:*\n"
+                    "• Операции на открытом рынке (ОМО) — покупка облигаций → M↑; продажа → M↓\n"
+                    "• Нормы резервирования — выше норма → меньше кредитов → M↓\n"
+                    "• Учётная ставка — ниже ставка → банки берут больше → M↑\n"
+                    "• Процент на резервы — выплата % стимулирует хранение резервов\n\n"
+                    "🔹 *Теория предпочтения ликвидности:*\n"
+                    "• Спрос на деньги убывающий (выше %, меньше спрос на деньги)\n"
+                    "• ФРС устанавливает предложение денег → равновесная процентная ставка\n\n"
+                    "🔹 *Влияние монетарной политики на AD:*\n"
+                    "• ФРС M↑ → ставка↓ → I↑ → AD сдвигается вправо\n"
+                    "• ФРС M↓ → ставка↑ → I↓ → AD сдвигается влево\n\n"
+                    "🔹 *КСР vs ДСР:* монетарная политика реально влияет в краткосроке; деньги нейтральны в долгосроке\n\n"
+                    "🔹 *Нулевая нижняя граница:* ставки не могут быть ниже 0% → ФРС использует QE"
+                )
+            },
+            {
+                "title": "Лекция 10 — Международная торговля и глобализация",
+                "content": (
+                    "🔹 *Открытая экономика* — торгует товарами и финансовыми активами с другими странами\n"
+                    "🔹 *Закрытая экономика* — без международной торговли\n\n"
+                    "🔹 *Ключевые понятия:*\n"
+                    "• Экспорт (X) — товары произведены внутри страны, проданы за рубежом\n"
+                    "• Импорт (M) — товары произведены за рубежом, проданы внутри\n"
+                    "• Чистый экспорт (NX) = X − M (торговый баланс)\n"
+                    "  NX > 0 = торговый профицит; NX < 0 = торговый дефицит\n\n"
+                    "🔹 *Факторы влияния на NX:*\n"
+                    "• Доход иностранцев (↑ → ↑ экспорт)\n"
+                    "• Валютный курс (обесценивание → ↑ экспорт, ↓ импорт)\n"
+                    "• Относительные цены и инфляция\n\n"
+                    "🔹 *Чистый отток капитала (NCO)* = покупка иностранных активов − покупка отечественных активов иностранцами\n"
+                    "• Тождество: NX = NCO\n\n"
+                    "🔹 *Сравнительное преимущество* — специализация там, где альтернативные издержки наименьши\n\n"
+                    "🔹 *Выгоды торговли:* ниже цены, разнообразие, экономия на масштабе, передача технологий\n\n"
+                    "🔹 *Торговые барьеры:* тарифы, квоты, субсидии, эмбарго"
+                )
+            },
+            {
+                "title": "Лекция 11 — Платёжный баланс и валютные курсы",
+                "content": (
+                    "🔹 *Платёжный баланс (ПБ)* — учёт всех операций страны с остальным миром\n\n"
+                    "🔹 *Счета ПБ:*\n"
+                    "• Счёт текущих операций — торговля товарами и услугами, доходы, трансферты\n"
+                    "• Финансовый счёт — прямые иностранные инвестиции (ПИИ) + портфельные инвестиции\n"
+                    "• Капитальный счёт — небольшой; трансферты капитала\n"
+                    "• ПБ всегда сбалансирован: Счёт текущих операций + Финансовый счёт = 0\n\n"
+                    "🔹 *NCO (чистый отток капитала):*\n"
+                    "• NCO > 0: отток капитала | NCO < 0: приток капитала\n"
+                    "• Ключевое тождество: NX = NCO\n\n"
+                    "🔹 *Валютные курсы:*\n"
+                    "• Номинальный — единиц иностранной валюты за единицу отечественной\n"
+                    "• Реальный = Номинальный × (внутренние цены / иностранные цены)\n"
+                    "• Удорожание: экспорт↓, импорт↑\n"
+                    "• Обесценивание: экспорт↑, импорт↓\n\n"
+                    "🔹 *Паритет покупательной способности (ППС):* курсы выравниваются так, чтобы одинаковые товары стоили одинаково\n\n"
+                    "🔹 *Фиксированный vs плавающий курс:*\n"
+                    "• Фиксированный: правительство поддерживает курс (нужны резервы)\n"
+                    "• Плавающий: определяется рынком (спрос и предложение)"
                 )
             },
         ]
@@ -487,18 +621,24 @@ FLASHCARDS = {
         {"term": "Credit Rating", "definition": "Assessment of a borrower's creditworthiness by agencies (Moody's, S&P). AAA = highest; BB and below = junk/high yield."},
     ],
     "macro": [
-        {"term": "GDP (Expenditure Method)", "definition": "GDP = C + I + G + (X − M). Consumption + Investment + Government spending + Net exports."},
-        {"term": "Demand-Pull Inflation", "definition": "Inflation caused by excess aggregate demand — too much money chasing too few goods (economy overheating)."},
-        {"term": "Cost-Push Inflation", "definition": "Inflation caused by rising production costs (wages, oil prices) that are passed on to consumers."},
-        {"term": "Phillips Curve", "definition": "Shows an inverse short-run relationship between inflation and unemployment. Higher inflation = lower unemployment."},
-        {"term": "Quantitative Easing (QE)", "definition": "Central bank creates new money to buy assets (usually government bonds), increasing money supply to stimulate economy."},
-        {"term": "Cyclical Unemployment", "definition": "Unemployment caused by a downturn in the business cycle — demand for labour falls when the economy slows."},
-        {"term": "Structural Unemployment", "definition": "Long-term unemployment caused by a mismatch between workers' skills and available jobs (e.g. industry decline)."},
-        {"term": "Crowding Out", "definition": "Government borrowing raises interest rates, making it more expensive for private firms to borrow, reducing private investment."},
-        {"term": "Comparative Advantage", "definition": "A country should specialise in producing goods where its opportunity cost is lowest, even if it's not the most efficient overall."},
-        {"term": "NAIRU", "definition": "Non-Accelerating Inflation Rate of Unemployment — the unemployment rate at which inflation is stable (natural rate)."},
-        {"term": "Current Account", "definition": "Part of the balance of payments recording trade in goods, services, income and current transfers."},
-        {"term": "Automatic Stabilisers", "definition": "Features of fiscal policy (benefits, progressive taxes) that automatically dampen economic fluctuations without new policy decisions."},
+        {"term": "ВВП (Метод расходов)", "definition": "ВВП = C + I + G + (X − M). Потребление + Инвестиции + Госрасходы + Чистый экспорт."},
+        {"term": "Реальный ВВП", "definition": "ВВП, скорректированный на инфляцию с использованием цен базового года. Позволяет сравнивать реальный рост."},
+        {"term": "Дефлятор ВВП", "definition": "(Номинальный ВВП / Реальный ВВП) × 100. Измеряет общий уровень цен в экономике."},
+        {"term": "ИПЦ", "definition": "Индекс потребительских цен — стоимость фиксированной корзины товаров. ИПЦ = (Стоимость сейчас / Стоимость в базовом году) × 100."},
+        {"term": "Инфляция спроса", "definition": "Инфляция из-за избыточного совокупного спроса — «слишком много денег за слишком малым количеством товаров»."},
+        {"term": "Инфляция издержек", "definition": "Инфляция из-за роста производственных затрат (зарплаты, нефть) → SRAS сдвигается влево."},
+        {"term": "NAIRU", "definition": "Естественный уровень безработицы — фрикционная + структурная. При нём инфляция стабильна."},
+        {"term": "Кривая Филлипса", "definition": "Обратная краткосрочная зависимость между инфляцией и безработицей. Инфляция↑ = безработица↓."},
+        {"term": "Денежный мультипликатор", "definition": "1 / Норма резервирования. При норме 10% мультипликатор = 10. Показывает, во сколько раз банки увеличивают денежную массу."},
+        {"term": "Операции на открытом рынке", "definition": "Покупка/продажа гособлигаций центральным банком. Покупка → денежная масса↑; продажа → денежная масса↓."},
+        {"term": "QE (Количественное смягчение)", "definition": "Центральный банк создаёт деньги для покупки активов — расширяет денежную массу когда ставки уже на нуле."},
+        {"term": "Эффект мультипликатора", "definition": "Начальные госрасходы → доход → расходы → ещё доход. Мультипликатор = 1 / (1 − MPC)."},
+        {"term": "Эффект вытеснения", "definition": "Госзаимствования → ставки↑ → частные инвестиции↓. Частично нейтрализует фискальный стимул."},
+        {"term": "Сравнительное преимущество", "definition": "Страна должна специализироваться там, где альтернативные издержки наименьши, даже если она не самая эффективная."},
+        {"term": "NX = NCO", "definition": "Тождество: Чистый экспорт = Чистый отток капитала. Каждая торговая операция имеет зеркальное финансовое движение."},
+        {"term": "Паритет покупательной способности", "definition": "Валютные курсы корректируются так, чтобы одинаковые товары стоили одинаково в разных странах."},
+        {"term": "LRAS", "definition": "Долгосрочная кривая AS — вертикальная при естественном уровне выпуска. В долгосроке выпуск определяется предложением, а не ценами."},
+        {"term": "Автоматические стабилизаторы", "definition": "Пособия по безработице и прогрессивные налоги автоматически сглаживают экономические циклы без новых решений."},
     ],
 }
 
@@ -786,94 +926,94 @@ QUIZ_QUESTIONS = {
 
     "macro": [
         {
-            "question": "Using the expenditure approach, GDP equals:",
-            "options": ["A) C + I + G", "B) C + I + G + (X − M)", "C) C + G + NX − I", "D) Wages + Profits + Rent"],
+            "question": "По методу расходов ВВП равен:",
+            "options": ["A) C + I + G", "B) C + I + G + (X − M)", "C) C + G + NX − I", "D) Зарплаты + Прибыль + Рента"],
             "correct": 1,
-            "explanation": "GDP = C (Consumption) + I (Investment) + G (Government) + NX (Net Exports = X − M)."
+            "explanation": "ВВП = C (Потребление) + I (Инвестиции) + G (Государство) + NX (Чистый экспорт = X − M)."
         },
         {
-            "question": "Demand-pull inflation is caused by:",
-            "options": ["A) Rising oil prices", "B) Falling consumer confidence", "C) Excess aggregate demand", "D) Supply chain disruptions"],
+            "question": "Дефлятор ВВП рассчитывается как:",
+            "options": ["A) Реальный ВВП / Номинальный ВВП × 100", "B) Номинальный ВВП / Реальный ВВП × 100", "C) ВВП / Население × 100", "D) ИПЦ / Номинальный ВВП × 100"],
+            "correct": 1,
+            "explanation": "Дефлятор ВВП = (Номинальный ВВП / Реальный ВВП) × 100. Измеряет общий уровень цен."
+        },
+        {
+            "question": "Чем реальный ВВП отличается от номинального?",
+            "options": ["A) Учитывает рост населения", "B) Скорректирован на инфляцию", "C) Включает только экспорт", "D) Измеряется в иностранной валюте"],
+            "correct": 1,
+            "explanation": "Реальный ВВП скорректирован на изменение цен (инфляцию) — лучше отражает реальный экономический рост."
+        },
+        {
+            "question": "Инфляция спроса вызвана:",
+            "options": ["A) Ростом цен на нефть", "B) Падением потребительского доверия", "C) Избыточным совокупным спросом", "D) Сбоями в цепочках поставок"],
             "correct": 2,
-            "explanation": "Demand-pull inflation occurs when AD grows faster than productive capacity — 'too much money chasing too few goods'."
+            "explanation": "Инфляция спроса возникает когда AD растёт быстрее производственных возможностей — «слишком много денег за слишком мало товаров»."
         },
         {
-            "question": "The Phillips Curve shows a short-run relationship between:",
-            "options": ["A) GDP and interest rates", "B) Inflation and unemployment", "C) Exports and imports", "D) Money supply and bond yields"],
+            "question": "Если норма резервирования 20%, денежный мультипликатор равен:",
+            "options": ["A) 2", "B) 5", "C) 10", "D) 20"],
             "correct": 1,
-            "explanation": "The Phillips Curve illustrates the inverse short-run trade-off between inflation and unemployment."
+            "explanation": "Денежный мультипликатор = 1 / Норма резервирования = 1 / 0.20 = 5."
         },
         {
-            "question": "Structural unemployment is caused by:",
-            "options": ["A) A seasonal slowdown in demand", "B) Workers between jobs", "C) Recession reducing labour demand", "D) A mismatch of skills and available jobs"],
+            "question": "Когда ФРС покупает государственные облигации, денежная масса:",
+            "options": ["A) Уменьшается", "B) Не меняется", "C) Увеличивается", "D) Зависит от инфляции"],
+            "correct": 2,
+            "explanation": "Покупка облигаций (ОМО) — банки получают резервы → могут выдавать больше кредитов → денежная масса растёт."
+        },
+        {
+            "question": "Кривая Филлипса показывает краткосрочную зависимость между:",
+            "options": ["A) ВВП и процентными ставками", "B) Инфляцией и безработицей", "C) Экспортом и импортом", "D) Денежной массой и доходностью облигаций"],
+            "correct": 1,
+            "explanation": "Кривая Филлипса показывает обратную краткосрочную зависимость между инфляцией и безработицей."
+        },
+        {
+            "question": "Структурная безработица вызвана:",
+            "options": ["A) Сезонным спадом спроса", "B) Сменой работы", "C) Рецессией", "D) Несоответствием навыков и вакансий"],
             "correct": 3,
-            "explanation": "Structural unemployment results from long-term changes in the economy (e.g. automation, industry decline) creating skills mismatches."
+            "explanation": "Структурная безработица — долгосрочная, из-за изменений в экономике (автоматизация, упадок отраслей)."
         },
         {
-            "question": "Quantitative Easing (QE) involves the central bank:",
-            "options": ["A) Raising interest rates", "B) Cutting government spending", "C) Buying assets to inject money into the economy", "D) Increasing taxes"],
-            "correct": 2,
-            "explanation": "QE: the central bank creates new money to purchase financial assets (mainly government bonds), expanding the money supply."
-        },
-        {
-            "question": "'Crowding out' refers to:",
-            "options": ["A) Consumers spending less due to high taxes", "B) Government borrowing raising interest rates, reducing private investment", "C) Imports replacing domestic goods", "D) Companies leaving a market due to competition"],
+            "question": "Эффект вытеснения означает, что рост госрасходов:",
+            "options": ["A) Напрямую снижает потребление", "B) Повышает ставки → снижает частные инвестиции", "C) Увеличивает импорт", "D) Снижает налоговые поступления"],
             "correct": 1,
-            "explanation": "When the government borrows heavily, it pushes up interest rates, making borrowing costlier for private businesses — 'crowding them out'."
+            "explanation": "Правительство занимает больше → ставки растут → частным фирмам дороже занимать → инвестиции сокращаются."
         },
         {
-            "question": "Comparative advantage states that countries should specialise where their:",
-            "options": ["A) Absolute output is highest", "B) Wages are lowest", "C) Opportunity cost is lowest", "D) Technology is most advanced"],
-            "correct": 2,
-            "explanation": "Comparative advantage is about opportunity cost — a country specialises in what it can produce at the lowest relative cost."
-        },
-        {
-            "question": "Real GDP differs from nominal GDP because it is adjusted for:",
-            "options": ["A) Population growth", "B) Inflation", "C) Exchange rate changes", "D) Government spending"],
+            "question": "В модели AD-AS кривая LRAS вертикальна, потому что:",
+            "options": ["A) Цены не меняются в долгосроке", "B) Экономика всегда на уровне полной занятости в долгосроке", "C) Государство контролирует предложение", "D) Экспорт равен импорту"],
             "correct": 1,
-            "explanation": "Real GDP is adjusted for price changes (inflation), making it a better measure of actual economic growth over time."
+            "explanation": "LRAS вертикальна при естественном уровне выпуска — в долгосроке выпуск определяется факторами предложения, а не уровнем цен."
         },
         {
-            "question": "Automatic stabilisers in fiscal policy include:",
-            "options": ["A) Changes in interest rates", "B) Emergency infrastructure spending", "C) Unemployment benefits and progressive taxation", "D) Quantitative easing"],
+            "question": "Сравнительное преимущество означает специализацию там, где:",
+            "options": ["A) Абсолютный выпуск наибольший", "B) Зарплаты наименьшие", "C) Альтернативные издержки наименьшие", "D) Технологии самые передовые"],
             "correct": 2,
-            "explanation": "Automatic stabilisers work without new policy decisions — benefits rise in recessions, taxes fall, automatically dampening the cycle."
+            "explanation": "Сравнительное преимущество — об альтернативных издержках. Страна специализируется там, где производит с наименьшими относительными затратами."
         },
         {
-            "question": "A budget deficit occurs when:",
-            "options": ["A) Exports exceed imports", "B) GDP falls below potential", "C) Government spending exceeds tax revenue", "D) Central bank raises interest rates"],
-            "correct": 2,
-            "explanation": "A budget deficit = government spending > tax revenue in a given year. The accumulated total is the national debt."
-        },
-        {
-            "question": "Currency depreciation makes a country's exports:",
-            "options": ["A) More expensive for foreigners", "B) Cheaper for foreigners", "C) Unavailable to foreigners", "D) Subject to higher tariffs"],
+            "question": "Тождество NX = NCO означает:",
+            "options": ["A) Импорт всегда равен экспорту", "B) Торговый баланс равен чистому оттоку капитала", "C) Госрасходы равны налогам", "D) Сбережения равны потреблению"],
             "correct": 1,
-            "explanation": "When a currency depreciates, its goods become cheaper in foreign currency terms → exports become more competitive."
+            "explanation": "Каждая торговая операция имеет зеркальное финансовое движение капитала — NX и NCO всегда равны."
         },
         {
-            "question": "The Human Development Index (HDI) measures:",
-            "options": ["A) GDP per capita only", "B) Military strength", "C) Income, education and life expectancy", "D) Trade balance"],
+            "question": "Дефицит бюджета возникает когда:",
+            "options": ["A) Экспорт превышает импорт", "B) ВВП ниже потенциала", "C) Госрасходы превышают налоговые поступления", "D) Центральный банк повышает ставки"],
             "correct": 2,
-            "explanation": "HDI is a composite index of: GDP per capita (income), mean/expected years of schooling, and life expectancy at birth."
+            "explanation": "Дефицит бюджета = G > T за данный год. Накопленный итог — государственный долг."
         },
         {
-            "question": "In the AD/AS model, LRAS is vertical because:",
-            "options": ["A) Prices don't change in the long run", "B) The economy is always at full employment in the long run", "C) Government controls supply", "D) Exports equal imports"],
+            "question": "Обесценивание национальной валюты делает экспорт страны:",
+            "options": ["A) Дороже для иностранцев", "B) Дешевле для иностранцев", "C) Недоступным для иностранцев", "D) Облагаемым более высокими тарифами"],
             "correct": 1,
-            "explanation": "LRAS is vertical at the natural rate of output (full employment). In the long run, output is determined by supply-side factors, not price level."
+            "explanation": "При обесценивании товары страны дешевеют в иностранной валюте → экспорт становится конкурентоспособнее."
         },
         {
-            "question": "The current account of the balance of payments records:",
-            "options": ["A) Changes in foreign currency reserves", "B) Foreign direct investment flows", "C) Trade in goods and services, income and transfers", "D) Government bond issuance"],
+            "question": "Автоматические стабилизаторы включают:",
+            "options": ["A) Изменения процентных ставок", "B) Экстренные инфраструктурные расходы", "C) Пособия по безработице и прогрессивные налоги", "D) Количественное смягчение"],
             "correct": 2,
-            "explanation": "The current account covers: trade in goods (visible), trade in services (invisible), income flows, and current transfers."
-        },
-        {
-            "question": "Which policy tool would a government use to REDUCE inflation quickly?",
-            "options": ["A) Increase government spending", "B) Cut income taxes", "C) Raise interest rates", "D) Depreciate the currency"],
-            "correct": 2,
-            "explanation": "Raising interest rates increases the cost of borrowing → reduces consumer spending and investment → lowers inflationary pressure."
+            "explanation": "Автоматические стабилизаторы действуют без новых решений — пособия растут в рецессии, налоги падают, автоматически сглаживая цикл."
         },
     ],
 }
@@ -921,13 +1061,15 @@ CHEATSHEETS = {
         "📌 *Помни:* Диверсификация убирает несистематический риск, но не систематический!"
     ),
     "macro": (
-        "🔑 *5 ключевых тем Macroeconomics:*\n\n"
-        "1️⃣ *ВВП* — C + I + G + (X−M); Реальный ВВП скорректирован на инфляцию\n"
-        "2️⃣ *Инфляция* — Demand-pull (избыток спроса) vs Cost-push (рост затрат)\n"
-        "3️⃣ *Безработица* — Фрикционная / Структурная / Циклическая\n"
-        "4️⃣ *Политика* — Фискальная (налоги + расходы) vs Монетарная (ставки + QE)\n"
-        "5️⃣ *Торговля* — Сравнительное преимущество = наименьшие альтернативные издержки\n\n"
-        "📌 *Помни:* Кривая Филлипса: инфляция ↑ = безработица ↓ (в краткосроке)"
+        "🔑 *Макроэкономика — ключевые формулы и концепции:*\n\n"
+        "1️⃣ *ВВП* = C + I + G + (X−M) | Реальный ВВП — скорректирован на инфляцию\n"
+        "2️⃣ *ИПЦ* = (Корзина сейчас / Корзина в базовом году) × 100 | Дефлятор = Ном./Реал. × 100\n"
+        "3️⃣ *Безработица* = Безраб. / Рабочая сила × 100% | NAIRU = фрикц. + структ.\n"
+        "4️⃣ *Мультипликатор* = 1/(1−MPC) | Денежный мульт. = 1/Норма резервирования\n"
+        "5️⃣ *Сбережения:* Частные = Y−T−C | Нац. = Y−C−G | Инвестиции = Нац. сбережения\n"
+        "6️⃣ *AD-AS:* AD сдвигается от C,I,G,NX | SRAS — издержки | LRAS — вертикаль\n"
+        "7️⃣ *Торговля:* NX = X−M | NX = NCO | Обесценивание → экспорт↑\n\n"
+        "📌 *Помни:* Монетарная — ЦБ (ставки, QE) | Фискальная — правительство (налоги, расходы)"
     ),
 }
 
@@ -1038,16 +1180,18 @@ TRUE_FALSE = {
         {"statement": "Financial intermediaries help channel funds from savers to borrowers.", "answer": True, "explanation": "Banks, pension funds, and insurers are intermediaries that facilitate capital allocation."},
     ],
     "macro": [
-        {"statement": "Real GDP adjusts nominal GDP for the effects of inflation.", "answer": True, "explanation": "Real GDP removes price changes, allowing true comparison of economic output over time."},
-        {"statement": "Demand-pull inflation is caused by rising production costs.", "answer": False, "explanation": "Cost-push inflation is caused by rising costs. Demand-pull comes from excess aggregate demand."},
-        {"statement": "The Phillips Curve shows a short-run trade-off between inflation and unemployment.", "answer": True, "explanation": "As unemployment falls (economy booms), inflation tends to rise in the short run."},
-        {"statement": "Quantitative easing involves raising interest rates to control inflation.", "answer": False, "explanation": "QE involves the central bank buying assets to expand money supply — it is expansionary, not contractionary."},
-        {"statement": "Fiscal policy is controlled by the central bank.", "answer": False, "explanation": "Fiscal policy (taxation and spending) is controlled by the government. The central bank controls monetary policy."},
-        {"statement": "A country with a comparative advantage produces a good at a lower opportunity cost.", "answer": True, "explanation": "Comparative advantage means producing where opportunity cost is lowest — the basis for international trade."},
-        {"statement": "Structural unemployment is caused by a lack of aggregate demand in the economy.", "answer": False, "explanation": "Structural unemployment results from skills mismatch or industry decline. Cyclical unemployment is demand-related."},
-        {"statement": "Automatic stabilisers reduce the need for discretionary fiscal policy.", "answer": True, "explanation": "Benefits and progressive taxes automatically dampen booms and recessions without new policy decisions."},
-        {"statement": "Crowding out occurs when government borrowing reduces private investment.", "answer": True, "explanation": "Government borrowing can push up interest rates, making it more expensive for businesses to borrow and invest."},
-        {"statement": "GDP using the expenditure method is: C + I + G + (X − M).", "answer": True, "explanation": "Consumption + Investment + Government spending + Net exports = GDP by expenditure approach."},
+        {"statement": "Реальный ВВП корректирует номинальный ВВП на инфляцию.", "answer": True, "explanation": "Реальный ВВП устраняет изменения цен, позволяя сравнивать реальный выпуск во времени."},
+        {"statement": "Инфляция спроса вызвана ростом производственных затрат.", "answer": False, "explanation": "Инфляция издержек — от роста затрат. Инфляция спроса — от избыточного совокупного спроса."},
+        {"statement": "Кривая Филлипса показывает краткосрочную зависимость между инфляцией и безработицей.", "answer": True, "explanation": "При снижении безработицы (перегрев экономики) инфляция в краткосроке растёт."},
+        {"statement": "QE предполагает повышение процентных ставок для контроля инфляции.", "answer": False, "explanation": "QE — покупка активов центральным банком для расширения денежной массы. Это стимулирующая, а не ограничительная мера."},
+        {"statement": "Фискальная политика контролируется центральным банком.", "answer": False, "explanation": "Фискальная политика (налоги и расходы) — прерогатива правительства. Центральный банк управляет монетарной политикой."},
+        {"statement": "Страна со сравнительным преимуществом производит товар с наименьшими альтернативными издержками.", "answer": True, "explanation": "Сравнительное преимущество — наименьшие альтернативные издержки. Основа международной торговли."},
+        {"statement": "Структурная безработица вызвана нехваткой совокупного спроса.", "answer": False, "explanation": "Структурная безработица — от несоответствия навыков или упадка отраслей. Циклическая — от недостатка спроса."},
+        {"statement": "Автоматические стабилизаторы снижают потребность в дискреционной фискальной политике.", "answer": True, "explanation": "Пособия и прогрессивные налоги автоматически сглаживают подъёмы и рецессии без новых решений."},
+        {"statement": "Эффект вытеснения означает, что госзаимствования снижают частные инвестиции.", "answer": True, "explanation": "Госзаимствования повышают ставки → частным фирмам дороже занимать → инвестиции сокращаются."},
+        {"statement": "ВВП по методу расходов: C + I + G + (X − M).", "answer": True, "explanation": "Потребление + Инвестиции + Госрасходы + Чистый экспорт = ВВП по методу расходов."},
+        {"statement": "Денежный мультипликатор равен норме резервирования.", "answer": False, "explanation": "Денежный мультипликатор = 1 / Норма резервирования. При норме 10% мультипликатор = 10, а не 0,1."},
+        {"statement": "Тождество NX = NCO означает, что торговый дефицит всегда сопровождается притоком капитала.", "answer": True, "explanation": "Если NX < 0 (дефицит), то NCO < 0 — иностранцы покупают отечественные активы больше, чем отечественные покупают иностранные (приток капитала)."},
     ],
 }
 
@@ -1076,11 +1220,13 @@ VIDEOS = {
         {"title": "Financial Intermediaries", "url": "https://youtu.be/placeholder_fm_5", "topic": "intermediaries"},
     ],
     "macro": [
-        {"title": "GDP & Economic Growth", "url": "https://youtu.be/placeholder_macro_1", "topic": "gdp"},
-        {"title": "Inflation Types Explained", "url": "https://youtu.be/placeholder_macro_2", "topic": "inflation"},
-        {"title": "Fiscal vs Monetary Policy", "url": "https://youtu.be/placeholder_macro_3", "topic": "policy"},
-        {"title": "Phillips Curve & Trade-offs", "url": "https://youtu.be/placeholder_macro_4", "topic": "phillips"},
-        {"title": "International Trade & Comparative Advantage", "url": "https://youtu.be/placeholder_macro_5", "topic": "trade"},
+        {"title": "Производительность и экономический рост (Crash Course)", "url": "https://www.youtube.com/watch?v=UHiUYj5EA0w", "topic": "рост"},
+        {"title": "Рынок заёмных средств (Loanable Funds Market)", "url": "https://www.youtube.com/watch?v=J_-55Y1eU0s", "topic": "финансовая система"},
+        {"title": "Деньги и финансы (Crash Course Economics)", "url": "https://www.youtube.com/watch?v=Dugn51K_6WA", "topic": "деньги"},
+        {"title": "Монетарная и фискальная политика", "url": "https://www.youtube.com/watch?v=bv-uNNkE39I", "topic": "политика"},
+        {"title": "AD-AS модель — 5 советов", "url": "https://www.youtube.com/watch?v=INsafdTVDKs", "topic": "AD-AS"},
+        {"title": "Глобализация (Crash Course)", "url": "https://www.youtube.com/watch?v=JJ0nFD19eT8", "topic": "торговля"},
+        {"title": "Абсолютное и сравнительное преимущество", "url": "https://www.youtube.com/watch?v=rv6Sq0fmclY", "topic": "торговля"},
     ],
 }
 
