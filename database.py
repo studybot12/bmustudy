@@ -314,6 +314,42 @@ class Database:
                 by_subject[r[0]] = r[1]
             return {"users": users, "paid": paid, "by_subject": by_subject}
 
+    def get_student_profile(self, user_id):
+        """Full profile for admin: user info + subjects + xp + activity."""
+        with self._con() as con:
+            user = con.execute(
+                "SELECT user_id, username, first_name, lang, created_at FROM users WHERE user_id=?",
+                (user_id,)
+            ).fetchone()
+            if not user:
+                return None
+            subjects = [r[0] for r in con.execute(
+                "SELECT subject_key FROM access WHERE user_id=?", (user_id,)).fetchall()]
+            quiz_rows = con.execute(
+                "SELECT score, total FROM quiz_results WHERE user_id=?", (user_id,)).fetchall()
+            tests = len(quiz_rows)
+            avg = int(sum(r[0]/r[1]*100 for r in quiz_rows)/tests) if tests else 0
+            try:
+                xp_row = con.execute(
+                    "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?", (user_id,)
+                ).fetchone()
+            except Exception:
+                xp_row = None
+            return {
+                "user_id": user[0],
+                "username": user[1],
+                "first_name": user[2],
+                "lang": user[3],
+                "created_at": user[4],
+                "subjects": subjects,
+                "tests": tests,
+                "avg_score": avg,
+                "xp": xp_row[0] if xp_row else 0,
+                "level": xp_row[1] if xp_row else 1,
+                "streak": xp_row[2] if xp_row else 0,
+                "last_activity": xp_row[3] if xp_row else None,
+            }
+
     def get_all_users_with_subjects(self):
         with self._con() as con:
             users = con.execute("SELECT user_id, username, first_name FROM users").fetchall()

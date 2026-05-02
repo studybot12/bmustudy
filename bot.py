@@ -43,14 +43,23 @@ TEXTS = {
         "help": "💬 Поддержка",
         "choose_subject_buy": "🛒 *Купить доступ*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
         "choose_subject_study": "📚 *Мои предметы*\n\n━━━━━━━━━━━━━━━\nВыберите предмет для изучения:",
-        "choose_trial_subject": "🎯 *Пробный тест — бесплатно*\n\n━━━━━━━━━━━━━━━\nВыберите предмет\n_3 вопроса · без оплаты_",
+        "choose_trial_subject": "🎯 *Пробный режим — бесплатно*\n\n━━━━━━━━━━━━━━━\nВыберите предмет\n_без оплаты_",
+        "trial_choose_type": "🎯 *Пробный режим: {subject}*\n\n━━━━━━━━━━━━━━━\nЧто хотите попробовать?",
+        "trial_type_mcq": "✏️ MCQ Тест (3 вопроса)",
+        "trial_type_tf": "⚡ True / False (5 вопросов)",
+        "trial_tf_done": "🏁 *Пробный True/False завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Ваш результат: *{score} / {total}*\n\n━━━━━━━━━━━━━━━\n💎 *Полная версия включает:*\n✏️ 20 вопросов MCQ\n⚡ True/False полный\n📖 Теории\n🃏 Флэшкарты\n📊 История и прогресс\n🤖 ИИ-преподаватель\n\n👇 Купите доступ прямо сейчас!",
+        "admin_profile_not_found": "❌ Студент с ID `{user_id}` не найден.",
+        "admin_profile_text": "👤 *Профиль студента*\n\n━━━━━━━━━━━━━━━\n🔹 Имя: *{first_name}*\n🔹 Username: *{username}*\n🆔 ID: `{user_id}`\n🌐 Язык: *{lang}*\n📅 Регистрация: *{created_at}*\n\n━━━━━━━━━━━━━━━\n📚 *Предметы:* {subjects}\n\n📊 *Активность:*\n✏️ Тестов пройдено: *{tests}*\n📈 Средний балл: *{avg}%*\n⚡ XP: *{xp}*\n🏅 Уровень: *{level}*\n🔥 Серия: *{streak}* дней\n📆 Последняя активность: *{last_activity}*",
+        "admin_giveaccess_usage": "Использование: /giveaccess USER_ID SUBJECT_KEY\nПример: /giveaccess 123456789 f1\nДля всех предметов: /giveaccess 123456789 all",
+        "admin_giveaccess_done": "✅ Доступ к *{subject}* выдан студенту `{user_id}`",
+        "admin_giveaccess_all_done": "✅ Доступ ко *всем предметам* выдан студенту `{user_id}`",
         "payment_instruction": "💳 *Оплата доступа*\n\n📘 Предмет: *{subject}*\n💰 Стоимость: *{price:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n━━━━━━━━━━━━━━━\n📸 После оплаты отправьте скриншот перевода 👇",
         "screenshot_received": "✅ *Скриншот получен!*\n\n⏳ Ваша оплата на проверке\n🕐 Обычно до *30 минут*\n\n━━━━━━━━━━━━━━━\n🔔 Вы получите уведомление как только доступ откроется.",
         "access_granted": "🎉 *Поздравляем! Доступ открыт!*\n\n━━━━━━━━━━━━━━━\n📘 Предмет *{subject}* теперь доступен!\n\n✨ Удачи в учёбе!",
         "access_denied": "❌ *Оплата не подтверждена*\n\n━━━━━━━━━━━━━━━\nПожалуйста, свяжитесь с администратором.",
         "no_subjects": "📭 *Предметов пока нет*\n\n━━━━━━━━━━━━━━━\nПриобретите доступ чтобы начать учиться 👇",
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Выберите режим обучения:_",
-        "study_materials": "📖 Конспект",
+        "study_materials": "📖 Теории",
         "flashcards": "🃏 Флэшкарты",
         "quiz": "✏️ Тест MCQ",
         "progress": "📊 Прогресс",
@@ -66,7 +75,7 @@ TEXTS = {
         "prev_card": "⬅️ Предыдущая",
         "finish_flashcards": "✅ Завершить",
         "flashcards_done": "🎉 *Флэшкарты пройдены!*\n\n━━━━━━━━━━━━━━━\n💪 Отличная работа! Удачи на экзамене!",
-        "help_text": "💬 *Поддержка*\n\n━━━━━━━━━━━━━━━\n📩 По вопросам оплаты и доступа:\nОбратитесь к администратору\n\n⏰ Бот работает 24/7\n✅ Доступ открывается в течение 30 минут после оплаты",
+        "help_text": "💬 *Поддержка*\n\n━━━━━━━━━━━━━━━\n📩 По вопросам оплаты и доступа:\n👤 Напишите администратору: @user\n\n⏰ Бот работает 24/7\n✅ Доступ открывается в течение 30 минут после оплаты",
         "already_has_access": "✅ У вас уже есть доступ к этому предмету!",
         "restart_quiz": "🔄 Пройти снова",
         "back_to_subject": "📘 К предмету",
@@ -146,9 +155,15 @@ TEXTS = {
         "quiz_regression": "📉 В прошлый раз было лучше на {delta}%. Не сдавайся!",
         "quiz_same": "➡️ Такой же результат как в прошлый раз.",
         # Bundle
-        "bundle": "🎓 Все предметы (-20%)",
+        "bundle": "🎓 Пакеты предметов",
         "bundle_text": "🎓 *Пакет «Все предметы»*\n\n━━━━━━━━━━━━━━━\n📚 Включает все {count} предмета\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум* (скидка 20%!)\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
         "bundle_already": "✅ У вас уже есть доступ ко всем предметам!",
+        "bundle_choose": "🎓 *Пакеты предметов*\n\n━━━━━━━━━━━━━━━\nВыберите пакет:\n\n📦 *2 предмета* — скидка *10%*\n📦 *4 предмета* — скидка *20%*",
+        "bundle2_text": "📦 *Пакет 2 предмета (-10%)*\n\n━━━━━━━━━━━━━━━\nВыберите 2 предмета:\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
+        "bundle4_text": "📦 *Пакет 4 предмета (-20%)*\n\n━━━━━━━━━━━━━━━\n📚 Все {count} предмета\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
+        "bundle_select_2": "Выберите 2 предмета (нажмите на каждый):",
+        "bundle_selected": "✅ Выбрано: {subjects}",
+        "bundle_need_more": "❗ Выберите ещё {n} предмет(а)",
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
@@ -159,14 +174,23 @@ TEXTS = {
         "help": "💬 Support",
         "choose_subject_buy": "🛒 *Buy Access*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
         "choose_subject_study": "📚 *My Subjects*\n\n━━━━━━━━━━━━━━━\nChoose a subject to study:",
-        "choose_trial_subject": "🎯 *Free Trial*\n\n━━━━━━━━━━━━━━━\nChoose a subject\n_3 questions · no payment needed_",
+        "choose_trial_subject": "🎯 *Free Trial*\n\n━━━━━━━━━━━━━━━\nChoose a subject\n_no payment needed_",
+        "trial_choose_type": "🎯 *Free Trial: {subject}*\n\n━━━━━━━━━━━━━━━\nWhat would you like to try?",
+        "trial_type_mcq": "✏️ MCQ Test (3 questions)",
+        "trial_type_tf": "⚡ True / False (5 questions)",
+        "trial_tf_done": "🏁 *Free Trial True/False Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Your score: *{score} / {total}*\n\n━━━━━━━━━━━━━━━\n💎 *Full version includes:*\n✏️ 20 MCQ questions\n⚡ Full True/False\n📖 Theories\n🃏 Flashcards\n📊 History & progress\n🤖 AI Tutor\n\n👇 Buy access now!",
+        "admin_profile_not_found": "❌ Student with ID `{user_id}` not found.",
+        "admin_profile_text": "👤 *Student Profile*\n\n━━━━━━━━━━━━━━━\n🔹 Name: *{first_name}*\n🔹 Username: *{username}*\n🆔 ID: `{user_id}`\n🌐 Language: *{lang}*\n📅 Registered: *{created_at}*\n\n━━━━━━━━━━━━━━━\n📚 *Subjects:* {subjects}\n\n📊 *Activity:*\n✏️ Tests taken: *{tests}*\n📈 Average score: *{avg}%*\n⚡ XP: *{xp}*\n🏅 Level: *{level}*\n🔥 Streak: *{streak}* days\n📆 Last activity: *{last_activity}*",
+        "admin_giveaccess_usage": "Usage: /giveaccess USER_ID SUBJECT_KEY\nExample: /giveaccess 123456789 f1\nFor all subjects: /giveaccess 123456789 all",
+        "admin_giveaccess_done": "✅ Access to *{subject}* granted to student `{user_id}`",
+        "admin_giveaccess_all_done": "✅ Access to *all subjects* granted to student `{user_id}`",
         "payment_instruction": "💳 *Purchase Access*\n\n📘 Subject: *{subject}*\n💰 Price: *{price:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n━━━━━━━━━━━━━━━\n📸 After payment, send a screenshot 👇",
         "screenshot_received": "✅ *Screenshot received!*\n\n⏳ Your payment is under review\n🕐 Usually within *30 minutes*\n\n━━━━━━━━━━━━━━━\n🔔 You'll get a notification once access is granted.",
         "access_granted": "🎉 *Congratulations! Access Granted!*\n\n━━━━━━━━━━━━━━━\n📘 *{subject}* is now available!\n\n✨ Good luck with your studies!",
         "access_denied": "❌ *Payment Not Confirmed*\n\n━━━━━━━━━━━━━━━\nPlease contact the administrator.",
         "no_subjects": "📭 *No subjects yet*\n\n━━━━━━━━━━━━━━━\nPurchase access to start learning 👇",
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Choose a study mode:_",
-        "study_materials": "📖 Study Notes",
+        "study_materials": "📖 Theories",
         "flashcards": "🃏 Flashcards",
         "quiz": "✏️ Practice Test",
         "progress": "📊 Progress",
@@ -182,7 +206,7 @@ TEXTS = {
         "prev_card": "⬅️ Previous",
         "finish_flashcards": "✅ Finish",
         "flashcards_done": "🎉 *Flashcards Complete!*\n\n━━━━━━━━━━━━━━━\n💪 Great work! Good luck on your exam!",
-        "help_text": "💬 *Support*\n\n━━━━━━━━━━━━━━━\n📩 For payment & access issues:\nContact the administrator\n\n⏰ Bot runs 24/7\n✅ Access granted within 30 minutes of payment",
+        "help_text": "💬 *Support*\n\n━━━━━━━━━━━━━━━\n📩 For payment & access issues:\n👤 Contact the admin: @user\n\n⏰ Bot runs 24/7\n✅ Access granted within 30 minutes of payment",
         "already_has_access": "✅ You already have access to this subject!",
         "restart_quiz": "🔄 Try Again",
         "back_to_subject": "📘 Back to Subject",
@@ -262,9 +286,15 @@ TEXTS = {
         "quiz_regression": "📉 Last time was {delta}% better. Keep going!",
         "quiz_same": "➡️ Same result as last time.",
         # Bundle
-        "bundle": "🎓 All Subjects (-20%)",
+        "bundle": "🎓 Subject Bundles",
         "bundle_text": "🎓 *All Subjects Bundle*\n\n━━━━━━━━━━━━━━━\n📚 Includes all {count} subjects\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS* (20% off!)\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
         "bundle_already": "✅ You already have access to all subjects!",
+        "bundle_choose": "🎓 *Subject Bundles*\n\n━━━━━━━━━━━━━━━\nChoose a bundle:\n\n📦 *2 subjects* — *10%* discount\n📦 *4 subjects* — *20%* discount",
+        "bundle2_text": "📦 *2-Subject Bundle (-10%)*\n\n━━━━━━━━━━━━━━━\nChoose 2 subjects:\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
+        "bundle4_text": "📦 *4-Subject Bundle (-20%)*\n\n━━━━━━━━━━━━━━━\n📚 All {count} subjects\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
+        "bundle_select_2": "Select 2 subjects (tap each one):",
+        "bundle_selected": "✅ Selected: {subjects}",
+        "bundle_need_more": "❗ Select {n} more subject(s)",
     }
 }
 
@@ -348,7 +378,98 @@ async def admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text += f"• {u['first_name']} ({username}) — {subjects}\n"
     await update.message.reply_text(text, parse_mode="Markdown")
 
-async def add_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def admin_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    args = context.args
+    if not args:
+        await update.message.reply_text("Использование: /profile USER_ID\nПример: /profile 123456789")
+        return
+    try:
+        target_id = int(args[0])
+    except ValueError:
+        await update.message.reply_text("❌ USER_ID должен быть числом.")
+        return
+    profile = db.get_student_profile(target_id)
+    if not profile:
+        await update.message.reply_text(f"❌ Студент с ID `{target_id}` не найден.", parse_mode="Markdown")
+        return
+    subjects = ", ".join(profile["subjects"]) if profile["subjects"] else ("нет" if (db.get_user_lang(ADMIN_ID) or "ru") == "ru" else "none")
+    username = f"@{profile['username']}" if profile["username"] else "—"
+    last_act = str(profile["last_activity"]) if profile["last_activity"] else "—"
+    created = str(profile["created_at"])[:10] if profile["created_at"] else "—"
+    text = (
+        f"👤 *Профиль студента*\n\n"
+        f"━━━━━━━━━━━━━━━\n"
+        f"🔹 Имя: *{profile['first_name']}*\n"
+        f"🔹 Username: *{username}*\n"
+        f"🆔 ID: `{profile['user_id']}`\n"
+        f"🌐 Язык: *{profile['lang']}*\n"
+        f"📅 Регистрация: *{created}*\n\n"
+        f"━━━━━━━━━━━━━━━\n"
+        f"📚 *Предметы:* {subjects}\n\n"
+        f"📊 *Активность:*\n"
+        f"✏️ Тестов пройдено: *{profile['tests']}*\n"
+        f"📈 Средний балл: *{profile['avg_score']}%*\n"
+        f"⚡ XP: *{profile['xp']}*\n"
+        f"🏅 Уровень: *{profile['level']}*\n"
+        f"🔥 Серия: *{profile['streak']}* дней\n"
+        f"📆 Последняя активность: *{last_act}*"
+    )
+    await update.message.reply_text(text, parse_mode="Markdown")
+
+
+async def admin_giveaccess(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    args = context.args
+    if len(args) != 2:
+        await update.message.reply_text(
+            "Использование: /giveaccess USER_ID SUBJECT_KEY\n"
+            "Пример: /giveaccess 123456789 f1\n"
+            "Все предметы: /giveaccess 123456789 all",
+            parse_mode="Markdown"
+        )
+        return
+    try:
+        target_id = int(args[0])
+    except ValueError:
+        await update.message.reply_text("❌ USER_ID должен быть числом.")
+        return
+    subject_arg = args[1].lower()
+    if subject_arg == "all":
+        for key in SUBJECTS:
+            db.grant_access(target_id, key)
+        await update.message.reply_text(
+            f"✅ *Доступ ко всем предметам* выдан студенту `{target_id}`", parse_mode="Markdown"
+        )
+        try:
+            lang = db.get_user_lang(target_id) or "ru"
+            msg = "🎉 *Доступ открыт!*\n\nАдминистратор открыл вам доступ ко всем предметам!\n\n▶️ Нажмите /start" if lang == "ru" else "🎉 *Access Granted!*\n\nAdmin has granted you access to all subjects!\n\n▶️ Press /start"
+            await context.bot.send_message(target_id, msg, parse_mode="Markdown")
+        except Exception:
+            pass
+    elif subject_arg in SUBJECTS:
+        db.grant_access(target_id, subject_arg)
+        subject_name = SUBJECTS[subject_arg]["name"]
+        await update.message.reply_text(
+            f"✅ Доступ к *{subject_name}* выдан студенту `{target_id}`", parse_mode="Markdown"
+        )
+        try:
+            lang = db.get_user_lang(target_id) or "ru"
+            msg = f"🎉 *Доступ открыт!*\n\nАдминистратор открыл вам доступ к *{subject_name}*!\n\n▶️ Нажмите /start" if lang == "ru" else f"🎉 *Access Granted!*\n\nAdmin has granted you access to *{subject_name}*!\n\n▶️ Press /start"
+            await context.bot.send_message(target_id, msg, parse_mode="Markdown")
+        except Exception:
+            pass
+    else:
+        keys_list = ", ".join(SUBJECTS.keys())
+        await update.message.reply_text(
+            f"❌ Предмет `{subject_arg}` не найден.\nДоступные ключи: `{keys_list}`\nИли используйте `all`",
+            parse_mode="Markdown"
+        )
+
+
+
     if update.effective_user.id != ADMIN_ID:
         return
     args = context.args
@@ -396,30 +517,34 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return CHOOSING_SUBJECT
 
     elif action == "menu_trial":
-        buttons = [[InlineKeyboardButton(f"🎯 {info['name']}", callback_data=f"trial_{key}")] for key, info in SUBJECTS.items()]
+        buttons = [[InlineKeyboardButton(f"🎯 {info['name']}", callback_data=f"trial_pick_{key}")] for key, info in SUBJECTS.items()]
         buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
         await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(buttons))
         return CHOOSING_SUBJECT
 
     elif action == "menu_bundle":
-        subjects = db.get_user_subjects(user_id)
-        all_keys = list(SUBJECTS.keys())
-        if all(k in subjects for k in all_keys):
-            await query.answer(t(user_id, "bundle_already"), show_alert=True)
-            return MAIN_MENU
-        count = len(all_keys)
-        full_price = PRICE_PER_SUBJECT * count
-        bundle_price = int(full_price * 0.8)
-        save = full_price - bundle_price
-        text = t(user_id, "bundle_text", count=count, full_price=full_price,
-                 bundle_price=bundle_price, save=save, card=CARD_NUMBER)
-        context.user_data["pending_subject"] = "bundle"
-        context.user_data["promo_discount"] = 0
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-        await query.message.edit_text(text, parse_mode="Markdown",
+        lang = db.get_user_lang(user_id) or "en"
+        keyboard = [
+            [InlineKeyboardButton("📦 2 предмета (-10%)" if lang == "ru" else "📦 2 subjects (-10%)", callback_data="bundle2_start")],
+            [InlineKeyboardButton("📦 4 предмета (-20%)" if lang == "ru" else "📦 4 subjects (-20%)", callback_data="bundle4_start")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
+        ]
+        await query.message.edit_text(t(user_id, "bundle_choose"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
-        return PAYMENT_SCREENSHOT
+        return MAIN_MENU
+
+    elif action == "bundle2_start":
+        context.user_data["bundle_type"] = 2
+        context.user_data["bundle_selected"] = []
+        await show_bundle_subject_select(query.message, user_id, context, edit=True)
+        return CHOOSING_SUBJECT
+
+    elif action == "bundle4_start":
+        context.user_data["bundle_type"] = 4
+        context.user_data["bundle_selected"] = []
+        await show_bundle_subject_select(query.message, user_id, context, edit=True)
+        return CHOOSING_SUBJECT
 
     elif action == "menu_help":
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
@@ -506,6 +631,83 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                       reply_markup=InlineKeyboardMarkup(buttons))
         return CHOOSING_SUBJECT
 
+    if data.startswith("trial_pick_"):
+        subject_key = data.split("trial_pick_")[1]
+        subject_name = SUBJECTS[subject_key]["name"]
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "trial_type_mcq"), callback_data=f"trial_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "trial_type_tf"), callback_data=f"trial_tf_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
+        ]
+        await query.message.edit_text(
+            t(user_id, "trial_choose_type", subject=subject_name),
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return CHOOSING_SUBJECT
+
+    if data.startswith("trial_tf_"):
+        subject_key = data.split("trial_tf_")[1]
+        if db.has_used_trial(user_id, subject_key):
+            lang = db.get_user_lang(user_id) or "en"
+            msg = "❌ Вы уже использовали пробный режим для этого предмета." if lang == "ru" else "❌ You have already used the free trial for this subject."
+            await query.answer(msg, show_alert=True)
+            return CHOOSING_SUBJECT
+        all_tf = get_true_false(subject_key)
+        if not all_tf:
+            await query.answer("Нет вопросов" if (db.get_user_lang(user_id) or "en") == "ru" else "No questions", show_alert=True)
+            return CHOOSING_SUBJECT
+        questions = random.sample(all_tf, min(5, len(all_tf)))
+        context.user_data["tf_questions"] = questions
+        context.user_data["tf_index"] = 0
+        context.user_data["tf_score"] = 0
+        context.user_data["tf_subject"] = subject_key
+        context.user_data["tf_is_trial"] = True
+        db.mark_trial_used(user_id, subject_key)
+        await show_tf_question(query.message, user_id, context, edit=True)
+        return TF_SESSION
+
+    if data.startswith("bsel_"):
+        subject_key = data.split("bsel_")[1]
+        bundle_type = context.user_data.get("bundle_type", 2)
+        selected = context.user_data.get("bundle_selected", [])
+        owned = db.get_user_subjects(user_id)
+        if subject_key in owned:
+            await query.answer("✅ У вас уже есть этот предмет" if (db.get_user_lang(user_id) or "en") == "ru" else "✅ You already own this subject", show_alert=False)
+            return CHOOSING_SUBJECT
+        if subject_key in selected:
+            selected.remove(subject_key)
+        else:
+            if len(selected) < bundle_type:
+                selected.append(subject_key)
+            else:
+                lang = db.get_user_lang(user_id) or "en"
+                msg = f"Уже выбрано {bundle_type} предметов" if lang == "ru" else f"Already selected {bundle_type} subjects"
+                await query.answer(msg, show_alert=False)
+                return CHOOSING_SUBJECT
+        context.user_data["bundle_selected"] = selected
+        await show_bundle_subject_select(query.message, user_id, context, edit=True)
+        return CHOOSING_SUBJECT
+
+    if data == "bundle_confirm":
+        selected = context.user_data.get("bundle_selected", [])
+        bundle_type = context.user_data.get("bundle_type", 2)
+        discount = 10 if bundle_type == 2 else 20
+        full_price = PRICE_PER_SUBJECT * bundle_type
+        bundle_price = int(full_price * (1 - discount / 100))
+        save = full_price - bundle_price
+        lang = db.get_user_lang(user_id) or "en"
+        subject_names = ", ".join(SUBJECTS[k]["name"] for k in selected)
+        if bundle_type == 2:
+            text = t(user_id, "bundle2_text", full_price=full_price, bundle_price=bundle_price, save=save, card=CARD_NUMBER)
+        else:
+            text = t(user_id, "bundle4_text", count=bundle_type, full_price=full_price, bundle_price=bundle_price, save=save, card=CARD_NUMBER)
+        text += f"\n\n📚 *{subject_names}*"
+        context.user_data["pending_subject"] = f"bundle_{'-'.join(selected)}"
+        context.user_data["promo_discount"] = 0
+        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+        await query.message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        return PAYMENT_SCREENSHOT
+
     if data.startswith("already_"):
         await query.answer(t(user_id, "already_has_access"), show_alert=True)
         return CHOOSING_SUBJECT
@@ -577,11 +779,9 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         [InlineKeyboardButton(t(user_id, "study_materials"), callback_data=f"materials_{subject_key}"),
          InlineKeyboardButton(t(user_id, "cheatsheet"), callback_data=f"cheatsheet_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "flashcards"), callback_data=f"flashcards_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "glossary"), callback_data=f"glossary_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "quiz"), callback_data=f"quiz_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "true_false"), callback_data=f"tf_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "exam_plan"), callback_data=f"examplan_{subject_key}")],
+         InlineKeyboardButton(t(user_id, "quiz"), callback_data=f"quiz_{subject_key}")],
+        [InlineKeyboardButton(t(user_id, "true_false"), callback_data=f"tf_{subject_key}"),
+         InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "ai_chat"), callback_data=f"aichat_{subject_key}"),
          InlineKeyboardButton(t(user_id, "videos"), callback_data=f"videos_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}"),
@@ -593,6 +793,42 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+
+
+async def show_bundle_subject_select(message, user_id, context, edit=False):
+    bundle_type = context.user_data.get("bundle_type", 2)
+    selected = context.user_data.get("bundle_selected", [])
+    lang = db.get_user_lang(user_id) or "en"
+    owned = db.get_user_subjects(user_id)
+    buttons = []
+    for key, info in SUBJECTS.items():
+        if key in owned:
+            label = f"✅ {info['name']}"
+        elif key in selected:
+            label = f"☑️ {info['name']}"
+        else:
+            label = f"📘 {info['name']}"
+        buttons.append([InlineKeyboardButton(label, callback_data=f"bsel_{key}")])
+
+    need = bundle_type - len(selected)
+    if lang == "ru":
+        header = f"📦 Выберите *{bundle_type}* предмета\n✅ Выбрано: {len(selected)}/{bundle_type}"
+        confirm_label = "✅ Подтвердить выбор"
+        back_label = "← Назад"
+    else:
+        header = f"📦 Select *{bundle_type}* subjects\n✅ Selected: {len(selected)}/{bundle_type}"
+        confirm_label = "✅ Confirm selection"
+        back_label = "← Back"
+
+    if len(selected) == bundle_type:
+        buttons.append([InlineKeyboardButton(confirm_label, callback_data="bundle_confirm")])
+    buttons.append([InlineKeyboardButton(back_label, callback_data="back_main")])
+
+    markup = InlineKeyboardMarkup(buttons)
+    if edit:
+        await message.edit_text(header, parse_mode="Markdown", reply_markup=markup)
+    else:
+        await message.reply_text(header, parse_mode="Markdown", reply_markup=markup)
 
 
 # ── PAYMENT ───────────────────────────────────────────────────────────────────
@@ -633,6 +869,14 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         full_price = PRICE_PER_SUBJECT * count
         final_price = int(full_price * 0.8)
         subject_display = "🎓 Пакет ВСЕ ПРЕДМЕТЫ"
+    elif subject_key and subject_key.startswith("bundle_"):
+        keys = subject_key.replace("bundle_", "").split("-")
+        bundle_type = len(keys)
+        discount_pct = 10 if bundle_type == 2 else 20
+        full_price = PRICE_PER_SUBJECT * bundle_type
+        final_price = int(full_price * (1 - discount_pct / 100))
+        names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
+        subject_display = f"📦 Пакет: {names}"
     else:
         final_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
         info = SUBJECTS[subject_key]
@@ -704,6 +948,15 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             db.remove_pending(student_id, subject_key)
             student_lang = db.get_user_lang(student_id) or "en"
             msg = "🎉 *Доступ ко всем предметам открыт!*\n\nТеперь вам доступны все предметы в разделе «Мои предметы»." if student_lang == "ru" else "🎉 *Full Access Granted!*\n\nAll subjects are now available in 'My Subjects'."
+        elif subject_key.startswith("bundle_"):
+            keys = subject_key.replace("bundle_", "").split("-")
+            for key in keys:
+                if key in SUBJECTS:
+                    db.grant_access(student_id, key)
+            db.remove_pending(student_id, subject_key)
+            student_lang = db.get_user_lang(student_id) or "en"
+            names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
+            msg = f"🎉 *Доступ открыт!*\n\n📚 {names}" if student_lang == "ru" else f"🎉 *Access Granted!*\n\n📚 {names}"
         else:
             info = SUBJECTS[subject_key]
             db.grant_access(student_id, subject_key)
@@ -1288,11 +1541,25 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
         ]
         await thinking_msg.delete()
-        await update.message.reply_text(f"🤖 {ai_reply}", parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard))
+        reply_text = f"🤖 {ai_reply}"
+        try:
+            await update.message.reply_text(reply_text, parse_mode="Markdown",
+                                            reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            # Fallback: send without markdown if formatting causes error
+            await update.message.reply_text(reply_text, reply_markup=InlineKeyboardMarkup(keyboard))
     except Exception as e:
         logger.error(f"AI chat error: {e}")
-        await thinking_msg.edit_text("⚠️ Ошибка ИИ. Попробуйте позже." if lang == "ru" else "⚠️ AI error. Try again later.")
+        try:
+            await thinking_msg.delete()
+        except Exception:
+            pass
+        keyboard = [
+            [InlineKeyboardButton(t(user_id, "ai_clear"), callback_data=f"ai_clear_{subject_key}")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+        ]
+        err_text = "⚠️ Ошибка ИИ. Попробуйте позже." if lang == "ru" else "⚠️ AI error. Try again later."
+        await update.message.reply_text(err_text, reply_markup=InlineKeyboardMarkup(keyboard))
 
     return AI_CHAT_SESSION
 
@@ -1560,17 +1827,26 @@ async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif pct >= 70: grade = t(user_id, "grade_good")
             elif pct >= 50: grade = t(user_id, "grade_ok")
             else: grade = t(user_id, "grade_bad")
-            xp_gain = max(5, int(score / total * 30))
-            db.add_xp(user_id, xp_gain)
-            done = result_text + "\n\n" + t(user_id, "tf_done", score=score, total=total, grade=grade)
-            done += f"\n\n⚡ *+{xp_gain} XP*"
-            keyboard = [
-                [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"tf_{subject_key}")],
-                [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
-            ]
+            is_trial = context.user_data.get("tf_is_trial", False)
+            if is_trial:
+                context.user_data["tf_is_trial"] = False
+                done = result_text + "\n\n" + t(user_id, "trial_tf_done", score=score, total=total)
+                keyboard = [
+                    [InlineKeyboardButton(t(user_id, "buy_now"), callback_data=f"buy_{subject_key}")],
+                    [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
+                ]
+            else:
+                xp_gain = max(5, int(score / total * 30))
+                db.add_xp(user_id, xp_gain)
+                done = result_text + "\n\n" + t(user_id, "tf_done", score=score, total=total, grade=grade)
+                done += f"\n\n⚡ *+{xp_gain} XP*"
+                keyboard = [
+                    [InlineKeyboardButton(t(user_id, "restart_quiz"), callback_data=f"tf_{subject_key}")],
+                    [InlineKeyboardButton(t(user_id, "back_to_subject"), callback_data=f"back_subject_{subject_key}")],
+                ]
             await query.message.edit_text(done, parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(keyboard))
-            return SUBJECT_MENU
+            return SUBJECT_MENU if not is_trial else CHOOSING_SUBJECT
         else:
             lang = db.get_user_lang(user_id) or "en"
             next_btn = "➡️ Следующий" if lang == "ru" else "➡️ Next"
@@ -1706,6 +1982,8 @@ def main():
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
+    app.add_handler(CommandHandler("profile", admin_profile))
+    app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
 
