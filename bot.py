@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import time
 from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -26,6 +27,23 @@ SUBJECT_PHOTOS = {
 }
 
 logger = logging.getLogger(__name__)
+
+# ── RATE LIMITER (AI tools cooldown) ─────────────────────────────────────────
+_ai_last_call: dict = {}  # user_id -> timestamp
+AI_COOLDOWN_SECONDS = 10
+
+def check_ai_rate_limit(user_id: int) -> float:
+    """Returns 0 if allowed, or seconds remaining if on cooldown."""
+    now = time.time()
+    last = _ai_last_call.get(user_id, 0)
+    remaining = AI_COOLDOWN_SECONDS - (now - last)
+    if remaining > 0:
+        return remaining
+    _ai_last_call[user_id] = now
+    return 0
+
+# ── ADMIN ACTION GUARD (prevent double-click) ─────────────────────────────────
+_processed_admin_actions: set = set()
 
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
@@ -505,6 +523,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     return CHOOSING_LANG
 
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Bug 8: /cancel — exits any session and returns to main menu."""
+    user_id = update.effective_user.id
+    context.user_data.clear()
+    lang = db.get_user_lang(user_id) or "en"
+    msg = "🏠 Вы вернулись в главное меню." if lang == "ru" else "🏠 Returned to main menu."
+    await update.message.reply_text(msg)
+    await show_main_menu(update.message, user_id)
+    return MAIN_MENU
+
 async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -858,9 +886,9 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         buttons = []
         for key, info in SUBJECTS.items():
             if key in subjects:
-                buttons.append([InlineKeyboardButton(f"✅ {info["name"]}", callback_data=f"already_{key}")])
+                buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
             else:
-                buttons.append([InlineKeyboardButton(f"🛒 {info["name"]}", callback_data=f"buy_{key}")])
+                buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
         buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
         try:
             await query.message.delete()
@@ -1190,6 +1218,13 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.from_user.id != ADMIN_ID:
         return
 
+    # Bug 10: Guard against double-click / repeated processing
+    action_key = query.data
+    if action_key in _processed_admin_actions:
+        await query.answer("⚠️ Уже обработано.", show_alert=True)
+        return
+    _processed_admin_actions.add(action_key)
+
     parts = query.data.split("_")
     action = parts[0]
     student_id = int(parts[1])
@@ -1222,9 +1257,17 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_message(student_id, msg + start_hint, parse_mode="Markdown")
         except:
             pass
-        await query.message.edit_caption(
-            query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
-        )
+        try:
+            if query.message.caption is not None:
+                await query.message.edit_caption(
+                    query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
+                )
+            else:
+                await query.message.edit_text(
+                    query.message.text + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
+                )
+        except Exception as e:
+            logger.error(f"admin_action edit error: {e}")
     elif action == "deny":
         subject_key = parts[2]
         db.remove_pending(student_id, subject_key)
@@ -1234,9 +1277,17 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_message(student_id, msg, parse_mode="Markdown")
         except:
             pass
-        await query.message.edit_caption(
-            query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown"
-        )
+        try:
+            if query.message.caption is not None:
+                await query.message.edit_caption(
+                    query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown"
+                )
+            else:
+                await query.message.edit_text(
+                    query.message.text + "\n\n❌ *Отклонено*", parse_mode="Markdown"
+                )
+        except Exception as e:
+            logger.error(f"admin_action edit error: {e}")
 
 
 # ── SUBJECT MENU HANDLER ──────────────────────────────────────────────────────
@@ -1661,7 +1712,7 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                           reply_markup=InlineKeyboardMarkup(keyboard))
             return SUBJECT_MENU
         else:
-            next_row = [InlineKeyboardButton("➡️ Next Question", callback_data="quiz_next")]
+            next_row = [InlineKeyboardButton("➡️ " + ("Следующий вопрос" if (db.get_user_lang(user_id) or "en") == "ru" else "Next Question"), callback_data="quiz_next")]
             keyboard = [bookmark_btn, next_row] if bookmark_btn else [[next_row[0]]]
             await query.message.edit_text(result_text, parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(keyboard))
@@ -1755,7 +1806,8 @@ async def trial_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                           reply_markup=InlineKeyboardMarkup(keyboard))
             return CHOOSING_SUBJECT
         else:
-            keyboard = [[InlineKeyboardButton("➡️ Next Question", callback_data="trial_next")]]
+            lang_trial = db.get_user_lang(user_id) or "en"
+            keyboard = [[InlineKeyboardButton("➡️ " + ("Следующий вопрос" if lang_trial == "ru" else "Next Question"), callback_data="trial_next")]]
             await query.message.edit_text(result_text, parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(keyboard))
             return TRIAL_SESSION
@@ -1859,6 +1911,13 @@ async def humanizer_message_handler(update: Update, context: ContextTypes.DEFAUL
     again_cb = "menu_humanizer" if subject_key == "global" else f"humanizer_{subject_key}"
     keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
 
+    # Rate limit check
+    cooldown = check_ai_rate_limit(user_id)
+    if cooldown > 0:
+        wait_msg = f"⏳ Подождите {int(cooldown)} сек. перед следующим запросом." if lang == "ru" else f"⏳ Please wait {int(cooldown)}s before the next request."
+        await update.message.reply_text(wait_msg, reply_markup=InlineKeyboardMarkup(keyboard_back))
+        return HUMANIZER_SESSION
+
     if len(text) < 50:
         await update.message.reply_text(t(user_id, "humanizer_too_short"), parse_mode="Markdown",
                                         reply_markup=InlineKeyboardMarkup(keyboard_back))
@@ -1900,6 +1959,7 @@ async def humanizer_message_handler(update: Update, context: ContextTypes.DEFAUL
         )
         result = response.text
         await thinking_msg.delete()
+        logger.info(f"Humanizer used: user_id={user_id} subject={subject_key} chars_in={len(text)} chars_out={len(result)}")
         keyboard = [
             [InlineKeyboardButton(t(user_id, "humanizer_try_again"), callback_data=again_cb)],
             [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
@@ -1938,6 +1998,13 @@ async def detector_message_handler(update: Update, context: ContextTypes.DEFAULT
     back_cb = "back_main" if subject_key == "global" else f"back_subject_{subject_key}"
     again_cb = "menu_detector" if subject_key == "global" else f"detector_{subject_key}"
     keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
+
+    # Rate limit check
+    cooldown = check_ai_rate_limit(user_id)
+    if cooldown > 0:
+        wait_msg = f"⏳ Подождите {int(cooldown)} сек. перед следующим запросом." if lang == "ru" else f"⏳ Please wait {int(cooldown)}s before the next request."
+        await update.message.reply_text(wait_msg, reply_markup=InlineKeyboardMarkup(keyboard_back))
+        return DETECTOR_SESSION
 
     if len(text) < 50:
         await update.message.reply_text(t(user_id, "detector_too_short"), parse_mode="Markdown",
@@ -1995,6 +2062,7 @@ async def detector_message_handler(update: Update, context: ContextTypes.DEFAULT
         )
         result = response.text
         await thinking_msg.delete()
+        logger.info(f"Detector used: user_id={user_id} subject={subject_key} chars_in={len(text)}")
         keyboard = [
             [InlineKeyboardButton(t(user_id, "detector_try_again"), callback_data=again_cb)],
             [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
@@ -2141,14 +2209,16 @@ async def show_tf_question(message, user_id, context, edit=False):
     questions = context.user_data["tf_questions"]
     index = context.user_data["tf_index"]
     subject_key = context.user_data["tf_subject"]
+    is_trial = context.user_data.get("tf_is_trial", False)
     total = len(questions)
     q = questions[index]
     text = t(user_id, "tf_question", subject=SUBJECTS[subject_key]["name"],
              num=index+1, total=total, statement=q["statement"])
+    back_cb = "back_main" if is_trial else f"back_subject_{subject_key}"
     keyboard = [
         [InlineKeyboardButton(t(user_id, "tf_true"), callback_data="tf_ans_true"),
          InlineKeyboardButton(t(user_id, "tf_false"), callback_data="tf_ans_false")],
-        [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]
+        [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
     ]
     markup = InlineKeyboardMarkup(keyboard)
     if edit:
@@ -2439,7 +2509,11 @@ def main():
                 CallbackQueryHandler(subject_menu_handler),
             ],
         },
-        fallbacks=[CommandHandler("start", start), MessageHandler(filters.ALL, fallback)],
+        fallbacks=[
+            CommandHandler("start", start),
+            CommandHandler("cancel", cancel),
+            MessageHandler(filters.ALL, fallback)
+        ],
         allow_reentry=True,
     )
 
@@ -2449,6 +2523,7 @@ def main():
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
     app.add_handler(CommandHandler("profile", admin_profile))
     app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
+    app.add_handler(CommandHandler("cancel", cancel))
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
 
