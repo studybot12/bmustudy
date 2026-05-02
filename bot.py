@@ -38,23 +38,11 @@ QUIZ_QUESTIONS_COUNT = 20
 TEXTS = {
     "ru": {
         "welcome": "✨ *Добро пожаловать в BMU Study Hub!*\n\n🎓 Умная подготовка к экзаменам\n📚 Конспекты · Тесты · Флэшкарты · ИИ\n\n━━━━━━━━━━━━━━━\n🌐 Выберите язык:",
-        "main_menu": (
-            "🎓 *BMU Study Hub*\n"
-            "_British Management University_\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "🆓 *Бесплатно* — доступно всем\n"
-            "💎 *Полный доступ* — после оплаты\n"
-            "━━━━━━━━━━━━━━━"
-        ),
+        "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nЧто будем делать сегодня?",
         "my_subjects": "📚 Мои предметы",
         "buy_access": "💳 Купить доступ",
         "trial_quiz": "🎯 Попробовать бесплатно",
         "help": "💬 Поддержка",
-        "free_tools": "🆓 Бесплатные инструменты",
-        "free_humanizer": "✍️ AI Humanizer  🆓",
-        "free_detector": "🔍 AI Detector  🆓",
-        "free_trial": "🎯 Пробный тест  🆓",
-        "free_leaderboard": "🏆 Лидерборд  🆓",
         "choose_subject_buy": "🛒 *Купить доступ*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
         "choose_subject_study": "📚 *Мои предметы*\n\n━━━━━━━━━━━━━━━\nВыберите предмет для изучения:",
         "choose_trial_subject": "🎯 *Пробный режим — бесплатно*\n\n━━━━━━━━━━━━━━━\nВыберите предмет\n_без оплаты_",
@@ -216,23 +204,11 @@ TEXTS = {
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
-        "main_menu": (
-            "🎓 *BMU Study Hub*\n"
-            "_British Management University_\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "🆓 *Free* — available to everyone\n"
-            "💎 *Full Access* — after purchase\n"
-            "━━━━━━━━━━━━━━━"
-        ),
+        "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\n\nWhat shall we study today?",
         "my_subjects": "📚 My Subjects",
         "buy_access": "💳 Buy Access",
         "trial_quiz": "🎯 Try for Free",
         "help": "💬 Support",
-        "free_tools": "🆓 Free Tools",
-        "free_humanizer": "✍️ AI Humanizer  🆓",
-        "free_detector": "🔍 AI Detector  🆓",
-        "free_trial": "🎯 Free Trial  🆓",
-        "free_leaderboard": "🏆 Leaderboard  🆓",
         "choose_subject_buy": "🛒 *Buy Access*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
         "choose_subject_study": "📚 *My Subjects*\n\n━━━━━━━━━━━━━━━\nChoose a subject to study:",
         "choose_trial_subject": "🎯 *Free Trial*\n\n━━━━━━━━━━━━━━━\nChoose a subject\n_no payment needed_",
