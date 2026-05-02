@@ -379,6 +379,15 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
 
+    elif action.startswith("study_"):
+        subject_key = action.split("_", 1)[1]
+        context.user_data["current_subject"] = subject_key
+        try:
+            await show_subject_menu(query.message, user_id, subject_key, edit=True)
+        except Exception:
+            await show_subject_menu(query.message, user_id, subject_key, edit=False)
+        return SUBJECT_MENU
+
 
 # ── SUBJECT SELECTION ─────────────────────────────────────────────────────────
 
@@ -610,13 +619,9 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
-        go_btn_label = "📘 Перейти к предмету" if student_lang == "ru" else "📘 Go to Subject"
-        student_keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton(go_btn_label, callback_data=f"study_{subject_key}")]
-        ])
+        start_hint = "\n\n▶️ Нажмите /start чтобы открыть предмет" if student_lang == "ru" else "\n\n▶️ Press /start to access your subject"
         try:
-            await context.bot.send_message(student_id, msg, parse_mode="Markdown",
-                                           reply_markup=student_keyboard)
+            await context.bot.send_message(student_id, msg + start_hint, parse_mode="Markdown")
         except:
             pass
         await query.message.edit_caption(
@@ -1229,35 +1234,6 @@ async def show_my_rank(message, user_id, edit=False):
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
-async def access_granted_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handles study_KEY button from access granted notification message."""
-    query = update.callback_query
-    await query.answer()
-    user_id = query.from_user.id
-    data = query.data
-    if data.startswith("study_"):
-        subject_key = data.split("_", 1)[1]
-        context.user_data["current_subject"] = subject_key
-        info = SUBJECTS.get(subject_key, {})
-        photo_url = SUBJECT_PHOTOS.get(subject_key)
-        lang = db.get_user_lang(user_id) or "en"
-        keyboard = [
-            [InlineKeyboardButton(TEXTS[lang]["study_materials"], callback_data=f"materials_{subject_key}"),
-             InlineKeyboardButton(TEXTS[lang]["cheatsheet"], callback_data=f"cheatsheet_{subject_key}")],
-            [InlineKeyboardButton(TEXTS[lang]["flashcards"], callback_data=f"flashcards_{subject_key}"),
-             InlineKeyboardButton(TEXTS[lang]["glossary"], callback_data=f"glossary_{subject_key}")],
-            [InlineKeyboardButton(TEXTS[lang]["quiz"], callback_data=f"quiz_{subject_key}"),
-             InlineKeyboardButton(TEXTS[lang]["quiz_history"], callback_data=f"history_{subject_key}")],
-            [InlineKeyboardButton(TEXTS[lang]["ai_chat"], callback_data=f"aichat_{subject_key}"),
-             InlineKeyboardButton(TEXTS[lang]["progress"], callback_data=f"progress_{subject_key}")],
-            [InlineKeyboardButton(TEXTS[lang]["back"], callback_data="back_main")],
-        ]
-        text = TEXTS[lang]["subject_menu"].format(subject=info.get("name", subject_key))
-        markup = InlineKeyboardMarkup(keyboard)
-        try:
-            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-        except Exception:
-            pass
 
 async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
@@ -1323,7 +1299,6 @@ def main():
     )
 
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
-    app.add_handler(CallbackQueryHandler(access_granted_handler, pattern="^study_"))
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
