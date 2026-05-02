@@ -842,6 +842,17 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                       reply_markup=InlineKeyboardMarkup(keyboard))
         return MAIN_MENU
 
+    elif data in ("lang_ru", "lang_en"):
+        new_lang = data.split("_")[1]
+        user = query.from_user
+        db.upsert_user(user.id, user.username or "", user.first_name or "", new_lang)
+        confirm = "✅ Язык изменён на *Русский*" if new_lang == "ru" else "✅ Language changed to *English*"
+        back_label = "← Назад" if new_lang == "ru" else "← Back"
+        keyboard = [[InlineKeyboardButton(back_label, callback_data="back_main")]]
+        await query.message.edit_text(confirm, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        return MAIN_MENU
+
     elif action == "menu_leaderboard":
         await show_leaderboard(query.message, user_id, edit=True)
         return MAIN_MENU
