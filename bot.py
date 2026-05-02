@@ -48,7 +48,7 @@ _processed_admin_actions: set = set()
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
  AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT,
- HUMANIZER_SESSION, DETECTOR_SESSION, ONBOARDING) = range(15)
+ ONBOARDING) = range(10)
 
 FREE_QUESTIONS = 3
 QUIZ_QUESTIONS_COUNT = 20
@@ -239,40 +239,7 @@ TEXTS = {
         "bundle_selected": "✅ Выбрано: {subjects}",
         "bundle_need_more": "❗ Выберите ещё {n} предмет(а)",
         # AI Humanizer
-        "humanizer": "🆓 AI Humanizer",
-        "humanizer_intro": (
-            "✍️ *AI Humanizer*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "Вставьте ваше эссе — ИИ перепишет его в более живом, человеческом стиле:\n"
-            "• Уберёт шаблонные AI-фразы\n"
-            "• Добавит вариативность предложений\n"
-            "• Сохранит смысл и структуру\n\n"
-            "💬 _Отправьте текст эссе:_"
-        ),
-        "humanizer_processing": "✍️ _Переписываю текст..._",
-        "humanizer_result": "✍️ *Humanized версия:*\n\n━━━━━━━━━━━━━━━\n{result}",
-        "humanizer_try_again": "🔄 Humanize снова",
-        "humanizer_error": "⚠️ Ошибка обработки. Попробуйте ещё раз.",
-        "humanizer_too_long": "❗ Текст слишком длинный. Максимум 3000 символов.",
-        "humanizer_too_short": "❗ Текст слишком короткий. Минимум 50 символов.",
         # AI Detector
-        "detector": "🆓 AI Detector",
-        "detector_intro": (
-            "🔍 *AI Detector*\n_{subject}_\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "Вставьте текст эссе — ИИ проверит, написан ли он человеком или ИИ.\n\n"
-            "📊 Вы получите:\n"
-            "• Процент AI-контента\n"
-            "• Список подозрительных паттернов\n"
-            "• Рекомендации по улучшению\n\n"
-            "💬 _Отправьте текст для проверки:_"
-        ),
-        "detector_processing": "🔍 _Анализирую текст..._",
-        "detector_result": "🔍 *Результат AI Detection:*\n\n━━━━━━━━━━━━━━━\n{result}",
-        "detector_try_again": "🔄 Проверить другой текст",
-        "detector_error": "⚠️ Ошибка анализа. Попробуйте ещё раз.",
-        "detector_too_long": "❗ Текст слишком длинный. Максимум 3000 символов.",
-        "detector_too_short": "❗ Текст слишком короткий. Минимум 50 символов.",
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
@@ -459,40 +426,7 @@ TEXTS = {
         "bundle_selected": "✅ Selected: {subjects}",
         "bundle_need_more": "❗ Select {n} more subject(s)",
         # AI Humanizer
-        "humanizer": "🆓 AI Humanizer",
-        "humanizer_intro": (
-            "✍️ *AI Humanizer*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "Paste your essay — AI will rewrite it in a more natural, human style:\n"
-            "• Removes typical AI phrases\n"
-            "• Adds sentence variety\n"
-            "• Preserves meaning and structure\n\n"
-            "💬 _Send your essay text:_"
-        ),
-        "humanizer_processing": "✍️ _Rewriting your text..._",
-        "humanizer_result": "✍️ *Humanized Version:*\n\n━━━━━━━━━━━━━━━\n{result}",
-        "humanizer_try_again": "🔄 Humanize again",
-        "humanizer_error": "⚠️ Processing error. Please try again.",
-        "humanizer_too_long": "❗ Text is too long. Maximum 3000 characters.",
-        "humanizer_too_short": "❗ Text is too short. Minimum 50 characters.",
         # AI Detector
-        "detector": "🆓 AI Detector",
-        "detector_intro": (
-            "🔍 *AI Detector*\n_{subject}_\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "Paste your essay — AI will check if it was written by a human or AI.\n\n"
-            "📊 You will get:\n"
-            "• AI content percentage\n"
-            "• Suspicious patterns found\n"
-            "• Improvement recommendations\n\n"
-            "💬 _Send your text to analyse:_"
-        ),
-        "detector_processing": "🔍 _Analysing your text..._",
-        "detector_result": "🔍 *AI Detection Result:*\n\n━━━━━━━━━━━━━━━\n{result}",
-        "detector_try_again": "🔄 Check another text",
-        "detector_error": "⚠️ Analysis error. Please try again.",
-        "detector_too_long": "❗ Text is too long. Maximum 3000 characters.",
-        "detector_too_short": "❗ Text is too short. Minimum 50 characters.",
     }
 }
 
@@ -571,9 +505,7 @@ async def onboarding_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
     elif action == "onboard_3":
         text = TEXTS[lang]["onboarding_3"]
         keyboard = [
-            [InlineKeyboardButton(t(user_id, "humanizer"), callback_data="menu_humanizer"),
-             InlineKeyboardButton(t(user_id, "detector"), callback_data="menu_detector")],
-            [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
+                [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
             [InlineKeyboardButton(TEXTS[lang]["onboarding_start"], callback_data="onboard_skip")],
         ]
         await query.message.edit_text(text, parse_mode="Markdown",
@@ -591,8 +523,6 @@ async def onboarding_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def show_main_menu(message, user_id, edit=False):
     keyboard = [
-        [InlineKeyboardButton(t(user_id, "humanizer"), callback_data="menu_humanizer"),
-         InlineKeyboardButton(t(user_id, "detector"), callback_data="menu_detector")],
         [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial"),
          InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard")],
         [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
@@ -810,21 +740,7 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_bundle_subject_select(query.message, user_id, context, edit=True)
         return CHOOSING_SUBJECT
 
-    elif action == "menu_humanizer":
-        context.user_data["humanizer_subject"] = "global"
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-        intro = t(user_id, "humanizer_intro")
-        await query.message.edit_text(intro, parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(keyboard))
-        return HUMANIZER_SESSION
 
-    elif action == "menu_detector":
-        context.user_data["detector_subject"] = "global"
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-        intro = t(user_id, "detector_intro")
-        await query.message.edit_text(intro, parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(keyboard))
-        return DETECTOR_SESSION
 
     elif action == "menu_help":
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
@@ -1075,8 +991,6 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
          InlineKeyboardButton(t(user_id, "quiz_history"), callback_data=f"history_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "ai_chat"), callback_data=f"aichat_{subject_key}"),
          InlineKeyboardButton(t(user_id, "videos"), callback_data=f"videos_{subject_key}")],
-        [InlineKeyboardButton(t(user_id, "humanizer"), callback_data=f"humanizer_{subject_key}"),
-         InlineKeyboardButton(t(user_id, "detector"), callback_data=f"detector_{subject_key}")],
         [InlineKeyboardButton(t(user_id, "progress"), callback_data=f"progress_{subject_key}"),
          InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
     ]
@@ -1431,27 +1345,7 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
                                       disable_web_page_preview=True)
         return SUBJECT_MENU
 
-    if data.startswith("humanizer_"):
-        subject_key = data.split("humanizer_")[1]
-        context.user_data["humanizer_subject"] = subject_key
-        context.user_data["awaiting_humanizer"] = True
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
-        await query.message.edit_text(
-            t(user_id, "humanizer_intro", subject=SUBJECTS[subject_key]["name"]),
-            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        return HUMANIZER_SESSION
 
-    if data.startswith("detector_"):
-        subject_key = data.split("detector_")[1]
-        context.user_data["detector_subject"] = subject_key
-        context.user_data["awaiting_detector"] = True
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
-        await query.message.edit_text(
-            t(user_id, "detector_intro", subject=SUBJECTS[subject_key]["name"]),
-            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        return DETECTOR_SESSION
 
     if data.startswith("examplan_"):
         subject_key = data.split("examplan_")[1]
@@ -1906,196 +1800,6 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
     return AI_CHAT_SESSION
 
 
-# ── AI HUMANIZER ──────────────────────────────────────────────────────────────
-
-async def humanizer_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    text = update.message.text.strip()
-    subject_key = context.user_data.get("humanizer_subject")
-    lang = db.get_user_lang(user_id) or "en"
-
-    if not subject_key:
-        await show_main_menu(update.message, user_id)
-        return MAIN_MENU
-
-    back_cb = "back_main" if subject_key == "global" else f"back_subject_{subject_key}"
-    again_cb = "menu_humanizer" if subject_key == "global" else f"humanizer_{subject_key}"
-    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
-
-    # Rate limit check
-    cooldown = check_ai_rate_limit(user_id)
-    if cooldown > 0:
-        wait_msg = f"⏳ Подождите {int(cooldown)} сек. перед следующим запросом." if lang == "ru" else f"⏳ Please wait {int(cooldown)}s before the next request."
-        await update.message.reply_text(wait_msg, reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return HUMANIZER_SESSION
-
-    if len(text) < 50:
-        await update.message.reply_text(t(user_id, "humanizer_too_short"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return HUMANIZER_SESSION
-
-    if len(text) > 3000:
-        await update.message.reply_text(t(user_id, "humanizer_too_long"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return HUMANIZER_SESSION
-
-    if not GEMINI_AVAILABLE or not os.environ.get("GEMINI_API_KEY"):
-        await update.message.reply_text(t(user_id, "ai_unavailable"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return HUMANIZER_SESSION
-
-    thinking_msg = await update.message.reply_text(t(user_id, "humanizer_processing"), parse_mode="Markdown")
-
-    system_prompt = (
-        "You are an expert essay editor. Your task is to rewrite the given text to make it sound "
-        "more natural and human-written, while preserving the original meaning, structure and arguments. "
-        "Guidelines:\n"
-        "- Replace generic AI phrases (e.g. 'It is important to note that', 'In conclusion', 'Furthermore') "
-        "with more natural alternatives\n"
-        "- Vary sentence length and structure — mix short and long sentences\n"
-        "- Add natural transitions and connectors\n"
-        "- Keep academic tone but make it feel personal and authentic\n"
-        "- Do NOT add new arguments or change the meaning\n"
-        "- Output ONLY the rewritten text, no explanations or commentary\n"
-        f"- Write in the same language as the input text"
-    )
-
-    try:
-        client = genai_client.Client(api_key=os.environ["GEMINI_API_KEY"])
-        contents = [genai_types.Content(role="user", parts=[genai_types.Part(text=text)])]
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=contents,
-            config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
-        )
-        result = response.text
-        await thinking_msg.delete()
-        logger.info(f"Humanizer used: user_id={user_id} subject={subject_key} chars_in={len(text)} chars_out={len(result)}")
-        keyboard = [
-            [InlineKeyboardButton(t(user_id, "humanizer_try_again"), callback_data=again_cb)],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
-        ]
-        # Send result — try markdown, fall back to plain
-        result_text = t(user_id, "humanizer_result", result=result)
-        try:
-            await update.message.reply_text(result_text, parse_mode="Markdown",
-                                            reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            await update.message.reply_text(result_text, reply_markup=InlineKeyboardMarkup(keyboard))
-    except Exception as e:
-        logger.error(f"Humanizer error: {e}")
-        try:
-            await thinking_msg.delete()
-        except Exception:
-            pass
-        await update.message.reply_text(t(user_id, "humanizer_error"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-
-    return HUMANIZER_SESSION
-
-
-# ── AI DETECTOR ───────────────────────────────────────────────────────────────
-
-async def detector_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    text = update.message.text.strip()
-    subject_key = context.user_data.get("detector_subject")
-    lang = db.get_user_lang(user_id) or "en"
-
-    if not subject_key:
-        await show_main_menu(update.message, user_id)
-        return MAIN_MENU
-
-    back_cb = "back_main" if subject_key == "global" else f"back_subject_{subject_key}"
-    again_cb = "menu_detector" if subject_key == "global" else f"detector_{subject_key}"
-    keyboard_back = [[InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]]
-
-    # Rate limit check
-    cooldown = check_ai_rate_limit(user_id)
-    if cooldown > 0:
-        wait_msg = f"⏳ Подождите {int(cooldown)} сек. перед следующим запросом." if lang == "ru" else f"⏳ Please wait {int(cooldown)}s before the next request."
-        await update.message.reply_text(wait_msg, reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return DETECTOR_SESSION
-
-    if len(text) < 50:
-        await update.message.reply_text(t(user_id, "detector_too_short"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return DETECTOR_SESSION
-
-    if len(text) > 3000:
-        await update.message.reply_text(t(user_id, "detector_too_long"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return DETECTOR_SESSION
-
-    if not GEMINI_AVAILABLE or not os.environ.get("GEMINI_API_KEY"):
-        await update.message.reply_text(t(user_id, "ai_unavailable"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-        return DETECTOR_SESSION
-
-    thinking_msg = await update.message.reply_text(t(user_id, "detector_processing"), parse_mode="Markdown")
-
-    if lang == "ru":
-        system_prompt = (
-            "Ты эксперт по обнаружению AI-текста. Проанализируй предоставленный текст и определи, "
-            "написан ли он человеком или ИИ.\n\n"
-            "Твой ответ должен содержать строго следующие разделы:\n\n"
-            "🎯 *Вероятность AI:* [X]%\n\n"
-            "📋 *Признаки AI в тексте:*\n"
-            "• [список конкретных паттернов или фраз, которые выдают AI — если нашёл]\n\n"
-            "✅ *Признаки живого письма:*\n"
-            "• [что выглядит как написанное человеком]\n\n"
-            "💡 *Рекомендации:*\n"
-            "• [что изменить чтобы текст звучал более человечно]\n\n"
-            "Будь конкретным и объективным. Отвечай на русском языке."
-        )
-    else:
-        system_prompt = (
-            "You are an expert AI text detector. Analyse the provided text and determine whether "
-            "it was written by a human or an AI.\n\n"
-            "Your response must contain exactly these sections:\n\n"
-            "🎯 *AI Probability:* [X]%\n\n"
-            "📋 *AI Patterns Found:*\n"
-            "• [list specific patterns or phrases that suggest AI authorship — if found]\n\n"
-            "✅ *Human Writing Signs:*\n"
-            "• [what looks like it was written by a human]\n\n"
-            "💡 *Recommendations:*\n"
-            "• [what to change to make the text sound more human]\n\n"
-            "Be specific and objective. Reply in English."
-        )
-
-    try:
-        client = genai_client.Client(api_key=os.environ["GEMINI_API_KEY"])
-        contents = [genai_types.Content(role="user", parts=[genai_types.Part(text=text)])]
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=contents,
-            config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
-        )
-        result = response.text
-        await thinking_msg.delete()
-        logger.info(f"Detector used: user_id={user_id} subject={subject_key} chars_in={len(text)}")
-        keyboard = [
-            [InlineKeyboardButton(t(user_id, "detector_try_again"), callback_data=again_cb)],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data=back_cb)]
-        ]
-        result_text = t(user_id, "detector_result", result=result)
-        try:
-            await update.message.reply_text(result_text, parse_mode="Markdown",
-                                            reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            await update.message.reply_text(result_text, reply_markup=InlineKeyboardMarkup(keyboard))
-    except Exception as e:
-        logger.error(f"Detector error: {e}")
-        try:
-            await thinking_msg.delete()
-        except Exception:
-            pass
-        await update.message.reply_text(t(user_id, "detector_error"), parse_mode="Markdown",
-                                        reply_markup=InlineKeyboardMarkup(keyboard_back))
-
-    return DETECTOR_SESSION
-
-
 # ── BOOKMARKS ─────────────────────────────────────────────────────────────────
 
 async def show_bookmarks(message, user_id, edit=False):
@@ -2507,16 +2211,6 @@ def main():
             TF_SESSION: [CallbackQueryHandler(tf_handler)],
             EXAM_DATE_INPUT: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, fallback),
-                CallbackQueryHandler(subject_menu_handler),
-            ],
-            HUMANIZER_SESSION: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, humanizer_message_handler),
-                CallbackQueryHandler(main_menu_handler, pattern="^(menu_humanizer|menu_detector|back_main)$"),
-                CallbackQueryHandler(subject_menu_handler),
-            ],
-            DETECTOR_SESSION: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, detector_message_handler),
-                CallbackQueryHandler(main_menu_handler, pattern="^(menu_humanizer|menu_detector|back_main)$"),
                 CallbackQueryHandler(subject_menu_handler),
             ],
         },
