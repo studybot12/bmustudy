@@ -3,7 +3,7 @@
 SUBJECTS = {
     "f1": {"name": "F1 — Business & Technology"},
     "f3": {"name": "F3 — Financial Accounting"},
-    "fm": {"name": "Financial Markets"},
+    "fm": {"name": "Intro to Financial Markets & Institutions"},
     "macro": {"name": "Macroeconomics"},
 }
 
@@ -227,108 +227,166 @@ MATERIALS = {
     },
 
     "fm": {
-        "name": "Financial Markets",
+        "name": "Intro to Financial Markets & Institutions",
         "chapters": [
             {
-                "title": "Functions & Structure of Financial Markets",
+                "title": "Lecture 7 — Market Efficiency: Core Concepts",
                 "content": (
-                    "🔹 *Financial markets* channel funds from savers to borrowers\n\n"
-                    "🔹 *Key functions:*\n"
-                    "• Price discovery\n"
-                    "• Liquidity provision\n"
-                    "• Risk sharing & transfer\n"
-                    "• Mobilisation of savings\n\n"
-                    "🔹 *Money markets* — short-term (< 1 year): Treasury bills, commercial paper, repos\n"
-                    "🔹 *Capital markets* — long-term (> 1 year): bonds, equities\n\n"
-                    "🔹 *Primary market* — new securities issued (IPO)\n"
-                    "🔹 *Secondary market* — existing securities traded (stock exchange)\n\n"
-                    "🔹 *Market efficiency (EMH):*\n"
-                    "• Weak form — prices reflect past trading data\n"
-                    "• Semi-strong — prices reflect all public information\n"
-                    "• Strong form — prices reflect all information (public + private)"
+                    "🔹 *What is Market Efficiency?*\n"
+                    "An *informationally efficient market* is one in which asset prices reflect new information *quickly and rationally*.\n"
+                    "• 'Quick' = relative to trade execution time (e.g. if info takes 15 min to be priced in, and execution takes 30 min → still efficient)\n"
+                    "• Prices should NOT react to *anticipated* info — only *unexpected* info moves prices\n"
+                    "• In a perfectly efficient market → *passive strategy* preferred (lower transaction & management costs)\n\n"
+                    "🔹 *Market Value vs Intrinsic Value*\n"
+                    "• *Market value* — current price at which asset can be bought/sold\n"
+                    "• *Intrinsic value* — value based on complete information about asset's characteristics\n"
+                    "• Efficient market: Market value = Intrinsic value\n"
+                    "• Inefficient market: the two can diverge significantly → active investors seek to exploit this\n\n"
+                    "🔹 *Factors Affecting Market Efficiency*\n"
+                    "• ↑ Market participants → ↑ efficiency\n"
+                    "• ↑ Information availability & disclosure → ↑ efficiency\n"
+                    "• ↑ Limits on short-selling / arbitrage → ↓ efficiency\n"
+                    "• ↑ Transaction costs → ↓ efficiency\n"
+                    "• ↑ Information-acquisition costs → ↓ efficiency"
                 )
             },
             {
-                "title": "Equity Markets",
+                "title": "Lecture 7 — Forms of Market Efficiency (EMH)",
                 "content": (
-                    "🔹 *Shares (equity)* represent ownership in a company\n\n"
-                    "🔹 *Types of shares:*\n"
-                    "• Ordinary shares — voting rights, residual claim, variable dividends\n"
-                    "• Preference shares — fixed dividends, priority over ordinary in liquidation\n\n"
-                    "🔹 *Equity valuation models:*\n"
-                    "• *Dividend Discount Model (DDM):* P = D₁ / (r − g)\n"
-                    "  where D₁ = next dividend, r = required return, g = growth rate\n"
-                    "• *P/E ratio:* Share price / Earnings per share\n"
-                    "• *Price-to-Book:* Market price / Book value per share\n\n"
-                    "🔹 *Stock indices:* FTSE 100, S&P 500, Dow Jones\n\n"
-                    "🔹 *IPO process:* Company hires underwriters → sets price → offers shares to public"
+                    "🔹 *Three Forms of the Efficient Market Hypothesis (EMH):*\n\n"
+                    "📊 What each form reflects:\n"
+                    "• *Weak form* → Past market data only (price & volume history)\n"
+                    "• *Semi-strong form* → All public information (earnings, dividends, news)\n"
+                    "• *Strong form* → All public AND private (insider) information\n\n"
+                    "🔹 *Weak Form*\n"
+                    "• Security prices fully reflect all past market data\n"
+                    "• *Technical analysis* cannot produce consistent abnormal returns\n"
+                    "• Test: look for serial correlation in returns; test if chart patterns beat market\n\n"
+                    "🔹 *Semi-Strong Form*\n"
+                    "• Prices reflect all publicly available information\n"
+                    "• *Fundamental analysis* cannot consistently earn abnormal returns\n"
+                    "• Test: event studies — do prices adjust quickly to new public info?\n"
+                    "• Most developed markets are considered semi-strong efficient\n\n"
+                    "🔹 *Strong Form*\n"
+                    "• Prices reflect ALL info, including private (insider) info\n"
+                    "• No one can earn abnormal returns — not even insiders\n"
+                    "• Most research: markets are *NOT* strong-form efficient (regulations ban insider trading precisely because it works)\n\n"
+                    "🔹 *Implications for Portfolio Management*\n"
+                    "• If semi-strong → active managers cannot consistently beat the market → invest passively\n"
+                    "• Role of managers: establish portfolios matching client objectives/constraints, not just beat the market"
                 )
             },
             {
-                "title": "Debt Markets & Bonds",
+                "title": "Lecture 7 — Market Anomalies & Behavioral Finance",
                 "content": (
-                    "🔹 *Bonds* = debt instruments; issuer promises to pay coupons + principal\n\n"
-                    "🔹 *Key terms:*\n"
-                    "• Par/Face value — amount repaid at maturity\n"
-                    "• Coupon rate — annual interest as % of face value\n"
-                    "• Yield to maturity (YTM) — total return if held to maturity\n"
-                    "• Duration — sensitivity of bond price to interest rate changes\n\n"
-                    "🔹 *Bond price & yield relationship:* ↑ yield = ↓ price (inverse)\n\n"
-                    "🔹 *Types of bonds:*\n"
-                    "• Government bonds (gilts/treasuries) — low risk\n"
-                    "• Corporate bonds — higher risk, higher yield\n"
-                    "• Zero-coupon bonds — no coupons, sold at discount\n"
-                    "• Convertible bonds — can be converted to equity\n\n"
-                    "🔹 *Credit ratings:* AAA → BBB (investment grade); BB and below (junk/high yield)"
+                    "🔹 *Market Anomalies* — patterns that challenge EMH\n\n"
+                    "📅 *Time-Series Anomalies:*\n"
+                    "• *January Effect* — stocks (especially small-cap) earn higher returns in January\n"
+                    "• *Momentum Effect* — stocks with high recent returns tend to continue outperforming\n"
+                    "• *Overreaction Effect* — 'loser' stocks over 3–5 years tend to outperform afterwards\n\n"
+                    "📐 *Cross-Sectional Anomalies:*\n"
+                    "• *Size Effect* — small-cap stocks outperform large-cap\n"
+                    "• *Value Effect* — value stocks (low P/E, low P/B, high dividend yield) beat growth stocks\n\n"
+                    "📌 *Other Anomalies:*\n"
+                    "• Closed-end fund discounts to NAV\n"
+                    "• Earnings surprise — buying positive-surprise stocks earns abnormal returns\n"
+                    "• IPOs — prices rise on listing day but underperform long-term\n\n"
+                    "⚠️ In practice most anomalies cannot be profitably exploited after costs → many are *data mining* artefacts\n\n"
+                    "🔹 *Behavioral Finance* — explains irrational investor behavior:\n"
+                    "• *Loss aversion* — losses hurt more than equal gains feel good\n"
+                    "• *Herding* — ignoring private info and following the crowd\n"
+                    "• *Overconfidence* — overestimating one's ability to value securities\n"
+                    "• *Information cascades* — blindly following a few early movers\n"
+                    "• *Representativeness* — judging probability based on past experience\n"
+                    "• *Mental accounting* — treating pockets of money differently\n"
+                    "• *Conservatism* — slow to update beliefs on new info\n"
+                    "• *Narrow framing* — analysing decisions in isolation\n\n"
+                    "💡 Even if individuals are biased, *biases may cancel out* → markets can still be efficient"
                 )
             },
             {
-                "title": "Derivatives",
+                "title": "Lecture 8 — Foreign Exchange (FX) Market: Introduction",
                 "content": (
-                    "🔹 *Derivatives* are instruments whose value is derived from an underlying asset\n\n"
-                    "🔹 *Futures:* obligation to buy/sell at a set price on a future date\n"
-                    "• Standardised, exchange-traded, marked to market daily\n\n"
-                    "🔹 *Options:* right (not obligation) to buy/sell\n"
-                    "• Call option — right to BUY\n"
-                    "• Put option — right to SELL\n"
-                    "• In-the-money / At-the-money / Out-of-the-money\n\n"
-                    "🔹 *Swaps:* exchange of cash flows (e.g. fixed for floating interest rates)\n\n"
-                    "🔹 *Uses of derivatives:*\n"
-                    "• Hedging — reduce risk\n"
-                    "• Speculation — bet on price movement\n"
-                    "• Arbitrage — exploit price differences"
+                    "🔹 *The FX Market — Key Facts*\n"
+                    "• World's largest financial market: daily turnover >$7 trillion\n"
+                    "• ~15× larger than global fixed-income; ~50× larger than global equities\n"
+                    "• Operates 24/7 across all global time zones\n"
+                    "• Core function: enables conversion of currencies for international trade & investment\n\n"
+                    "🔹 *Functions of the FX Market*\n"
+                    "1. Facilitating international trade (buying goods in foreign currencies)\n"
+                    "2. Accounting for financial market transactions (moving funds into/out of foreign assets)\n"
+                    "3. Providing flexibility — spot transactions, FX swaps, options, forward contracts\n\n"
+                    "🔹 *Currency Notation*\n"
+                    "• Individual currencies: USD, EUR, GBP, JPY, CHF, AUD, CAD, CNY, etc. (ISO 3-letter codes)\n"
+                    "• Exchange rate notation: A/B = units of A per 1 unit of B\n"
+                    "  — EUR.USD = USD/EUR → how many USD to buy 1 EUR\n"
+                    "  — If EUR.USD rises from 1.0950 → 1.0900: USD *appreciated*, EUR *depreciated*\n\n"
+                    "🔹 *FX Market Composition*\n"
+                    "• 33% spot market\n"
+                    "• 14% forward/futures market\n"
+                    "• 53% currency swaps\n"
+                    "• Largest volume: London, then New York; most active 8:00–11:30 am NY time"
                 )
             },
             {
-                "title": "Risk & Return",
+                "title": "Lecture 8 — Exchange Rates: Nominal, Real & Cross-Rates",
                 "content": (
-                    "🔹 *Return* = income + capital gain\n\n"
-                    "🔹 *Risk types:*\n"
-                    "• *Systematic (market) risk* — cannot be diversified (e.g. recession)\n"
-                    "• *Unsystematic (specific) risk* — can be diversified away\n\n"
-                    "🔹 *Beta (β):* measures systematic risk relative to market\n"
-                    "• β = 1 → moves with market\n"
-                    "• β > 1 → more volatile\n"
-                    "• β < 1 → less volatile\n\n"
-                    "🔹 *CAPM:* Required return = Rf + β(Rm − Rf)\n"
-                    "  where Rf = risk-free rate, Rm = market return\n\n"
-                    "🔹 *Portfolio diversification* — combining assets reduces unsystematic risk\n"
-                    "🔹 *Efficient Frontier* — set of optimal portfolios (max return for given risk)"
+                    "🔹 *Exchange Rate Basics*\n"
+                    "• *Price currency* = numerator (the one used to express the price)\n"
+                    "• *Base currency* = denominator (the one you're pricing)\n"
+                    "• Example: USD/EUR = 1.45 → $1.45 per €1 → USD is price currency, EUR is base\n"
+                    "• If the quote ↑ → base currency *appreciated*; if ↓ → base currency *depreciated*\n\n"
+                    "🔹 *Direct vs Indirect Quote*\n"
+                    "• *Direct* — domestic currency as price currency (foreign = base)\n"
+                    "• *Indirect* — foreign currency as price currency (domestic = base)\n"
+                    "• They are reciprocals: if EUR/USD = 1.2310, then USD/EUR = 1/1.2310 = 0.8123\n\n"
+                    "🔹 *Bid & Offer (Two-sided Price)*\n"
+                    "• *Bid* — price the bank will pay for the base currency (client sells base)\n"
+                    "• *Offer/Ask* — price the client pays to buy the base currency\n"
+                    "• Spread = Offer − Bid → bank's profit\n"
+                    "• Example: CHF/EUR = 1.1620–1.1622 → client receives 1.1620 selling EUR; pays 1.1622 buying EUR\n\n"
+                    "🔹 *Nominal Exchange Rate*\n"
+                    "• Actual market rate between two currencies\n"
+                    "• *PPP theory*: rates should adjust so identical goods cost the same across markets\n"
+                    "• Reality: nominal rates persistently deviate from PPP (trade barriers, transaction costs)\n\n"
+                    "🔹 *Real Exchange Rate*\n"
+                    "• Adjusts nominal rate for relative price levels (CPI)\n"
+                    "• Formula: Real FX rate = S(A/B) × (CPI_B / CPI_A)\n"
+                    "• % change ≈ %ΔS + %ΔCPI_foreign − %ΔCPI_domestic\n"
+                    "• Example: S(GBP/EUR) ↑10%, CPI_EUR ↑5%, CPI_GBP ↑2% → real rate ↑≈13%\n"
+                    "  → need 13% more £ to buy the same goods in the Eurozone"
                 )
             },
             {
-                "title": "Financial Intermediaries & Regulation",
+                "title": "Lecture 8 — Exchange Rate Regimes & FX Participants",
                 "content": (
-                    "🔹 *Financial intermediaries* sit between savers and borrowers:\n"
-                    "• Commercial banks — accept deposits, make loans\n"
-                    "• Investment banks — capital raising, M&A advisory\n"
-                    "• Insurance companies — pool risk\n"
-                    "• Pension funds — long-term investment for retirement\n"
-                    "• Hedge funds — aggressive strategies, less regulated\n\n"
-                    "🔹 *Central banks:* control monetary policy, lender of last resort, bank supervision\n\n"
-                    "🔹 *Key regulators:* FCA (UK), SEC (US), ECB (Eurozone)\n\n"
-                    "🔹 *Basel III:* international banking regulation — capital adequacy, liquidity requirements\n\n"
-                    "🔹 *Systemic risk:* failure of one institution triggers wider financial crisis"
+                    "🔹 *Exchange Rate Regimes*\n"
+                    "How a country's central bank manages its currency's value:\n\n"
+                    "🏳️ *Countries WITHOUT their own currency:*\n"
+                    "• *Formal Dollarization* — uses another country's currency (e.g. Panama uses USD)\n"
+                    "• *Monetary Union* — multiple countries share one currency (e.g. Eurozone)\n\n"
+                    "🏳️ *Countries WITH their own currency:*\n"
+                    "• *Currency Board* — fix to another currency, only print money if reserves back it (e.g. Hong Kong HKD/USD)\n"
+                    "• *Conventional Fixed Peg* — pegged within ±1% (e.g. Saudi Arabia → USD)\n"
+                    "• *Target Zone / Peg with Horizontal Bands* — wider range ±2%\n"
+                    "• *Crawling Peg* — peg adjusted gradually for inflation differences (China historical)\n"
+                    "• *Crawling Bands* — range widens over time toward float\n"
+                    "• *Managed Float* — central bank occasionally intervenes to stabilise (e.g. India)\n"
+                    "• *Independent Float* — fully market-determined (USD, EUR, GBP)\n\n"
+                    "🇺🇿 *Uzbekistan: Managed Floating*\n"
+                    "• CBU influences rate in response to inflation, BOP, external shocks\n"
+                    "• Inflation target: 5% (medium-term); Policy rate: 14% (as of March 2026)\n"
+                    "• Soum showed relative stability in 2025 (~6.9% appreciation in late 2025)\n\n"
+                    "🔹 *FX Market Participants (Buy Side)*\n"
+                    "1. Corporate accounts — revenues/expenses in foreign currency; primarily hedging\n"
+                    "2. Real money accounts — institutional funds (pensions, endowments); hedging/unhedged\n"
+                    "3. Leveraged accounts — hedge funds; forex as an asset class, active trading\n"
+                    "4. Retail accounts — non-professional, spot transactions\n"
+                    "5. Governments — transactional to policy goals\n"
+                    "6. Central banks — intervention, managing foreign reserves\n"
+                    "7. Sovereign wealth funds — countries with current account surpluses; hedging & active\n\n"
+                    "*Sell Side:* FX dealing banks — only the largest first-tier global banks\n\n"
+                    "💡 Given the wide variety of participants and motives, FX rate movements are very hard to predict"
                 )
             },
         ]
@@ -1168,16 +1226,28 @@ TRUE_FALSE = {
         {"statement": "An accrual represents an expense paid in advance for a future period.", "answer": False, "explanation": "An accrual is an expense incurred but not yet paid. Prepayment is paid in advance."},
     ],
     "fm": [
-        {"statement": "When interest rates rise, bond prices fall.", "answer": True, "explanation": "Bond prices and yields move inversely. Higher rates make existing bonds less attractive, reducing their price."},
-        {"statement": "A beta of less than 1 means a stock is more volatile than the market.", "answer": False, "explanation": "Beta < 1 means less volatile than the market. Beta > 1 means more volatile."},
-        {"statement": "Systematic risk can be eliminated through diversification.", "answer": False, "explanation": "Only unsystematic (company-specific) risk can be diversified away. Systematic risk affects the whole market."},
-        {"statement": "The primary market is where existing securities are traded between investors.", "answer": False, "explanation": "The primary market is for new issues (IPOs). The secondary market is where existing securities are traded."},
-        {"statement": "CAPM calculates expected return as: Rf + β(Rm − Rf).", "answer": True, "explanation": "This is the Capital Asset Pricing Model formula. Rf = risk-free rate, Rm = market return, β = beta."},
-        {"statement": "Duration measures a bond's sensitivity to changes in interest rates.", "answer": True, "explanation": "Longer duration = greater price sensitivity to rate changes."},
-        {"statement": "A money market instrument typically has a maturity of over 5 years.", "answer": False, "explanation": "Money market instruments are short-term, typically under 1 year (e.g., T-bills, commercial paper)."},
-        {"statement": "Diversification can completely eliminate all investment risk.", "answer": False, "explanation": "Diversification eliminates unsystematic risk but not systematic (market) risk."},
-        {"statement": "In the Gordon Growth Model, a higher required return leads to a higher share price.", "answer": False, "explanation": "P = D₁ / (r − g). A higher required return (r) reduces the share price."},
-        {"statement": "Financial intermediaries help channel funds from savers to borrowers.", "answer": True, "explanation": "Banks, pension funds, and insurers are intermediaries that facilitate capital allocation."},
+        # Lecture 7 — Market Efficiency
+        {"statement": "In an informationally efficient market, asset prices reflect new information quickly and rationally.", "answer": True, "explanation": "This is the definition of an efficient market. 'Quickly' means relative to the time needed to execute a trade."},
+        {"statement": "In a perfectly efficient market, active investment strategies are preferred over passive ones.", "answer": False, "explanation": "In a perfectly efficient market, passive strategies are preferred because active strategies incur higher transaction costs without producing superior risk-adjusted returns."},
+        {"statement": "In a highly efficient market, market value equals intrinsic value.", "answer": True, "explanation": "When full information is reflected in prices, the market price equals the true intrinsic (fundamental) value of the asset."},
+        {"statement": "Weak-form market efficiency implies that technical analysis can consistently produce abnormal returns.", "answer": False, "explanation": "In a weak-form efficient market, all past price/volume data is already reflected in prices, so technical analysis cannot consistently outperform."},
+        {"statement": "Semi-strong-form efficiency means prices reflect all publicly available information.", "answer": True, "explanation": "Semi-strong form includes all public information: financials, news, dividends, etc. Fundamental analysis cannot consistently earn abnormal returns."},
+        {"statement": "Strong-form efficient markets are not strong-form efficient because regulations against insider trading exist.", "answer": True, "explanation": "Most research confirms markets are NOT strong-form efficient — insider trading regulations exist precisely because trading on private info can earn abnormal profits."},
+        {"statement": "The January Effect is a cross-sectional anomaly.", "answer": False, "explanation": "The January Effect is a time-series (calendar) anomaly — returns in January are historically higher than other months, especially for small-cap stocks."},
+        {"statement": "Loss aversion in behavioral finance means investors dislike losses more than they value equivalent gains.", "answer": True, "explanation": "Behavioral finance shows humans are loss-averse: the pain of a $100 loss feels greater than the pleasure of a $100 gain."},
+        {"statement": "Market anomalies definitively prove that markets are inefficient.", "answer": False, "explanation": "Most research concludes anomalies cannot be easily exploited after costs, and many may result from data mining rather than true inefficiency."},
+        {"statement": "Herding behavior means investors use private information to trade against the market.", "answer": False, "explanation": "Herding is when investors ignore their own private information and follow other investors' decisions instead."},
+        # Lecture 8 — Foreign Exchange Market
+        {"statement": "The FX market is the largest financial market in the world, with daily turnover exceeding $7 trillion.", "answer": True, "explanation": "The FX market dwarfs all other financial markets — roughly 15× fixed income and 50× global equities by daily turnover."},
+        {"statement": "In the exchange rate notation USD/EUR, the EUR is the price currency.", "answer": False, "explanation": "In A/B notation, A is the price currency and B is the base currency. So in USD/EUR, USD is the price currency and EUR is the base."},
+        {"statement": "If the USD/EUR exchange rate rises from 1.25 to 1.30, the EUR has appreciated relative to the USD.", "answer": True, "explanation": "A rising USD/EUR quote means you need more USD to buy 1 EUR → EUR is more expensive → EUR appreciated."},
+        {"statement": "A direct exchange rate quote expresses the domestic currency as the price currency.", "answer": True, "explanation": "Direct quote = domestic currency in the numerator (price currency). Indirect quote is the reverse."},
+        {"statement": "Purchasing Power Parity (PPP) holds consistently in real-world FX markets.", "answer": False, "explanation": "PPP rarely holds due to trade barriers, transaction costs, and differences in goods. Nominal exchange rates persistently deviate from PPP."},
+        {"statement": "The real exchange rate adjusts the nominal rate for relative price levels between two countries.", "answer": True, "explanation": "Real FX rate = Nominal rate × (Foreign CPI / Domestic CPI). It measures the relative purchasing power of currencies."},
+        {"statement": "In a currency board arrangement, a country can issue money freely without foreign reserve constraints.", "answer": False, "explanation": "A currency board can only issue domestic currency if it holds equivalent reserves in the anchor currency — severely limiting monetary autonomy."},
+        {"statement": "Uzbekistan operates under an independently floating exchange rate regime.", "answer": False, "explanation": "Uzbekistan operates a managed float — the CBU influences the rate in response to inflation and BOP indicators, though the market plays the leading role."},
+        {"statement": "In the FX market, the bid price is always lower than the offer price.", "answer": True, "explanation": "Banks buy at the bid (lower) and sell at the offer (higher). The spread between them is the bank's profit."},
+        {"statement": "Currency swaps account for the largest share of the FX market by volume.", "answer": True, "explanation": "Currency swaps make up ~53% of FX market volume, compared to ~33% spot and ~14% forward/futures."},
     ],
     "macro": [
         {"statement": "Real GDP корректирует Nominal GDP на инфляцию.", "answer": True, "explanation": "Real GDP устраняет изменения цен, позволяя сравнивать реальный выпуск во времени."},
@@ -1213,11 +1283,11 @@ VIDEOS = {
         {"title": "Ratio Analysis", "url": "https://youtu.be/placeholder_f3_5", "topic": "ratios"},
     ],
     "fm": [
-        {"title": "How Bonds Work", "url": "https://youtu.be/placeholder_fm_1", "topic": "bonds"},
-        {"title": "CAPM & Beta Explained", "url": "https://youtu.be/placeholder_fm_2", "topic": "capm"},
-        {"title": "Stock Markets & IPOs", "url": "https://youtu.be/placeholder_fm_3", "topic": "stocks"},
-        {"title": "Risk & Diversification", "url": "https://youtu.be/placeholder_fm_4", "topic": "risk"},
-        {"title": "Financial Intermediaries", "url": "https://youtu.be/placeholder_fm_5", "topic": "intermediaries"},
+        {"title": "Market Efficiency Explained (EMH)", "url": "https://www.youtube.com/watch?v=yTCX2D7PdRY", "topic": "market efficiency"},
+        {"title": "Weak, Semi-Strong & Strong Form EMH", "url": "https://youtu.be/placeholder_fm_2", "topic": "EMH forms"},
+        {"title": "Behavioral Finance & Investor Biases", "url": "https://youtu.be/placeholder_fm_3", "topic": "behavioral finance"},
+        {"title": "FX Market Introduction & Exchange Rates", "url": "https://youtu.be/placeholder_fm_4", "topic": "foreign exchange"},
+        {"title": "Exchange Rate Regimes Explained", "url": "https://youtu.be/placeholder_fm_5", "topic": "exchange rate regimes"},
     ],
     "macro": [
         {"title": "Производительность и экономический рост (Crash Course)", "url": "https://www.youtube.com/watch?v=UHiUYj5EA0w", "topic": "рост"},
