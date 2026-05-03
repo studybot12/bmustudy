@@ -3,7 +3,7 @@
 SUBJECTS = {
     "f1": {"name": "F1 — Business & Technology"},
     "f3": {"name": "F3 — Financial Accounting"},
-    "fm": {"name": "Financial Markets"},
+    "fm": {"name": "Intro to Financial Markets & Institutions"},
     "macro": {"name": "Macroeconomics"},
 }
 
@@ -409,108 +409,243 @@ MATERIALS = {
     },
 
     "fm": {
-        "name": "Financial Markets",
+        "name": "Intro to Financial Markets & Institutions",
         "chapters": [
             {
-                "title": "Functions & Structure of Financial Markets",
+                "title": "Lecture 7 — Market Efficiency: Core Concepts",
                 "content": (
-                    "🔹 *Financial markets* channel funds from savers to borrowers\n\n"
-                    "🔹 *Key functions:*\n"
-                    "• Price discovery\n"
-                    "• Liquidity provision\n"
-                    "• Risk sharing & transfer\n"
-                    "• Mobilisation of savings\n\n"
-                    "🔹 *Money markets* — short-term (< 1 year): Treasury bills, commercial paper, repos\n"
-                    "🔹 *Capital markets* — long-term (> 1 year): bonds, equities\n\n"
-                    "🔹 *Primary market* — new securities issued (IPO)\n"
-                    "🔹 *Secondary market* — existing securities traded (stock exchange)\n\n"
-                    "🔹 *Market efficiency (EMH):*\n"
-                    "• Weak form — prices reflect past trading data\n"
-                    "• Semi-strong — prices reflect all public information\n"
-                    "• Strong form — prices reflect all information (public + private)"
+                    "🔹 *What is Market Efficiency?*\n"
+                    "An *informationally efficient market* is one in which asset prices reflect new information *quickly and rationally*.\n"
+                    "• 'Quick' = relative to trade execution time\n"
+                    "• Prices should NOT react to *anticipated* info — only *unexpected* info moves prices\n"
+                    "• In a perfectly efficient market → *passive strategy* preferred\n\n"
+                    "🔹 *Market Value vs Intrinsic Value*\n"
+                    "• *Market value* — current price at which asset can be bought/sold\n"
+                    "• *Intrinsic value* — value based on complete information\n"
+                    "• Efficient market: Market value = Intrinsic value\n\n"
+                    "🔹 *Factors Affecting Market Efficiency*\n"
+                    "• ↑ Market participants → ↑ efficiency\n"
+                    "• ↑ Information availability → ↑ efficiency\n"
+                    "• ↑ Limits on short-selling/arbitrage → ↓ efficiency\n"
+                    "• ↑ Transaction & information-acquisition costs → ↓ efficiency"
                 )
             },
             {
-                "title": "Equity Markets",
+                "title": "Lecture 7 — Forms of Market Efficiency (EMH)",
                 "content": (
-                    "🔹 *Shares (equity)* represent ownership in a company\n\n"
-                    "🔹 *Types of shares:*\n"
-                    "• Ordinary shares — voting rights, residual claim, variable dividends\n"
-                    "• Preference shares — fixed dividends, priority over ordinary in liquidation\n\n"
-                    "🔹 *Equity valuation models:*\n"
-                    "• *Dividend Discount Model (DDM):* P = D₁ / (r − g)\n"
-                    "  where D₁ = next dividend, r = required return, g = growth rate\n"
-                    "• *P/E ratio:* Share price / Earnings per share\n"
-                    "• *Price-to-Book:* Market price / Book value per share\n\n"
-                    "🔹 *Stock indices:* FTSE 100, S&P 500, Dow Jones\n\n"
-                    "🔹 *IPO process:* Company hires underwriters → sets price → offers shares to public"
+                    "🔹 *Three Forms of EMH:*\n"
+                    "• *Weak form* → prices reflect past market data only\n"
+                    "• *Semi-strong form* → prices reflect all public information\n"
+                    "• *Strong form* → prices reflect all public AND private info\n\n"
+                    "🔹 *Weak Form*\n"
+                    "• Technical analysis cannot produce consistent abnormal returns\n"
+                    "• Test: serial correlation in returns? Chart patterns beat market?\n\n"
+                    "🔹 *Semi-Strong Form*\n"
+                    "• Fundamental analysis cannot consistently earn abnormal returns\n"
+                    "• Test: event studies — do prices adjust quickly to new public info?\n"
+                    "• Most developed markets are semi-strong efficient\n\n"
+                    "🔹 *Strong Form*\n"
+                    "• Even insiders cannot earn abnormal returns\n"
+                    "• Most research: markets are NOT strong-form efficient\n\n"
+                    "🔹 *Implications*\n"
+                    "• If semi-strong → active managers cannot consistently beat the market\n"
+                    "• Role of managers: match client objectives, not just beat market"
                 )
             },
             {
-                "title": "Debt Markets & Bonds",
+                "title": "Lecture 7 — Market Anomalies & Behavioral Finance",
                 "content": (
-                    "🔹 *Bonds* = debt instruments; issuer promises to pay coupons + principal\n\n"
-                    "🔹 *Key terms:*\n"
-                    "• Par/Face value — amount repaid at maturity\n"
-                    "• Coupon rate — annual interest as % of face value\n"
-                    "• Yield to maturity (YTM) — total return if held to maturity\n"
-                    "• Duration — sensitivity of bond price to interest rate changes\n\n"
-                    "🔹 *Bond price & yield relationship:* ↑ yield = ↓ price (inverse)\n\n"
-                    "🔹 *Types of bonds:*\n"
-                    "• Government bonds (gilts/treasuries) — low risk\n"
-                    "• Corporate bonds — higher risk, higher yield\n"
-                    "• Zero-coupon bonds — no coupons, sold at discount\n"
-                    "• Convertible bonds — can be converted to equity\n\n"
-                    "🔹 *Credit ratings:* AAA → BBB (investment grade); BB and below (junk/high yield)"
+                    "🔹 *Time-Series Anomalies:*\n"
+                    "• *January Effect* — stocks earn higher returns in January (especially small-cap)\n"
+                    "• *Momentum Effect* — high recent returns tend to continue\n"
+                    "• *Overreaction Effect* — 'loser' stocks over 3–5 years tend to outperform afterwards\n\n"
+                    "🔹 *Cross-Sectional Anomalies:*\n"
+                    "• *Size Effect* — small-cap stocks outperform large-cap\n"
+                    "• *Value Effect* — value stocks (low P/E, low P/B) beat growth stocks\n\n"
+                    "🔹 *Other Anomalies:*\n"
+                    "• Closed-end fund discounts; Earnings surprise; IPO underperformance long-term\n"
+                    "• Most anomalies cannot be profitably exploited after costs → often data mining\n\n"
+                    "🔹 *Behavioral Finance:*\n"
+                    "• *Loss aversion* — losses hurt more than equal gains feel good\n"
+                    "• *Herding* — following the crowd, ignoring private info\n"
+                    "• *Overconfidence* — overestimating ability to value securities\n"
+                    "• *Information cascades* — blindly following a few early movers\n"
+                    "• *Representativeness, Mental accounting, Conservatism, Narrow framing*\n"
+                    "• Biases may cancel out → markets can still be efficient despite irrational individuals"
                 )
             },
             {
-                "title": "Derivatives",
+                "title": "Lecture 8 — Foreign Exchange (FX) Market: Introduction",
                 "content": (
-                    "🔹 *Derivatives* are instruments whose value is derived from an underlying asset\n\n"
-                    "🔹 *Futures:* obligation to buy/sell at a set price on a future date\n"
-                    "• Standardised, exchange-traded, marked to market daily\n\n"
-                    "🔹 *Options:* right (not obligation) to buy/sell\n"
-                    "• Call option — right to BUY\n"
-                    "• Put option — right to SELL\n"
-                    "• In-the-money / At-the-money / Out-of-the-money\n\n"
-                    "🔹 *Swaps:* exchange of cash flows (e.g. fixed for floating interest rates)\n\n"
-                    "🔹 *Uses of derivatives:*\n"
-                    "• Hedging — reduce risk\n"
-                    "• Speculation — bet on price movement\n"
-                    "• Arbitrage — exploit price differences"
+                    "🔹 *The FX Market — Key Facts*\n"
+                    "• World's largest financial market: daily turnover >$7 trillion\n"
+                    "• ~15× larger than global fixed-income; ~50× larger than global equities\n"
+                    "• Operates 24/7 across all global time zones\n\n"
+                    "🔹 *Functions of the FX Market*\n"
+                    "1. Facilitating international trade\n"
+                    "2. Accounting for financial market transactions\n"
+                    "3. Providing flexibility — spot, FX swaps, options, forwards\n\n"
+                    "🔹 *Currency Notation*\n"
+                    "• ISO 3-letter codes: USD, EUR, GBP, JPY, CHF, AUD, CAD, CNY\n"
+                    "• A/B = units of A per 1 unit of B (A = price currency, B = base currency)\n"
+                    "• If EUR.USD rises from 1.0950 → 1.0900: USD *appreciated*, EUR *depreciated*\n\n"
+                    "🔹 *FX Market Composition*\n"
+                    "• 33% spot | 14% forward/futures | 53% currency swaps\n"
+                    "• Largest volume: London, then New York"
                 )
             },
             {
-                "title": "Risk & Return",
+                "title": "Lecture 8 — Exchange Rates: Nominal, Real & Quotations",
                 "content": (
-                    "🔹 *Return* = income + capital gain\n\n"
-                    "🔹 *Risk types:*\n"
-                    "• *Systematic (market) risk* — cannot be diversified (e.g. recession)\n"
-                    "• *Unsystematic (specific) risk* — can be diversified away\n\n"
-                    "🔹 *Beta (β):* measures systematic risk relative to market\n"
-                    "• β = 1 → moves with market\n"
-                    "• β > 1 → more volatile\n"
-                    "• β < 1 → less volatile\n\n"
-                    "🔹 *CAPM:* Required return = Rf + β(Rm − Rf)\n"
-                    "  where Rf = risk-free rate, Rm = market return\n\n"
-                    "🔹 *Portfolio diversification* — combining assets reduces unsystematic risk\n"
-                    "🔹 *Efficient Frontier* — set of optimal portfolios (max return for given risk)"
+                    "🔹 *Exchange Rate Basics*\n"
+                    "• *Price currency* = numerator; *Base currency* = denominator\n"
+                    "• Example: USD/EUR = 1.45 → $1.45 per €1\n"
+                    "• Quote ↑ → base currency *appreciated*; ↓ → base *depreciated*\n\n"
+                    "🔹 *Direct vs Indirect Quote*\n"
+                    "• *Direct* — domestic currency as price currency\n"
+                    "• *Indirect* — foreign currency as price currency\n"
+                    "• They are reciprocals: EUR/USD = 1.2310 → USD/EUR = 0.8123\n\n"
+                    "🔹 *Bid & Offer (Two-sided Price)*\n"
+                    "• *Bid* — bank buys base currency (client sells)\n"
+                    "• *Offer/Ask* — client pays to buy base currency\n"
+                    "• Spread = Offer − Bid = bank's profit\n\n"
+                    "🔹 *Nominal Exchange Rate* — actual market rate; PPP rarely holds\n\n"
+                    "🔹 *Real Exchange Rate*\n"
+                    "• Real FX rate = S(A/B) × (CPI_B / CPI_A)\n"
+                    "• % change ≈ %ΔS + %ΔCPI_foreign − %ΔCPI_domestic\n"
+                    "• Example: S(GBP/EUR)↑10%, CPI_EUR↑5%, CPI_GBP↑2% → real rate ↑≈13%"
                 )
             },
             {
-                "title": "Financial Intermediaries & Regulation",
+                "title": "Lecture 8 — Exchange Rate Regimes & FX Participants",
                 "content": (
-                    "🔹 *Financial intermediaries* sit between savers and borrowers:\n"
-                    "• Commercial banks — accept deposits, make loans\n"
-                    "• Investment banks — capital raising, M&A advisory\n"
-                    "• Insurance companies — pool risk\n"
-                    "• Pension funds — long-term investment for retirement\n"
-                    "• Hedge funds — aggressive strategies, less regulated\n\n"
-                    "🔹 *Central banks:* control monetary policy, lender of last resort, bank supervision\n\n"
-                    "🔹 *Key regulators:* FCA (UK), SEC (US), ECB (Eurozone)\n\n"
-                    "🔹 *Basel III:* international banking regulation — capital adequacy, liquidity requirements\n\n"
-                    "🔹 *Systemic risk:* failure of one institution triggers wider financial crisis"
+                    "🔹 *Countries WITHOUT own currency:*\n"
+                    "• *Formal Dollarization* — uses another country's currency (e.g. Panama → USD)\n"
+                    "• *Monetary Union* — share one currency (e.g. Eurozone)\n\n"
+                    "🔹 *Countries WITH own currency:*\n"
+                    "• *Currency Board* — fix to another, only issue money if reserves back it (Hong Kong)\n"
+                    "• *Conventional Fixed Peg* — pegged within ±1% (Saudi Arabia → USD)\n"
+                    "• *Target Zone* — wider range ±2%\n"
+                    "• *Crawling Peg* — adjusted gradually for inflation differences\n"
+                    "• *Managed Float* — central bank occasionally intervenes (India)\n"
+                    "• *Independent Float* — fully market-determined (USD, EUR, GBP)\n\n"
+                    "🇺🇿 *Uzbekistan: Managed Floating*\n"
+                    "• CBU influences rate in response to inflation, BOP, external shocks\n"
+                    "• Inflation target: 5%; Policy rate: 14% (as of March 2026)\n\n"
+                    "🔹 *FX Participants (Buy Side):*\n"
+                    "Corporate accounts · Real money accounts · Leveraged accounts (hedge funds)\n"
+                    "Retail accounts · Governments · Central banks · Sovereign wealth funds\n"
+                    "*Sell Side:* only the largest first-tier global banks"
+                )
+            },
+            {
+                "title": "Lecture 9 — Cross Rates & Forward Exchange Rates",
+                "content": (
+                    "🔹 *Cross Rate Calculations*\n"
+                    "• A/C = (A/B) × (B/C) — the common currency cancels out\n"
+                    "• Example: PKR/USD=250, INR/USD=80 → PKR/INR = 250×(1/80) = *3.125*\n"
+                    "• Curriculum: USD/EUR=1.1701, CHF/USD=0.9900 → CHF/EUR = *1.1584*\n"
+                    "• USD/GBP=1.3118 → GBP/EUR = 1.1701/1.3118 = *0.8920*\n\n"
+                    "🔹 *Triangular Arbitrage*\n"
+                    "• Implied cross rate ≠ quoted → riskless profit by buying low, selling high\n\n"
+                    "🔹 *Spot vs Forward*\n"
+                    "• *Spot* — T+2 settlement; *Forward* — agreed today, settled >T+2\n\n"
+                    "🔹 *Forward Points (Pips)*\n"
+                    "• Forward = Spot ± (points ÷ 10,000)\n"
+                    "• Example: Spot=1.2875, 12m points=−26.5 → Forward = *1.28485*\n\n"
+                    "🔹 *No-Arbitrage Forward Rate*\n"
+                    "• F(P/B) = S(P/B) × (1 + i_P) / (1 + i_B)\n"
+                    "• For x-day: replace i with (i × x/360)\n"
+                    "• Example: S(INR/USD)=100, i_INR=10%, i_USD=1% → F = *108.91*\n\n"
+                    "🔹 *Premium vs Discount Rule*\n"
+                    "• Forward > Spot → base at *premium* | Forward < Spot → base at *discount*\n"
+                    "• Currency with *higher* interest rate → always trades at *forward discount*"
+                )
+            },
+            {
+                "title": "Lecture 9 — Capital Flows, Trade Balance & Capital Restrictions",
+                "content": (
+                    "🔹 *Trade Balance Identity*\n"
+                    "• (X − M) = (S − I) + (T − G)\n"
+                    "• Trade surplus requires: fiscal surplus (T>G) and/or excess savings (S>I)\n"
+                    "• Trade deficit → financed by borrowing from or selling assets to foreigners\n\n"
+                    "🔹 *Exchange Rates & Trade*\n"
+                    "• Depreciation → exports cheaper, imports dearer → reduces deficit\n"
+                    "• Appreciation → exports dearer, imports cheaper → worsens trade balance\n"
+                    "• Rates self-correct over time\n\n"
+                    "🔹 *Capital Restrictions*\n"
+                    "• Inflow restrictions: strategic/defense reasons\n"
+                    "• Outflow restrictions: prevent capital flight; preserve FX reserves; boost domestic investment\n"
+                    "• ⚠️ Long-term: capital restrictions *reduce welfare*\n\n"
+                    "🔹 *The Impossible Trinity*\n"
+                    "Cannot have all three simultaneously:\n"
+                    "1. Fixed exchange rates\n"
+                    "2. Free capital flows\n"
+                    "3. Independent monetary policy\n"
+                    "→ A country can only achieve *two of the three*"
+                )
+            },
+            {
+                "title": "Lecture 10 — Derivatives: Instruments & Market Features",
+                "content": (
+                    "🔹 *What is a Derivative?*\n"
+                    "• Value derived from an *underlying asset* (equity, bond, rate, FX, commodity)\n"
+                    "• Legal agreement: size, underlying, settlement date, price\n"
+                    "• *Buyer (long)* = takes delivery; *Seller (short)* = delivers\n\n"
+                    "🔹 *Two Categories*\n"
+                    "• *Commitments* — both obligated: forwards, futures, swaps\n"
+                    "• *Contingencies* — buyer has right, seller has obligation: options\n\n"
+                    "🔹 *Trading Venues*\n"
+                    "• *OTC* — customizable, less transparent, no daily settlement\n"
+                    "• *Exchange-Traded (ETD)* — standardized, clearinghouse as counterparty, daily MTM\n\n"
+                    "🔹 *Benefits:* Risk management, short selling, diversification, lower costs, price discovery\n\n"
+                    "🔹 *Risks:* High leverage, lack of transparency, liquidity risk, counterparty credit risk"
+                )
+            },
+            {
+                "title": "Lecture 10 — Forwards, Futures & Swaps",
+                "content": (
+                    "🔹 *1. Forwards (OTC)*\n"
+                    "• Long buys, short sells at F₀(T) agreed today; value at initiation = 0\n"
+                    "• F₀(T) = S₀(1 + r)^T | Payoff: S_T − F₀(T) | Zero-sum game\n"
+                    "• 📌 Procam: 100oz gold at $1,792.13; settles at $1,780.50 → pays $1,163\n\n"
+                    "🔹 *2. Futures (Exchange-Traded)*\n"
+                    "• Standardized: fixed sizes, dates, underlyings\n"
+                    "• *Mark-to-Market (MTM)* daily through clearinghouse\n"
+                    "• *Initial margin* required; drops below *maintenance margin* → *margin call*\n"
+                    "• 📌 Gold futures: F₀=$1,792.13, margin $4,950; price →$1,797.13 → +$500 MTM\n\n"
+                    "🔹 *3. Swaps*\n"
+                    "• Two parties exchange series of cash flows\n"
+                    "• One leg: *floating* (MRR/SOFR); Other leg: *fixed* (swap rate)\n"
+                    "• No notional principal exchanged (interest rate swaps)\n"
+                    "• Value at inception = zero\n"
+                    "• 📌 FinnLay: rec 5% fixed, pay 2% MRR on $100m → net receipt $1.5m\n"
+                    "• 📌 Fyleton: rec 2.25% fixed GBP200m, pay 1.95% MRR → net receipt £300k"
+                )
+            },
+            {
+                "title": "Lecture 10 — Options & Arbitrage/Replication Pricing",
+                "content": (
+                    "🔹 *Options*\n"
+                    "• Buyer pays *premium* for right (not obligation) to transact\n"
+                    "• *Call* — right to BUY at strike X | *Put* — right to SELL at strike X\n"
+                    "• *European* — at expiry only | *American* — any time before expiry\n\n"
+                    "🔹 *Call Payoff & Profit*\n"
+                    "• Payoff: c_T = max(0, S_T − X)\n"
+                    "• Profit: π = max(0, S_T − X) − c₀\n"
+                    "• ITM: S_T>X | ATM: S_T=X | OTM: S_T<X\n\n"
+                    "🔹 *Put Payoff & Profit*\n"
+                    "• Payoff: p_T = max(0, X − S_T)\n"
+                    "• Profit: π = max(0, X − S_T) − p₀\n\n"
+                    "📌 Call: c₀=$5, X=$30; S_T=$40 → profit=+$5 ✅; S_T=$25 → profit=−$5 ❌\n\n"
+                    "🔹 *Option Value = Intrinsic Value + Time Value*\n\n"
+                    "🔹 *Arbitrage & Law of One Price*\n"
+                    "• Same future payoff → same price today\n"
+                    "• F₀(T) = S₀(1 + r)^T — no-arbitrage forward price\n\n"
+                    "🔹 *Replication*\n"
+                    "• Buying asset with borrowed funds = long forward payoff\n"
+                    "• 📌 Gold: S₀=$1,783.28, r=2%, T=0.25 → F₀=$1,792.13\n"
+                    "• Market quotes $32 vs fair $31.50 → sell overpriced forward, buy+borrow → $0.50 profit"
                 )
             },
         ]
@@ -1498,95 +1633,255 @@ QUIZ_QUESTIONS = {
     ],
 
     "fm": [
+        # Lecture 7 — Market Efficiency
         {
-            "question": "According to the Efficient Market Hypothesis, in a SEMI-STRONG form market, prices reflect:",
-            "options": ["A) Past trading data only", "B) All public information", "C) All public and private information", "D) Only insider information"],
+            "question": "According to the EMH, in a WEAK-FORM efficient market, prices reflect:",
+            "options": ["A) All public and private information", "B) All publicly available information", "C) Past market trading data only", "D) Only dividend announcements"],
+            "correct": 2,
+            "explanation": "Weak-form: prices reflect past market data (prices, volumes). Technical analysis cannot generate consistent abnormal returns."
+        },
+        {
+            "question": "In a SEMI-STRONG form efficient market, which strategy is MOST likely to generate consistent abnormal returns?",
+            "options": ["A) Technical analysis of price charts", "B) Fundamental analysis of public financials", "C) Trading on insider information", "D) None — no strategy can consistently outperform"],
+            "correct": 2,
+            "explanation": "Semi-strong: all public info is priced in. Only insider trading (private info) could generate abnormal returns — but markets are generally NOT strong-form efficient."
+        },
+        {
+            "question": "If a market is semi-strong efficient, active portfolio managers should:",
+            "options": ["A) Use technical analysis to beat the market", "B) Favour passive investment strategies", "C) Rely on insider information", "D) Focus only on small-cap stocks"],
             "correct": 1,
-            "explanation": "Semi-strong EMH: prices reflect all publicly available information. Technical and fundamental analysis cannot generate excess returns."
+            "explanation": "Semi-strong efficiency means active managers cannot consistently outperform after costs. Passive strategies (index funds) are preferred."
         },
         {
-            "question": "If a stock has a beta of 1.5, it is:",
-            "options": ["A) Less volatile than the market", "B) Equally volatile as the market", "C) 50% more volatile than the market", "D) Not correlated with the market"],
+            "question": "The January Effect is classified as which type of anomaly?",
+            "options": ["A) Cross-sectional anomaly", "B) Structural anomaly", "C) Time-series (calendar) anomaly", "D) Fundamental anomaly"],
             "correct": 2,
-            "explanation": "Beta of 1.5 means if the market rises 10%, the stock is expected to rise 15%. More volatile than market."
+            "explanation": "The January Effect is a calendar (time-series) anomaly — returns in January are historically higher, especially for small-cap stocks."
         },
         {
-            "question": "Using CAPM, if Rf = 3%, Rm = 10%, β = 1.2, the required return is:",
-            "options": ["A) 10%", "B) 11.4%", "C) 13%", "D) 8.4%"],
+            "question": "The SIZE EFFECT anomaly states that:",
+            "options": ["A) Large-cap stocks outperform small-cap stocks", "B) Small-cap stocks tend to outperform large-cap stocks", "C) All stocks have equal expected returns", "D) Stock size has no impact on returns"],
             "correct": 1,
-            "explanation": "CAPM: 3% + 1.2 × (10% − 3%) = 3% + 8.4% = 11.4%"
+            "explanation": "The size effect is a cross-sectional anomaly: small-cap stocks have historically delivered higher risk-adjusted returns than large-cap stocks."
         },
         {
-            "question": "What happens to bond prices when interest rates RISE?",
-            "options": ["A) Bond prices rise", "B) Bond prices stay the same", "C) Bond prices fall", "D) Bond yields fall"],
+            "question": "Which behavioral bias describes investors following others rather than using their own analysis?",
+            "options": ["A) Loss aversion", "B) Overconfidence", "C) Herding", "D) Narrow framing"],
             "correct": 2,
-            "explanation": "Bond prices and yields move inversely. When interest rates rise, existing bonds with lower coupons become less attractive → prices fall."
+            "explanation": "Herding = ignoring private information and following the crowd. It can amplify market trends and create bubbles."
         },
         {
-            "question": "A call option gives the holder the right to:",
-            "options": ["A) Sell the underlying asset at the strike price", "B) Buy the underlying asset at the strike price", "C) Both buy and sell", "D) Receive a fixed coupon"],
+            "question": "Loss aversion in behavioral finance means investors:",
+            "options": ["A) Prefer risky assets over safe ones", "B) Feel the pain of a loss more strongly than the pleasure of an equal gain", "C) Always sell winning positions too early", "D) Ignore sunk costs in decision-making"],
             "correct": 1,
-            "explanation": "A call option = right to BUY. A put option = right to SELL. Neither is an obligation."
+            "explanation": "Loss aversion: the psychological pain from losing $100 is greater than the pleasure from gaining $100. This leads to irrational decision-making."
         },
         {
-            "question": "Which type of risk CAN be eliminated through portfolio diversification?",
-            "options": ["A) Systematic risk", "B) Market risk", "C) Unsystematic (specific) risk", "D) Macroeconomic risk"],
+            "question": "Market anomalies such as the momentum effect are MOST likely explained by:",
+            "options": ["A) Proof that all markets are inefficient", "B) Investor irrationality that is always exploitable", "C) Data mining or statistical methods rather than true inefficiency", "D) Government manipulation of markets"],
             "correct": 2,
-            "explanation": "Unsystematic (company-specific) risk can be diversified away by holding a broad portfolio. Systematic risk cannot."
+            "explanation": "Most research concludes anomalies are hard to exploit after costs and may result from data mining — forming hypotheses after analyzing data rather than before."
         },
+        # Lecture 8 — FX Market
         {
-            "question": "In the Dividend Discount Model, if D₁ = £2, r = 10%, g = 4%, the share price is:",
-            "options": ["A) £20", "B) £33.33", "C) £50", "D) £25"],
+            "question": "In the exchange rate notation USD/EUR = 1.10, which is the BASE currency?",
+            "options": ["A) USD", "B) EUR", "C) Both equally", "D) Neither — it's a cross rate"],
             "correct": 1,
-            "explanation": "P = D₁ ÷ (r − g) = £2 ÷ (0.10 − 0.04) = £2 ÷ 0.06 = £33.33"
+            "explanation": "In A/B notation, B is the base currency (denominator). EUR is the base; USD is the price currency. The quote means 1 EUR = 1.10 USD."
         },
         {
-            "question": "Which market do investors use to trade EXISTING securities?",
-            "options": ["A) Primary market", "B) Money market", "C) Secondary market", "D) Derivatives market"],
-            "correct": 2,
-            "explanation": "The secondary market is where already-issued securities are bought and sold between investors (e.g. stock exchange)."
-        },
-        {
-            "question": "Zero-coupon bonds are sold:",
-            "options": ["A) Above face value", "B) At face value", "C) At a discount to face value", "D) Only to governments"],
-            "correct": 2,
-            "explanation": "Zero-coupon bonds pay no periodic interest. They are sold at a discount and the investor's return comes from capital gain at maturity."
-        },
-        {
-            "question": "A futures contract is BEST described as:",
-            "options": ["A) A right to buy or sell at a future date", "B) An obligation to buy or sell at a specified price on a future date", "C) An exchange of cash flows", "D) Insurance against price movements"],
+            "question": "If the GBP/USD rate rises from 1.25 to 1.30, this means:",
+            "options": ["A) USD has appreciated against GBP", "B) GBP has appreciated against USD", "C) Both currencies strengthened", "D) The pound has weakened"],
             "correct": 1,
-            "explanation": "Futures are standardised, exchange-traded OBLIGATIONS to buy or sell at a set price on a future date. Unlike options, they must be honoured."
+            "explanation": "GBP/USD rising means you need more USD to buy 1 GBP → GBP is more expensive → GBP appreciated (USD depreciated)."
         },
         {
-            "question": "Credit rating BBB is considered:",
-            "options": ["A) Junk/high yield", "B) Investment grade", "C) Default", "D) AAA equivalent"],
+            "question": "A DIRECT exchange rate quote from a UK investor's perspective means:",
+            "options": ["A) Foreign currency as the price currency, GBP as the base", "B) GBP as the price currency, foreign currency as the base", "C) The rate is expressed in USD", "D) The rate uses forward points"],
             "correct": 1,
-            "explanation": "BBB (or Baa) is the lowest investment grade rating. Below this (BB and lower) is speculative/junk grade."
+            "explanation": "Direct quote: domestic currency (GBP for UK investor) is the price currency (numerator). Indirect is the reverse."
         },
         {
-            "question": "The primary function of financial intermediaries is to:",
-            "options": ["A) Print money", "B) Set interest rates", "C) Channel funds from savers to borrowers", "D) Regulate financial markets"],
+            "question": "In the FX market, the BID price is:",
+            "options": ["A) The rate at which the client buys the base currency", "B) The rate at which the dealer buys the base currency", "C) Always higher than the offer", "D) The mid-market rate"],
+            "correct": 1,
+            "explanation": "Bid = dealer buys (client sells) the base currency. Offer = dealer sells (client buys). Bid < Offer; spread is the dealer's profit."
+        },
+        {
+            "question": "Purchasing Power Parity (PPP) states that exchange rates should adjust so that:",
+            "options": ["A) All currencies have equal interest rates", "B) Identical goods cost the same across markets", "C) Trade balances are always zero", "D) Inflation is identical globally"],
+            "correct": 1,
+            "explanation": "PPP: in a frictionless world, exchange rates adjust until identical goods cost the same in different countries. In practice PPP rarely holds perfectly."
+        },
+        {
+            "question": "The REAL exchange rate differs from the NOMINAL exchange rate in that it:",
+            "options": ["A) Adjusts for relative price levels (CPI) between countries", "B) Includes forward points", "C) Is set by central banks", "D) Only applies to trade in goods"],
+            "correct": 0,
+            "explanation": "Real FX rate = Nominal rate × (Foreign CPI / Domestic CPI). It measures relative purchasing power, not just the market price."
+        },
+        {
+            "question": "The FX market's daily turnover of ~$7 trillion makes it approximately how many times larger than global equities?",
+            "options": ["A) 5 times", "B) 15 times", "C) 50 times", "D) 100 times"],
             "correct": 2,
-            "explanation": "Financial intermediaries (banks, pension funds, insurers) connect those with surplus funds (savers) to those who need funds (borrowers)."
+            "explanation": "The FX market is ~15× larger than global fixed income and ~50× larger than global equities by daily turnover."
         },
         {
-            "question": "Duration measures a bond's sensitivity to:",
-            "options": ["A) Credit risk", "B) Inflation", "C) Interest rate changes", "D) Currency risk"],
+            "question": "Under a CURRENCY BOARD arrangement, a country:",
+            "options": ["A) Can freely set its own interest rates", "B) Can only issue domestic currency backed by equivalent foreign reserves", "C) Has a floating exchange rate", "D) Shares its currency with neighbouring countries"],
+            "correct": 1,
+            "explanation": "Currency board: strict commitment to exchange domestic currency at a fixed rate. Can only issue money if it holds equivalent foreign reserves (e.g. Hong Kong HKD/USD)."
+        },
+        {
+            "question": "Uzbekistan's exchange rate regime is BEST described as:",
+            "options": ["A) Independently floating", "B) Fixed peg to the USD", "C) Managed float", "D) Currency board"],
             "correct": 2,
-            "explanation": "Duration measures how much a bond's price will change for a given change in interest rates. Longer duration = higher sensitivity."
+            "explanation": "Uzbekistan operates a managed float — the CBU influences the rate in response to inflation and BOP, though the market plays the leading role."
         },
         {
-            "question": "An IPO (Initial Public Offering) takes place in which market?",
-            "options": ["A) Secondary market", "B) Derivatives market", "C) Money market", "D) Primary market"],
-            "correct": 3,
-            "explanation": "IPOs involve issuing new shares to the public for the first time — this occurs in the primary market."
-        },
-        {
-            "question": "Which of these is an example of SYSTEMATIC risk?",
-            "options": ["A) A company's CEO resigns", "B) A factory burns down", "C) A global recession", "D) A product recall"],
+            "question": "Which FX market participants are on the SELL SIDE?",
+            "options": ["A) Pension funds and endowments", "B) Hedge funds and proprietary traders", "C) Large first-tier global FX dealing banks", "D) Central banks and governments"],
             "correct": 2,
-            "explanation": "Systematic risk affects the whole market (recession, interest rate changes). Company-specific events are unsystematic risk."
+            "explanation": "The sell side consists of the largest global banks acting as market makers. All other participants (corporates, funds, governments) are buy side."
+        },
+        # Lecture 9 — Cross Rates & Forward Rates
+        {
+            "question": "Given PKR/USD = 250 and INR/USD = 80, what is the PKR/INR cross rate?",
+            "options": ["A) 3.125", "B) 20,000", "C) 0.32", "D) 170"],
+            "correct": 0,
+            "explanation": "PKR/INR = (PKR/USD) × (USD/INR) = 250 × (1/80) = 3.125. The USD cancels out."
+        },
+        {
+            "question": "Given USD/EUR = 1.1701 and CHF/USD = 0.9900, the CHF/EUR cross rate is:",
+            "options": ["A) 1.1820", "B) 1.1584", "C) 0.8920", "D) 1.2072"],
+            "correct": 1,
+            "explanation": "CHF/EUR = (CHF/USD) × (USD/EUR) = 0.9900 × 1.1701 = 1.1584. USD cancels."
+        },
+        {
+            "question": "If the spot USD/EUR = 1.2875 and the 12-month forward points are −26.5, the 12-month forward rate is:",
+            "options": ["A) 1.2610", "B) 1.3140", "C) 1.28485", "D) 1.2610"],
+            "correct": 2,
+            "explanation": "Forward = Spot + (points ÷ 10,000) = 1.2875 + (−26.5 ÷ 10,000) = 1.2875 − 0.00265 = 1.28485."
+        },
+        {
+            "question": "Using the no-arbitrage formula with S(INR/USD) = 100, i_INR = 10%, i_USD = 1%, the 1-year forward rate is:",
+            "options": ["A) 101.00", "B) 110.00", "C) 108.91", "D) 109.00"],
+            "correct": 2,
+            "explanation": "F = S × (1 + i_P)/(1 + i_B) = 100 × (1.10/1.01) = 108.91 INR/USD."
+        },
+        {
+            "question": "The currency with the HIGHER interest rate will trade at a forward:",
+            "options": ["A) Premium", "B) Discount", "C) Par (no change)", "D) Depends on inflation only"],
+            "correct": 1,
+            "explanation": "Higher interest rate currency → forward DISCOUNT. This prevents arbitrage: higher rates compensate for expected depreciation."
+        },
+        {
+            "question": "Triangular arbitrage arises when:",
+            "options": ["A) Two currencies have different inflation rates", "B) The implied cross rate differs from the quoted cross rate", "C) A country imposes capital restrictions", "D) Central banks intervene in FX markets"],
+            "correct": 1,
+            "explanation": "If the implied cross rate ≠ quoted cross rate, you can buy low and sell high simultaneously for a riskless profit. Arbitrage quickly eliminates the mispricing."
+        },
+        {
+            "question": "A country's trade deficit must be exactly matched by:",
+            "options": ["A) A fiscal surplus", "B) A capital account surplus (net capital inflows)", "C) Higher domestic savings", "D) A reduction in money supply"],
+            "correct": 1,
+            "explanation": "From NX = NCO: if a country imports more than it exports (trade deficit), it must borrow from or sell assets to foreigners (capital account surplus)."
+        },
+        {
+            "question": "The 'Impossible Trinity' means a country CANNOT simultaneously have:",
+            "options": ["A) High growth, low inflation, and low unemployment", "B) Fixed exchange rate, free capital flows, AND independent monetary policy", "C) Trade surplus, fiscal surplus, and low debt", "D) Stable currency, high interest rates, and high reserves"],
+            "correct": 1,
+            "explanation": "The Impossible Trinity: fixed rates + free capital flows + independent monetary policy cannot coexist. A country must sacrifice at least one."
+        },
+        {
+            "question": "Currency depreciation is MOST likely to:",
+            "options": ["A) Worsen the trade balance by making imports cheaper", "B) Improve the trade balance by making exports cheaper", "C) Have no effect on international trade", "D) Increase the real exchange rate immediately"],
+            "correct": 1,
+            "explanation": "Depreciation → domestic goods become cheaper for foreigners (exports ↑) and foreign goods become dearer for domestic buyers (imports ↓) → trade balance improves."
+        },
+        # Lecture 10 — Derivatives
+        {
+            "question": "A derivative is BEST described as a financial instrument whose value:",
+            "options": ["A) Is fixed at inception and does not change", "B) Derives from the performance of an underlying asset", "C) Equals the face value of the underlying bond", "D) Is determined solely by central banks"],
+            "correct": 1,
+            "explanation": "Derivatives derive their value from an underlying (equity, bond, interest rate, currency, commodity). They do not have intrinsic value independent of the underlying."
+        },
+        {
+            "question": "Which of the following is a COMMITMENT derivative (both parties obligated)?",
+            "options": ["A) Call option", "B) Put option", "C) Forward contract", "D) Warrant"],
+            "correct": 2,
+            "explanation": "Forward contracts are commitments — both buyer and seller are obligated to transact. Options are contingencies — buyer has a right, not an obligation."
+        },
+        {
+            "question": "Exchange-traded derivatives differ from OTC derivatives in that they are:",
+            "options": ["A) Customizable to any specification", "B) Less transparent and harder to price", "C) Standardized with a clearinghouse as counterparty", "D) Not subject to margin requirements"],
+            "correct": 2,
+            "explanation": "ETDs are standardized (fixed sizes, dates, underlyings), cleared through a central clearinghouse, with daily MTM settlement and margin requirements."
+        },
+        {
+            "question": "Procam enters a forward to buy 100oz gold at $1,792.13. At maturity the gold price is $1,780.50. What is Procam's payoff?",
+            "options": ["A) +$1,163 received", "B) −$1,163 paid", "C) Zero — forward contracts have no payoff", "D) +$500 received"],
+            "correct": 1,
+            "explanation": "Payoff to buyer = S_T − F₀(T) = $1,780.50 − $1,792.13 = −$11.63/oz × 100oz = −$1,163. Procam pays the seller."
+        },
+        {
+            "question": "In futures markets, a MARGIN CALL occurs when:",
+            "options": ["A) The futures price rises above the forward price", "B) The margin account falls below the maintenance margin", "C) The clearinghouse changes the contract size", "D) Daily MTM gains exceed the initial margin"],
+            "correct": 1,
+            "explanation": "If daily MTM losses reduce the margin account below the maintenance margin, the exchange issues a margin call requiring the trader to top up to the initial margin."
+        },
+        {
+            "question": "In a PLAIN VANILLA interest rate swap, what does the fixed-rate payer receive?",
+            "options": ["A) Fixed coupon payments", "B) The notional principal at maturity", "C) Floating rate payments (MRR)", "D) Physical delivery of bonds"],
+            "correct": 2,
+            "explanation": "In a fixed-for-floating swap: the fixed-rate payer pays fixed and receives floating (MRR). The floating-rate payer does the opposite."
+        },
+        {
+            "question": "FinnLay receives 5% fixed and pays 2% MRR on a $100m notional (semiannual). The first net cash flow is:",
+            "options": ["A) $5,000,000 received", "B) $1,000,000 paid", "C) $1,500,000 received", "D) $2,500,000 paid"],
+            "correct": 2,
+            "explanation": "Receives: (5%/2) × $100m = $2.5m. Pays: (2%/2) × $100m = $1.0m. Net receipt = $2.5m − $1.0m = $1.5m."
+        },
+        {
+            "question": "A CALL option buyer will EXERCISE the option when:",
+            "options": ["A) S_T < X (spot price is below strike)", "B) S_T = X (spot equals strike)", "C) S_T > X (spot price exceeds strike)", "D) The option has expired worthless"],
+            "correct": 2,
+            "explanation": "A call gives the right to BUY at X. You exercise when S_T > X because you can buy below market price. Payoff = max(0, S_T − X)."
+        },
+        {
+            "question": "An investor buys a call option: c₀ = $5, X = $30. At maturity S_T = $40. What is the PROFIT?",
+            "options": ["A) $10", "B) $5", "C) $40", "D) −$5"],
+            "correct": 1,
+            "explanation": "Payoff = S_T − X = $40 − $30 = $10. Profit = Payoff − Premium = $10 − $5 = $5."
+        },
+        {
+            "question": "A PUT option buyer profits when:",
+            "options": ["A) The underlying price rises above the strike", "B) The underlying price falls below the strike", "C) The underlying price equals the strike", "D) Interest rates fall"],
+            "correct": 1,
+            "explanation": "Put = right to SELL at X. You profit when S_T < X (sell at X, buy cheaper in market). Payoff = max(0, X − S_T)."
+        },
+        {
+            "question": "The LAW OF ONE PRICE states that:",
+            "options": ["A) All currencies must have equal purchasing power", "B) Assets with identical future payoffs must have the same price today", "C) Forward prices always equal expected future spot prices", "D) Options and futures always trade at the same premium"],
+            "correct": 1,
+            "explanation": "Law of one price: if two assets produce identical future cash flows, they must cost the same today. Any difference creates a riskless arbitrage opportunity."
+        },
+        {
+            "question": "The NO-ARBITRAGE forward price of an asset is calculated as:",
+            "options": ["A) F₀(T) = S₀ / (1 + r)^T", "B) F₀(T) = S₀ × (1 + r)^T", "C) F₀(T) = S₀ + r × T", "D) F₀(T) = S₀ − dividend yield"],
+            "correct": 1,
+            "explanation": "F₀(T) = S₀(1 + r)^T. The forward price equals the spot price compounded at the risk-free rate. Any deviation creates an arbitrage opportunity."
+        },
+        {
+            "question": "Replication in derivatives pricing means:",
+            "options": ["A) Copying a competitor's trading strategy", "B) Creating the same payoff as a derivative using the underlying asset and borrowing/lending", "C) Duplicating a portfolio using only options", "D) Matching a bond's duration to a liability"],
+            "correct": 1,
+            "explanation": "Replication: recreate a derivative's cash flows using the underlying + borrowing/lending. Both must have the same price (law of one price)."
+        },
+        {
+            "question": "Which of the following is a risk UNIQUE to OTC derivatives compared to exchange-traded derivatives?",
+            "options": ["A) Market risk", "B) Counterparty credit risk", "C) Basis risk", "D) Liquidity risk from daily MTM"],
+            "correct": 1,
+            "explanation": "OTC derivatives involve direct exposure to the counterparty defaulting. ETDs eliminate this via the clearinghouse guarantee. Both have market and liquidity risk."
         },
     ],
 
@@ -1680,6 +1975,369 @@ QUIZ_QUESTIONS = {
             "options": ["A) Изменения процентных ставок", "B) Экстренные инфраструктурные расходы", "C) Unemployment Benefits и Progressive Taxation", "D) Quantitative Easing"],
             "correct": 2,
             "explanation": "Automatic Stabilisers действуют без новых решений — Benefits растут в рецессии, Taxes падают, автоматически сглаживая цикл."
+        },
+        {
+            "question": "Макроэкономика изучает:",
+            "options": [
+                "A) Поведение отдельных фирм и домохозяйств",
+                "B) Экономику в целом — ВВП, инфляцию, безработицу",
+                "C) Ценообразование на отдельных рынках",
+                "D) Оптимальное распределение ресурсов внутри фирмы"
+            ],
+            "correct": 1,
+            "explanation": "Макроэкономика изучает агрегированные показатели: ВВП, уровень цен, занятость, процентные ставки. Микроэкономика занимается отдельными агентами."
+        },
+        {
+            "question": "Opportunity Cost (альтернативная стоимость) — это:",
+            "options": [
+                "A) Денежные расходы на производство товара",
+                "B) Ценность наилучшей отвергнутой альтернативы",
+                "C) Сумма всех затрат на ресурсы",
+                "D) Разница между ценой и себестоимостью"
+            ],
+            "correct": 1,
+            "explanation": "Альтернативная стоимость — то, от чего отказываются, делая выбор. Производство пушек означает отказ от масла — классический пример."
+        },
+        {
+            "question": "Что НЕ включается в расчёт ВВП по методу расходов?",
+            "options": [
+                "A) Потребительские расходы (C)",
+                "B) Трансфертные платежи (пенсии, пособия)",
+                "C) Государственные закупки (G)",
+                "D) Чистый экспорт (NX)"
+            ],
+            "correct": 1,
+            "explanation": "Трансфертные платежи (пенсии, субсидии) не включаются в ВВП, так как не связаны с производством нового товара или услуги."
+        },
+        {
+            "question": "Если номинальный ВВП вырос на 10%, а дефлятор ВВП — на 6%, то реальный ВВП вырос примерно на:",
+            "options": [
+                "A) 16%",
+                "B) 10%",
+                "C) 4%",
+                "D) 6%"
+            ],
+            "correct": 2,
+            "explanation": "Реальный ВВП ≈ Номинальный ВВП / Дефлятор × 100. Рост реального ВВП ≈ 10% − 6% = 4%."
+        },
+        {
+            "question": "ВВП на душу населения используется для измерения:",
+            "options": [
+                "A) Общего размера экономики",
+                "B) Среднего уровня жизни",
+                "C) Темпа инфляции",
+                "D) Размера государственного долга"
+            ],
+            "correct": 1,
+            "explanation": "ВВП на душу населения = ВВП / численность населения. Используется как показатель среднего благосостояния, хотя не учитывает неравенство."
+        },
+        {
+            "question": "ИПЦ (Индекс потребительских цен) измеряет:",
+            "options": [
+                "A) Изменение цен на все товары, производимые в стране",
+                "B) Изменение стоимости потребительской корзины типичного домохозяйства",
+                "C) Средний уровень зарплат в экономике",
+                "D) Изменение ВВП в текущих ценах"
+            ],
+            "correct": 1,
+            "explanation": "ИПЦ отслеживает стоимость фиксированной корзины товаров и услуг, потребляемых типичным домохозяйством. Это основной показатель инфляции."
+        },
+        {
+            "question": "Frictional Unemployment (фрикционная безработица) — это безработица:",
+            "options": [
+                "A) Вызванная спадом в экономике",
+                "B) Возникающая при смене работы или поиске первого места",
+                "C) Связанная с устареванием профессии",
+                "D) Существующая в отдельных регионах из-за миграции"
+            ],
+            "correct": 1,
+            "explanation": "Фрикционная безработица — временная, возникает пока работник ищет новое место. Считается нормальной частью здоровой экономики."
+        },
+        {
+            "question": "NAIRU — это уровень безработицы, при котором:",
+            "options": [
+                "A) Инфляция равна нулю",
+                "B) Инфляция не ускоряется и не замедляется",
+                "C) Экономика находится в рецессии",
+                "D) Все работники заняты без исключения"
+            ],
+            "correct": 1,
+            "explanation": "NAIRU (Non-Accelerating Inflation Rate of Unemployment) — уровень безработицы, совместимый со стабильной инфляцией. Включает фрикционную и структурную безработицу."
+        },
+        {
+            "question": "Cost-Push Inflation возникает когда:",
+            "options": [
+                "A) AD сдвигается вправо из-за роста доходов",
+                "B) Издержки производства растут, сдвигая SRAS влево",
+                "C) Центральный банк увеличивает денежную массу",
+                "D) Правительство снижает налоги"
+            ],
+            "correct": 1,
+            "explanation": "Cost-Push Inflation: рост цен на ресурсы (нефть, зарплаты) → SRAS сдвигается влево → цены растут, выпуск падает. Характерна для стагфляции."
+        },
+        {
+            "question": "Долгосрочный экономический рост определяется прежде всего:",
+            "options": [
+                "A) Ростом государственных расходов",
+                "B) Ростом производительности труда и технологическим прогрессом",
+                "C) Снижением процентных ставок",
+                "D) Ростом потребительского спроса"
+            ],
+            "correct": 1,
+            "explanation": "Долгосрочный рост определяется предложением: производительность, технологии, капитал, институты. Спрос важен в краткосрочном периоде."
+        },
+        {
+            "question": "Правило 70 используется для:",
+            "options": [
+                "A) Расчёта налоговой нагрузки",
+                "B) Оценки времени удвоения экономики при заданном темпе роста",
+                "C) Определения оптимального уровня инфляции",
+                "D) Расчёта денежного мультипликатора"
+            ],
+            "correct": 1,
+            "explanation": "Правило 70: годы до удвоения ≈ 70 / темп роста (%). При росте 3.5% в год — удвоение за 20 лет."
+        },
+        {
+            "question": "Три функции денег:",
+            "options": [
+                "A) Средство обращения · мера стоимости · средство накопления",
+                "B) Средство обращения · средство кредита · средство расчёта",
+                "C) Мера стоимости · средство инвестирования · средство сбережения",
+                "D) Ликвидность · доходность · надёжность"
+            ],
+            "correct": 0,
+            "explanation": "Деньги выполняют три классические функции: средство обращения (облегчает обмен), мера стоимости (единица учёта), средство накопления (сохранение стоимости)."
+        },
+        {
+            "question": "M2 отличается от M1 тем, что включает:",
+            "options": [
+                "A) Только наличные деньги",
+                "B) Срочные вклады и сберегательные счета",
+                "C) Государственные облигации",
+                "D) Резервы коммерческих банков"
+            ],
+            "correct": 1,
+            "explanation": "M1 = наличные + текущие счета. M2 = M1 + срочные и сберегательные вклады. M2 шире и менее ликвиден."
+        },
+        {
+            "question": "Количественная теория денег (MV = PY) утверждает, что при постоянной скорости обращения рост денежной массы ведёт к:",
+            "options": [
+                "A) Росту реального ВВП",
+                "B) Пропорциональному росту уровня цен",
+                "C) Снижению безработицы",
+                "D) Росту реальной заработной платы"
+            ],
+            "correct": 1,
+            "explanation": "MV = PY: если V и Y константы, удвоение M → удвоение P. Монетаристы считают инфляцию 'всегда и везде денежным явлением' (Фридман)."
+        },
+        {
+            "question": "На рынке заёмных средств (Loanable Funds Market) процентная ставка выравнивает:",
+            "options": [
+                "A) Спрос на деньги и предложение денег",
+                "B) Объём сбережений (S) и объём инвестиций (I)",
+                "C) Государственные доходы и расходы",
+                "D) Экспорт и импорт"
+            ],
+            "correct": 1,
+            "explanation": "Рынок заёмных средств: предложение = сбережения, спрос = инвестиции. Равновесная ставка уравнивает S и I."
+        },
+        {
+            "question": "Если правительство увеличивает бюджетный дефицит, на рынке заёмных средств это приводит к:",
+            "options": [
+                "A) Снижению процентных ставок",
+                "B) Росту предложения заёмных средств",
+                "C) Росту спроса на заёмные средства и росту процентных ставок",
+                "D) Уменьшению объёма частных инвестиций без изменения ставок"
+            ],
+            "correct": 2,
+            "explanation": "Бюджетный дефицит → правительство занимает → спрос на заёмные средства растёт → ставка растёт → частные инвестиции вытесняются (crowding out)."
+        },
+        {
+            "question": "Кривая AD наклонена вниз, потому что при росте уровня цен:",
+            "options": [
+                "A) Реальные доходы падают, снижая потребление",
+                "B) Действуют три эффекта: богатства, процентной ставки и валютного курса",
+                "C) Центральный банк автоматически повышает ставку",
+                "D) Правительство сокращает расходы"
+            ],
+            "correct": 1,
+            "explanation": "Три эффекта объясняют наклон AD: эффект богатства (реальная стоимость активов падает), эффект ставки (ставки растут → инвестиции падают), эффект курса (импорт дорожает → NX растёт)."
+        },
+        {
+            "question": "В долгосрочном равновесии экономика всегда возвращается к уровню выпуска при полной занятости (LRAS), потому что:",
+            "options": [
+                "A) Правительство всегда корректирует бюджет",
+                "B) Заработные платы и цены гибкие в долгосроке",
+                "C) ФРС поддерживает постоянный темп роста денежной массы",
+                "D) AD всегда стабильна"
+            ],
+            "correct": 1,
+            "explanation": "В долгосроке зарплаты и цены полностью гибкие → экономика самокорректируется к потенциальному ВВП. LRAS вертикальна на уровне потенциального выпуска."
+        },
+        {
+            "question": "Recessionary Gap (рецессионный разрыв) означает, что:",
+            "options": [
+                "A) Фактический ВВП превышает потенциальный",
+                "B) Фактический ВВП ниже потенциального",
+                "C) Инфляция выше целевого уровня",
+                "D) Безработица ниже NAIRU"
+            ],
+            "correct": 1,
+            "explanation": "Рецессионный разрыв: фактический ВВП < потенциальный. Экономика работает ниже полной мощности → безработица выше естественного уровня."
+        },
+        {
+            "question": "Фискальный мультипликатор показывает:",
+            "options": [
+                "A) Во сколько раз вырастет денежная масса при росте резервов",
+                "B) На сколько изменится ВВП при изменении государственных расходов на 1 единицу",
+                "C) Соотношение налогов к ВВП",
+                "D) Скорость обращения денег в экономике"
+            ],
+            "correct": 1,
+            "explanation": "Фискальный мультипликатор = 1 / (1 − MPC). При MPC = 0.8: мультипликатор = 5. Рост G на $1 → рост ВВП на $5 (при прочих равных)."
+        },
+        {
+            "question": "Discretionary Fiscal Policy (дискреционная политика) — это:",
+            "options": [
+                "A) Автоматическое изменение налогов при изменении ВВП",
+                "B) Сознательные решения правительства изменить G или T",
+                "C) Решения центрального банка об изменении ставки",
+                "D) Действие рыночных сил без вмешательства государства"
+            ],
+            "correct": 1,
+            "explanation": "Дискреционная политика = активные, сознательные изменения G или T парламентом/правительством. Противоположность — автоматические стабилизаторы."
+        },
+        {
+            "question": "Automatic Stabilisers (автоматические стабилизаторы) работают потому что:",
+            "options": [
+                "A) Правительство принимает быстрые решения во время кризиса",
+                "B) Налоги и пособия меняются автоматически при изменении дохода",
+                "C) ФРС снижает ставки при рецессии",
+                "D) Экспорт растёт при ослаблении валюты"
+            ],
+            "correct": 1,
+            "explanation": "При спаде: доходы падают → налоги падают автоматически; безработица растёт → пособия растут автоматически. Оба эффекта поддерживают AD без решений парламента."
+        },
+        {
+            "question": "Если ФРС хочет снизить инфляцию, она должна:",
+            "options": [
+                "A) Купить государственные облигации",
+                "B) Снизить резервные требования",
+                "C) Продать государственные облигации (сократить денежную массу)",
+                "D) Снизить учётную ставку"
+            ],
+            "correct": 2,
+            "explanation": "Для борьбы с инфляцией ФРС проводит сдерживающую политику: продаёт облигации → банки теряют резервы → денежная масса сокращается → AD падает → инфляция снижается."
+        },
+        {
+            "question": "Liquidity Trap (ловушка ликвидности) означает:",
+            "options": [
+                "A) Избыточный рост денежной массы",
+                "B) Ситуацию когда ставки около нуля и монетарная политика теряет эффективность",
+                "C) Кризис банковской ликвидности",
+                "D) Отказ банков выдавать кредиты"
+            ],
+            "correct": 1,
+            "explanation": "Ловушка ликвидности: номинальные ставки ≈ 0%, люди держат деньги вместо облигаций. ФРС не может снижать ставки дальше → классическая монетарная политика не работает."
+        },
+        {
+            "question": "Quantitative Easing (количественное смягчение, QE) — это:",
+            "options": [
+                "A) Снижение налогов для стимулирования экономики",
+                "B) Покупка долгосрочных активов центральным банком для роста денежной массы",
+                "C) Фиксация валютного курса",
+                "D) Снижение резервных требований для банков"
+            ],
+            "correct": 1,
+            "explanation": "QE: центральный банк покупает долгосрочные облигации и другие активы → банковские резервы растут → кредитование должно расти. Применялось после 2008 и в COVID-19."
+        },
+        {
+            "question": "Absolute Advantage (абсолютное преимущество) означает способность производить:",
+            "options": [
+                "A) Товар с меньшей альтернативной стоимостью",
+                "B) Больший объём товара при тех же ресурсах",
+                "C) Товар без использования импортных компонентов",
+                "D) Товар дешевле любого конкурента на мировом рынке"
+            ],
+            "correct": 1,
+            "explanation": "Абсолютное преимущество: производить больше при тех же ресурсах (или то же — при меньших). Сравнительное преимущество важнее для торговли."
+        },
+        {
+            "question": "Согласно теореме Хекшера-Олина, страна экспортирует товары, в производстве которых интенсивно используется:",
+            "options": [
+                "A) Наиболее дефицитный фактор производства",
+                "B) Наиболее дешёвый и относительно избыточный фактор производства",
+                "C) Самая современная технология",
+                "D) Труд вне зависимости от его стоимости"
+            ],
+            "correct": 1,
+            "explanation": "Теорема Хекшера-Олина: страны экспортируют товары с интенсивным использованием избыточного фактора. Трудоизбыточные страны → экспорт трудоёмких товаров."
+        },
+        {
+            "question": "Тариф (импортная пошлина) приводит к:",
+            "options": [
+                "A) Росту благосостояния всех групп населения",
+                "B) Росту доходов потребителей и снижению прибыли отечественных производителей",
+                "C) Росту внутренних цен, выгоде производителей и потерям потребителей",
+                "D) Росту объёма импорта"
+            ],
+            "correct": 2,
+            "explanation": "Тариф повышает внутреннюю цену → потребители теряют, отечественные производители выигрывают, государство получает доход. Чистые потери для экономики в целом."
+        },
+        {
+            "question": "Current Account (счёт текущих операций) включает:",
+            "options": [
+                "A) Прямые иностранные инвестиции и портфельные вложения",
+                "B) Торговый баланс, доходы и текущие трансферты",
+                "C) Изменения в валютных резервах",
+                "D) Только товарный экспорт и импорт"
+            ],
+            "correct": 1,
+            "explanation": "Счёт текущих операций = торговый баланс (товары и услуги) + доходы от факторов + текущие трансферты. Отражает текущий поток доходов и расходов."
+        },
+        {
+            "question": "Если счёт текущих операций страны дефицитен, то счёт капитала и финансовый счёт должны быть:",
+            "options": [
+                "A) Тоже дефицитными",
+                "B) Сбалансированными на нуле",
+                "C) Профицитными (приток капитала)",
+                "D) Не связаны с текущим счётом"
+            ],
+            "correct": 2,
+            "explanation": "Платёжный баланс всегда равен нулю. Дефицит текущего счёта = профицит финансового счёта (страна привлекает капитал из-за рубежа)."
+        },
+        {
+            "question": "При системе плавающего валютного курса дефицит текущего счёта корректируется через:",
+            "options": [
+                "A) Снижение процентных ставок центральным банком",
+                "B) Обесценивание валюты, делающее экспорт дешевле, а импорт дороже",
+                "C) Рост государственных расходов",
+                "D) Продажу валютных резервов центральным банком"
+            ],
+            "correct": 1,
+            "explanation": "При плавающем курсе: дефицит ТА → спрос на иностранную валюту > предложение → национальная валюта обесценивается → экспорт дешевеет, импорт дорожает → ТА улучшается."
+        },
+        {
+            "question": "J-Curve эффект означает, что после обесценивания валюты торговый баланс:",
+            "options": [
+                "A) Немедленно улучшается",
+                "B) Сначала ухудшается, затем улучшается",
+                "C) Постоянно ухудшается",
+                "D) Не изменяется в краткосрочном периоде"
+            ],
+            "correct": 1,
+            "explanation": "J-Curve: краткосрочно — объёмы не успевают подстроиться, цены в иностранной валюте растут → баланс ухудшается. Долгосрочно — объёмы корректируются → баланс улучшается."
+        },
+        {
+            "question": "Stagflation (стагфляция) — это одновременное:",
+            "options": [
+                "A) Ускорение роста ВВП и снижение инфляции",
+                "B) Снижение ВВП (или стагнация) и рост инфляции",
+                "C) Рост ВВП и рост безработицы",
+                "D) Снижение инфляции и рост безработицы"
+            ],
+            "correct": 1,
+            "explanation": "Стагфляция = стагнация + инфляция. Вызывается негативным шоком предложения (SRAS влево). Пример: нефтяные кризисы 1970-х."
         },
     ],
 }
@@ -1882,11 +2540,11 @@ VIDEOS = {
         {"title": "Financial Ratio Analysis — Profitability, Liquidity, Gearing", "url": "https://youtu.be/placeholder_f3_5", "topic": "ratios"},
     ],
     "fm": [
-        {"title": "How Bonds Work", "url": "https://youtu.be/placeholder_fm_1", "topic": "bonds"},
-        {"title": "CAPM & Beta Explained", "url": "https://youtu.be/placeholder_fm_2", "topic": "capm"},
-        {"title": "Stock Markets & IPOs", "url": "https://youtu.be/placeholder_fm_3", "topic": "stocks"},
-        {"title": "Risk & Diversification", "url": "https://youtu.be/placeholder_fm_4", "topic": "risk"},
-        {"title": "Financial Intermediaries", "url": "https://youtu.be/placeholder_fm_5", "topic": "intermediaries"},
+        {"title": "Market Efficiency & EMH Explained", "url": "https://www.youtube.com/watch?v=yTCX2D7PdRY", "topic": "market efficiency"},
+        {"title": "FX Market: Exchange Rates & Quotations", "url": "https://youtu.be/placeholder_fm_2", "topic": "foreign exchange"},
+        {"title": "Forward Rates & Interest Rate Parity", "url": "https://youtu.be/placeholder_fm_3", "topic": "forward rates"},
+        {"title": "Derivatives: Forwards, Futures & Swaps", "url": "https://youtu.be/placeholder_fm_4", "topic": "derivatives"},
+        {"title": "Options: Calls, Puts & Payoff Profiles", "url": "https://youtu.be/placeholder_fm_5", "topic": "options"},
     ],
     "macro": [
         {"title": "Производительность и экономический рост (Crash Course)", "url": "https://www.youtube.com/watch?v=UHiUYj5EA0w", "topic": "рост"},
