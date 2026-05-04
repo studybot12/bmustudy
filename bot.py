@@ -799,6 +799,51 @@ async def list_promos_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode="Markdown")
 
 
+# ── BROADCAST ────────────────────────────────────────────────────────────────
+
+async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    if not context.args:
+        await update.message.reply_text(
+            "📢 *Рассылка*\n\nИспользование:\n`/broadcast Ваш текст сообщения`\n\nПример:\n`/broadcast 🎉 Новый предмет уже доступен!`",
+            parse_mode="Markdown"
+        )
+        return
+
+    text = " ".join(context.args)
+    users = db.get_all_users_with_subjects()
+    if not users:
+        await update.message.reply_text("❌ Нет студентов для рассылки.")
+        return
+
+    progress_msg = await update.message.reply_text(f"📤 Начинаю рассылку... (0/{len(users)})")
+    sent = 0
+    failed = 0
+    import asyncio
+    for i, user in enumerate(users):
+        try:
+            await context.bot.send_message(
+                chat_id=user["user_id"],
+                text=text,
+                parse_mode="Markdown"
+            )
+            sent += 1
+        except Exception:
+            failed += 1
+        if (i + 1) % 10 == 0:
+            try:
+                await progress_msg.edit_text(f"📤 Рассылка... ({i+1}/{len(users)})")
+            except Exception:
+                pass
+        await asyncio.sleep(0.05)
+
+    await progress_msg.edit_text(
+        f"✅ *Рассылка завершена!*\n\n📨 Отправлено: *{sent}*\n❌ Не доставлено: *{failed}*\n👥 Всего: *{len(users)}*",
+        parse_mode="Markdown"
+    )
+
+
 # ── MAIN MENU HANDLER ─────────────────────────────────────────────────────────
 
 async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1331,9 +1376,16 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             student_lang = db.get_user_lang(student_id) or "en"
             msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
             admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📘 {info['name']}"
-        start_hint = "\n\n▶️ Нажмите /start чтобы открыть предмет" if student_lang == "ru" else "\n\n▶️ Press /start to access your subject"
+        # Send access granted message with inline button to open subject directly
+        if subject_key == "bundle" or subject_key.startswith("bundle_"):
+            open_btn_label = "📚 Открыть мои предметы" if student_lang == "ru" else "📚 Open My Courses"
+            open_btn_cb = "menu_my_subjects"
+        else:
+            open_btn_label = f"📘 Открыть {SUBJECTS[subject_key]['name']}" if student_lang == "ru" else f"📘 Open {SUBJECTS[subject_key]['name']}"
+            open_btn_cb = f"study_{subject_key}"
+        open_markup = InlineKeyboardMarkup([[InlineKeyboardButton(open_btn_label, callback_data=open_btn_cb)]])
         try:
-            await context.bot.send_message(student_id, msg + start_hint, parse_mode="Markdown")
+            await context.bot.send_message(student_id, msg, parse_mode="Markdown", reply_markup=open_markup)
         except Exception:
             pass
         try:
@@ -2410,6 +2462,7 @@ def main():
             CommandHandler("addpromo", add_promo_cmd),
             CommandHandler("deletepromo", delete_promo_cmd),
             CommandHandler("listpromos", list_promos_cmd),
+            CommandHandler("broadcast", broadcast_cmd),
             MessageHandler(filters.ALL, fallback)
         ],
         allow_reentry=True,
@@ -2424,6 +2477,7 @@ def main():
     app.add_handler(CommandHandler("profile", admin_profile))
     app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
     app.add_handler(CommandHandler("revokeaccess", admin_revokeaccess))
+    app.add_handler(CommandHandler("broadcast", broadcast_cmd))
     app.add_handler(CommandHandler("cancel", cancel))
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)
