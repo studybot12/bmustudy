@@ -491,8 +491,8 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ),
             parse_mode="Markdown"
         )
-    except Exception:
-        pass
+    except Exception as e:
+        logger.error(f"Failed to notify admin about new user: {e}", exc_info=True)
 
     # Запускаем онбординг
     name = user.first_name or ("друг" if lang == "ru" else "friend")
@@ -1200,8 +1200,16 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 parse_mode="Markdown",
                 reply_markup=admin_keyboard
             )
+        else:
+            # Fallback: student sent text instead of photo
+            await context.bot.send_message(
+                chat_id=ADMIN_ID,
+                text=admin_text + "\n\n⚠️ Студент не прислал фото — прислал текст.",
+                parse_mode="Markdown",
+                reply_markup=admin_keyboard
+            )
     except Exception as e:
-        logger.error(f"Failed to notify admin: {e}")
+        logger.error(f"Failed to notify admin about payment: {e}", exc_info=True)
 
     keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
     await update.message.reply_text(
