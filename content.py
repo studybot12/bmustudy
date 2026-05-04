@@ -2066,181 +2066,181 @@ QUIZ_QUESTIONS = {
             "question": "Using the expenditure method, GDP equals:",
             "options": ["A) C + I + G", "B) C + I + G + (X − M)", "C) C + G + NX − I", "D) Wages + Profits + Rent"],
             "correct": 1,
-            "explanation": "GDP = C (Consumption) + I (Investment) + G (Government spending) + NX (Net Exports = X − M). Это формула метода расходов."
+            "explanation": "GDP = C (Consumption) + I (Investment) + G (Government spending) + NX (Net Exports = X − M). This is the expenditure approach — the most common method to calculate GDP."
         },
         {
             "question": "The GDP Deflator is calculated as:",
             "options": ["A) Real GDP / Nominal GDP × 100", "B) Nominal GDP / Real GDP × 100", "C) GDP / Population × 100", "D) CPI / Nominal GDP × 100"],
             "correct": 1,
-            "explanation": "GDP Deflator = (Nominal GDP / Real GDP) × 100. Измеряет общий уровень цен в экономике — шире CPI, охватывает весь выпуск."
+            "explanation": "GDP Deflator = (Nominal GDP / Real GDP) × 100. It measures the overall price level in the economy — broader than CPI as it covers all output, not just a fixed household basket."
         },
         {
             "question": "How does Real GDP differ from Nominal GDP?",
             "options": ["A) It accounts for population growth", "B) It is adjusted for inflation using base-year prices", "C) It only includes exports", "D) It is measured in foreign currency"],
             "correct": 1,
-            "explanation": "Real GDP скорректирован на изменение цен — позволяет сравнивать реальный экономический рост по годам без влияния инфляции."
+            "explanation": "Real GDP is adjusted for price changes using base-year prices — it allows genuine year-on-year comparisons of economic growth without the distorting effect of inflation."
         },
         {
             "question": "Demand-Pull Inflation is caused by:",
             "options": ["A) Rising oil prices", "B) Falling consumer confidence", "C) Excess Aggregate Demand", "D) Supply chain disruptions"],
             "correct": 2,
-            "explanation": "Demand-Pull возникает когда AD растёт быстрее производственных возможностей — 'too much money chasing too few goods'. AD сдвигается вправо → цены растут."
+            "explanation": "Demand-Pull inflation occurs when AD grows faster than the economy's productive capacity — 'too much money chasing too few goods'. The AD curve shifts right → price level rises."
         },
         {
             "question": "If the Reserve Ratio = 20%, the Money Multiplier equals:",
             "options": ["A) 2", "B) 5", "C) 10", "D) 20"],
             "correct": 1,
-            "explanation": "Money Multiplier = 1 / Reserve Ratio = 1 / 0.20 = 5. При депозите $1,000 банковская система создаёт $5,000 кредитов."
+            "explanation": "Money Multiplier = 1 / Reserve Ratio = 1 / 0.20 = 5. With an initial deposit of $1,000 the banking system can create up to $5,000 in credit through fractional reserve lending."
         },
         {
             "question": "When the Fed buys government bonds (Open-Market Operations), the money supply:",
             "options": ["A) Decreases", "B) Stays the same", "C) Increases", "D) Depends on inflation"],
             "correct": 2,
-            "explanation": "Покупка облигаций (OMO) — банки получают резервы → больше кредитов → Money Supply растёт. Обратное — при продаже облигаций."
+            "explanation": "When the Fed buys bonds (OMO), banks receive reserves → can extend more loans → Money Supply increases. The reverse happens when the Fed sells bonds."
         },
         {
             "question": "The Phillips Curve shows the short-run relationship between:",
             "options": ["A) GDP and interest rates", "B) Inflation and Unemployment", "C) Exports and Imports", "D) Money Supply and Bond Yields"],
             "correct": 1,
-            "explanation": "Phillips Curve — обратная краткосрочная зависимость: выше инфляция = ниже безработица. В долгосроке эта связь разрушается."
+            "explanation": "The Phillips Curve shows an inverse short-run trade-off: higher inflation = lower unemployment. In the long run this relationship breaks down as expectations adjust."
         },
         {
             "question": "Structural Unemployment is caused by:",
             "options": ["A) Seasonal decline in demand", "B) Workers changing jobs", "C) A recession", "D) A mismatch between workers' skills and available jobs"],
             "correct": 3,
-            "explanation": "Structural Unemployment — долгосрочная, из-за изменений в экономике: автоматизация, упадок отраслей. Требует переобучения — не решается ростом спроса."
+            "explanation": "Structural Unemployment is long-term unemployment caused by shifts in the economy — automation, industry decline, skills mismatch. It requires retraining; demand stimulus alone cannot fix it."
         },
         {
             "question": "The Crowding-Out effect means that higher Government Spending:",
             "options": ["A) Directly reduces consumption", "B) Raises interest rates → reduces private investment", "C) Increases imports", "D) Reduces tax revenues"],
             "correct": 1,
-            "explanation": "Government borrowing → процентные ставки↑ → частным фирмам дороже занимать → Investment сокращается. Частично нейтрализует фискальный стимул."
+            "explanation": "Government borrowing → interest rates rise → it becomes more expensive for private firms to borrow → private Investment falls. This partially offsets the fiscal stimulus."
         },
         {
             "question": "In the AD-AS model, the LRAS curve is vertical because:",
             "options": ["A) Prices do not change in the long run", "B) The economy is always at full employment in the long run", "C) The government controls supply", "D) Exports = Imports"],
             "correct": 1,
-            "explanation": "LRAS вертикальна при Natural Rate of Output — в долгосроке выпуск определяется Supply-side факторами (K, L, H, A), а не уровнем цен. Деньги нейтральны."
+            "explanation": "LRAS is vertical at the Natural Rate of Output — in the long run output is determined by supply-side factors (capital, labour, human capital, technology), not the price level. Money is neutral."
         },
         {
             "question": "Comparative Advantage means specialising where:",
             "options": ["A) Absolute output is greatest", "B) Wages are lowest", "C) Opportunity cost is lowest", "D) Technology is most advanced"],
             "correct": 2,
-            "explanation": "Comparative Advantage — об Opportunity Cost. Страна специализируется там, где производит с наименьшими альтернативными издержками. Основа выгод от торговли."
+            "explanation": "Comparative Advantage is about Opportunity Cost. A country specialises in goods it produces at the lowest opportunity cost. This is the foundation of gains from trade — even if one country is absolutely better at everything."
         },
         {
             "question": "The identity NX = NCO means:",
             "options": ["A) Imports always equal Exports", "B) Trade Balance = Net Capital Outflow", "C) Government Spending = Taxes", "D) Saving = Consumption"],
             "correct": 1,
-            "explanation": "Каждая торговая операция имеет зеркальное финансовое движение капитала — NX и NCO всегда равны. Trade deficit → capital inflow."
+            "explanation": "Every trade transaction has a mirror financial (capital) flow — NX and NCO are always equal by identity. A trade deficit means the country is a net recipient of foreign capital."
         },
         {
             "question": "A Budget Deficit occurs when:",
             "options": ["A) Exports > Imports", "B) GDP is below potential", "C) Government Spending > Tax Revenue", "D) The central bank raises interest rates"],
             "correct": 2,
-            "explanation": "Budget Deficit = G > T за данный год. Накопленный итог — National Debt. Дефицит финансируется выпуском государственных облигаций."
+            "explanation": "A Budget Deficit occurs when Government Spending exceeds Tax Revenue (G > T) in a given year. The accumulated total of past deficits is the National Debt, financed by issuing government bonds."
         },
         {
             "question": "Currency Depreciation makes a country's exports:",
             "options": ["A) More expensive for foreigners", "B) Cheaper for foreigners", "C) Unavailable to foreigners", "D) Subject to higher tariffs"],
             "correct": 1,
-            "explanation": "При Currency Depreciation товары страны дешевеют в иностранной валюте → Exports становятся конкурентоспособнее → NX растёт."
+            "explanation": "Currency Depreciation makes domestic goods cheaper in foreign currency terms → Exports become more price-competitive → Net Exports (NX) increase, boosting Aggregate Demand."
         },
         {
             "question": "Automatic Stabilisers include:",
             "options": ["A) Changes in interest rates", "B) Emergency infrastructure spending", "C) Unemployment benefits and progressive taxation", "D) Quantitative Easing"],
             "correct": 2,
-            "explanation": "Automatic Stabilisers действуют без новых решений: Benefits растут в рецессии, налоги падают — автоматически сглаживая цикл. Reduce boom-bust amplitude."
+            "explanation": "Automatic Stabilisers work without new government decisions: unemployment benefits rise in a recession and tax revenues fall — automatically cushioning the downturn and reducing boom-bust amplitude."
         },
         {
             "question": "Macroeconomics studies:",
             "options": ["A) Behaviour of individual firms and households", "B) The economy as a whole — GDP, inflation, unemployment", "C) Pricing in individual markets", "D) Optimal resource allocation within a firm"],
             "correct": 1,
-            "explanation": "Макроэкономика изучает агрегированные показатели: GDP, price level, employment, interest rates. Микроэкономика — отдельные агенты и рынки."
+            "explanation": "Macroeconomics studies economy-wide (aggregate) variables: GDP, price level, employment and interest rates. Microeconomics focuses on individual agents, firms and markets."
         },
         {
             "question": "Opportunity Cost is:",
             "options": ["A) The monetary cost of producing a good", "B) The value of the best alternative foregone", "C) The sum of all resource costs", "D) The difference between price and unit cost"],
             "correct": 1,
-            "explanation": "Opportunity Cost = ценность наилучшей отвергнутой альтернативы. Производство пушек = отказ от масла. Ключевой принцип экономического мышления."
+            "explanation": "Opportunity Cost = the value of the best alternative foregone. Producing more guns means giving up butter. It is the cornerstone of economic thinking — every choice has a cost."
         },
         {
             "question": "Which of the following is NOT included in GDP calculated by the expenditure method?",
             "options": ["A) Consumer spending (C)", "B) Transfer payments (pensions, benefits)", "C) Government purchases (G)", "D) Net exports (NX)"],
             "correct": 1,
-            "explanation": "Transfer payments (пенсии, субсидии) не включаются в GDP — они не связаны с производством нового товара или услуги. Просто перераспределение дохода."
+            "explanation": "Transfer payments (pensions, benefits, subsidies) are excluded from GDP — they are not linked to producing a new good or service. They are simply a redistribution of income, not output."
         },
         {
             "question": "If Nominal GDP grew by 10% and the GDP Deflator rose by 6%, Real GDP grew by approximately:",
             "options": ["A) 16%", "B) 10%", "C) 4%", "D) 6%"],
             "correct": 2,
-            "explanation": "Real GDP growth ≈ Nominal GDP growth − Inflation = 10% − 6% = 4%. Реальный рост очищен от ценового эффекта."
+            "explanation": "Real GDP growth ≈ Nominal GDP growth − Inflation = 10% − 6% = 4%. Real GDP strips out the price effect, showing how much actual output expanded."
         },
         {
             "question": "GDP per capita is used to measure:",
             "options": ["A) Total size of the economy", "B) Average living standard", "C) Inflation rate", "D) Size of government debt"],
             "correct": 1,
-            "explanation": "GDP per capita = GDP / population. Используется как индикатор среднего благосостояния, хотя не учитывает неравенство распределения доходов."
+            "explanation": "GDP per capita = GDP / population. It is used as a proxy for average living standards, though it does not capture income inequality or non-market welfare."
         },
         {
             "question": "The CPI (Consumer Price Index) measures:",
             "options": ["A) Price changes of all goods produced in the country", "B) Cost changes of a typical household's consumption basket", "C) Average wage levels in the economy", "D) Changes in GDP at current prices"],
             "correct": 1,
-            "explanation": "CPI отслеживает стоимость фиксированной корзины товаров типичного домохозяйства. Основной показатель инфляции. Может иметь bias из-за замещения."
+            "explanation": "CPI tracks the cost of a fixed basket of goods typical of a household's consumption. It is the main inflation measure, though it can be upward-biased due to substitution and quality improvements."
         },
         {
             "question": "Frictional Unemployment is unemployment arising from:",
             "options": ["A) Economic recession", "B) Workers changing jobs or searching for their first job", "C) Skills becoming obsolete", "D) Regional migration patterns"],
             "correct": 1,
-            "explanation": "Frictional Unemployment — временная, возникает пока работник ищет новое место. Считается нормальной частью здоровой экономики. Всегда присутствует."
+            "explanation": "Frictional Unemployment is short-term unemployment arising while workers search for a new job or enter the labour market for the first time. It is considered normal and always present in a healthy economy."
         },
         {
             "question": "NAIRU is the level of unemployment at which:",
             "options": ["A) Inflation equals zero", "B) Inflation is neither accelerating nor decelerating", "C) The economy is in recession", "D) All workers are employed"],
             "correct": 1,
-            "explanation": "NAIRU (Non-Accelerating Inflation Rate of Unemployment) — уровень, совместимый со стабильной инфляцией. Включает frictional + structural unemployment."
+            "explanation": "NAIRU (Non-Accelerating Inflation Rate of Unemployment) is the unemployment level consistent with stable inflation. It comprises frictional + structural unemployment and represents the long-run equilibrium."
         },
         {
             "question": "Cost-Push Inflation occurs when:",
             "options": ["A) AD shifts right due to rising incomes", "B) Rising production costs shift SRAS left", "C) The central bank increases the money supply", "D) The government cuts taxes"],
             "correct": 1,
-            "explanation": "Cost-Push: рост цен на ресурсы (нефть, зарплаты) → SRAS сдвигается влево → цены растут, выпуск падает. Характерна для стагфляции (1970s нефтяной шок)."
+            "explanation": "Cost-Push inflation: rising input costs (oil, wages) → SRAS shifts left → prices rise and output falls simultaneously. This produces stagflation — as seen during the 1970s oil shocks."
         },
         {
             "question": "Long-run economic growth is primarily determined by:",
             "options": ["A) Government spending increases", "B) Growth in labour productivity and technological progress", "C) Lower interest rates", "D) Consumer demand growth"],
             "correct": 1,
-            "explanation": "Долгосрочный рост определяется Supply-side факторами: производительность, технологии, капитал, институты. Спрос важен лишь в краткосрочном периоде."
+            "explanation": "Long-run growth is driven by supply-side factors: labour productivity, technological progress, capital accumulation and strong institutions. Demand stimulus matters only in the short run."
         },
         {
             "question": "The Rule of 70 is used to:",
             "options": ["A) Calculate tax burden", "B) Estimate how many years it takes for the economy to double at a given growth rate", "C) Determine the optimal inflation rate", "D) Calculate the money multiplier"],
             "correct": 1,
-            "explanation": "Rule of 70: years to double ≈ 70 / growth rate (%). При росте 3.5% в год — удвоение за 20 лет. При 7% — за 10 лет. Иллюстрирует силу сложного роста."
+            "explanation": "Rule of 70: years to double ≈ 70 / growth rate (%). At 3.5% annual growth — doubling in 20 years; at 7% — doubling in 10 years. This illustrates the powerful effect of compound growth."
         },
         {
             "question": "The three functions of money are:",
             "options": ["A) Medium of exchange · unit of account · store of value", "B) Medium of exchange · credit instrument · settlement tool", "C) Unit of account · investment vehicle · savings tool", "D) Liquidity · yield · safety"],
             "correct": 0,
-            "explanation": "Три классические функции денег: medium of exchange (облегчает обмен), unit of account (единица учёта), store of value (сохранение стоимости)."
+            "explanation": "The three classic functions of money: medium of exchange (facilitates transactions), unit of account (common measure of value), and store of value (preserves purchasing power over time)."
         },
         {
             "question": "M2 differs from M1 in that it includes:",
             "options": ["A) Only physical cash", "B) Time deposits and savings accounts", "C) Government bonds", "D) Commercial bank reserves"],
             "correct": 1,
-            "explanation": "M1 = cash + current accounts. M2 = M1 + срочные и сберегательные вклады + money market funds. M2 шире и менее ликвиден, чем M1."
+            "explanation": "M1 = cash in circulation + demand (current) accounts. M2 = M1 + time deposits, savings accounts and money market funds. M2 is broader and less liquid than M1."
         },
         {
             "question": "The Quantity Theory of Money (MV = PY) states that with constant velocity, money supply growth leads to:",
             "options": ["A) Real GDP growth", "B) Proportional rise in the price level", "C) Lower unemployment", "D) Higher real wages"],
             "correct": 1,
-            "explanation": "MV = PY: если V и Y константы, удвоение M → удвоение P. Friedman: 'Inflation is always and everywhere a monetary phenomenon.' Основа монетаризма."
+            "explanation": "MV = PY: if velocity (V) and real output (Y) are constant, doubling M → doubles P. Friedman: 'Inflation is always and everywhere a monetary phenomenon.' This is the foundation of monetarism."
         },
         {
             "question": "In the Loanable Funds Market, the interest rate equilibrates:",
             "options": ["A) Money demand and money supply", "B) Saving (S) and Investment (I)", "C) Government revenues and spending", "D) Exports and imports"],
             "correct": 1,
-            "explanation": "Loanable Funds Market: supply = сбережения, demand = инвестиции. Равновесная ставка уравнивает S и I. Budget deficit → сдвигает спрос вправо → ставка растёт."
+            "explanation": "In the Loanable Funds Market, supply comes from savers and demand from borrowers (investors). The equilibrium interest rate equates S and I. A budget deficit shifts demand right → interest rate rises."
         },
         {
             "question": "If the government increases the budget deficit, in the loanable funds market this leads to:",
@@ -2252,31 +2252,31 @@ QUIZ_QUESTIONS = {
             "question": "The AD curve slopes downward because when the price level rises:",
             "options": ["A) Real incomes fall, reducing consumption only", "B) Three effects operate: wealth, interest rate, and exchange rate effects", "C) The central bank automatically raises rates", "D) The government cuts spending"],
             "correct": 1,
-            "explanation": "Три эффекта объясняют наклон AD: wealth effect (реальная стоимость активов↓), interest rate effect (ставки↑ → I↓), exchange rate effect (валюта дорожает → NX↓)."
+            "explanation": "Three effects explain the downward slope of AD: wealth effect (real value of assets falls → consumption falls), interest rate effect (rates rise → investment falls), exchange rate effect (currency appreciates → NX falls)."
         },
         {
             "question": "In long-run equilibrium, the economy always returns to its natural output level (LRAS) because:",
             "options": ["A) The government always adjusts the budget", "B) Wages and prices are flexible in the long run", "C) The Fed maintains a constant money growth rate", "D) AD is always stable"],
             "correct": 1,
-            "explanation": "В долгосроке зарплаты и цены полностью гибкие → экономика самокорректируется к потенциальному GDP. LRAS вертикальна на уровне потенциального выпуска."
+            "explanation": "In the long run, wages and prices are fully flexible → the economy self-corrects back to potential GDP without policy intervention. This is why LRAS is vertical at the natural output level."
         },
         {
             "question": "A Recessionary Gap means that:",
             "options": ["A) Actual GDP exceeds potential GDP", "B) Actual GDP is below potential GDP", "C) Inflation is above target", "D) Unemployment is below NAIRU"],
             "correct": 1,
-            "explanation": "Recessionary Gap: фактический ВВП < потенциальный. Экономика работает ниже полной мощности → безработица выше NAIRU. Требует стимулирующей политики."
+            "explanation": "A Recessionary Gap: actual GDP < potential GDP. The economy operates below full capacity → unemployment exceeds NAIRU → deflationary pressure builds. Expansionary fiscal or monetary policy can close the gap."
         },
         {
             "question": "The Fiscal Multiplier shows:",
             "options": ["A) How much the money supply grows when reserves increase", "B) By how much GDP changes when government spending changes by 1 unit", "C) The ratio of taxes to GDP", "D) The velocity of money in the economy"],
             "correct": 1,
-            "explanation": "Fiscal Multiplier = 1 / (1 − MPC). При MPC = 0.8: multiplier = 5. Рост G на $1 → рост ВВП на $5 (при прочих равных, без crowding-out)."
+            "explanation": "Fiscal Multiplier = 1 / (1 − MPC). With MPC = 0.8: multiplier = 5. A $1 rise in government spending → $5 rise in GDP (all else equal, assuming no crowding-out)."
         },
         {
             "question": "Discretionary Fiscal Policy refers to:",
             "options": ["A) Automatic changes in taxes and spending during the business cycle", "B) Deliberate government decisions to change spending or taxes to influence the economy", "C) Central bank control of interest rates", "D) Fixed rules for monetary expansion"],
             "correct": 1,
-            "explanation": "Discretionary policy = сознательные решения правительства менять G или T для воздействия на экономику. В отличие от automatic stabilisers — требует новых решений."
+            "explanation": "Discretionary Fiscal Policy = deliberate government decisions to change G or T to influence the economy. Unlike automatic stabilisers, it requires an active legislative decision each time."
         },
     ],
 }
