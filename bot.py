@@ -473,6 +473,27 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = query.data.split("_")[1]
     user = query.from_user
     db.upsert_user(user.id, user.username or "", user.first_name or "", lang)
+
+    # Notify admin about new registration
+    try:
+        stats = db.get_stats()
+        total = stats["users"]
+        username_str = f"@{user.username}" if user.username else "без username"
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=(
+                f"🆕 *Новый студент!*\n\n"
+                f"👤 Имя: *{user.first_name}*\n"
+                f"🔗 Username: {username_str}\n"
+                f"🆔 ID: `{user.id}`\n"
+                f"🌐 Язык: *{lang}*\n\n"
+                f"👥 Всего студентов: *{total}*"
+            ),
+            parse_mode="Markdown"
+        )
+    except Exception:
+        pass
+
     # Запускаем онбординг
     name = user.first_name or ("друг" if lang == "ru" else "friend")
     context.user_data["onboarding_name"] = name
