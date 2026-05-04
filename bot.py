@@ -474,6 +474,26 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = query.from_user
     db.upsert_user(user.id, user.username or "", user.first_name or "", lang)
 
+    # Notify admin about new registration
+    try:
+        stats = db.get_stats()
+        total = stats["users"]
+        username_str = f"@{user.username}" if user.username else "без username"
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=(
+                f"🆕 *Новый студент!*\n\n"
+                f"👤 Имя: *{user.first_name}*\n"
+                f"🔗 Username: {username_str}\n"
+                f"🆔 ID: `{user.id}`\n"
+                f"🌐 Язык: *{lang}*\n\n"
+                f"👥 Всего студентов: *{total}*"
+            ),
+            parse_mode="Markdown"
+        )
+    except Exception as e:
+        logger.error(f"Failed to notify admin about new user: {e}", exc_info=True)
+
     # Запускаем онбординг
     name = user.first_name or ("друг" if lang == "ru" else "friend")
     context.user_data["onboarding_name"] = name
@@ -1001,19 +1021,20 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         markup = InlineKeyboardMarkup(keyboard)
         photo_url = SUBJECT_PHOTOS.get(subject_key)
+        try:
+            await query.message.delete()
+        except Exception:
+            pass
         if photo_url:
             try:
-                await query.message.edit_media(
-                    media=__import__("telegram").InputMediaPhoto(media=photo_url, caption=text, parse_mode="Markdown"),
-                    reply_markup=markup
+                await query.message.chat.send_photo(
+                    photo=photo_url, caption=text,
+                    parse_mode="Markdown", reply_markup=markup
                 )
                 return PAYMENT_SCREENSHOT
             except Exception:
                 pass
-        try:
-            await query.message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
-        except Exception:
-            await query.message.chat.send_message(text, parse_mode="Markdown", reply_markup=markup)
+        await query.message.chat.send_message(text, parse_mode="Markdown", reply_markup=markup)
         return PAYMENT_SCREENSHOT
 
     if data.startswith("promo_"):
@@ -1188,7 +1209,7 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 reply_markup=admin_keyboard
             )
     except Exception as e:
-        logger.error(f"Failed to notify admin: {e}")
+        logger.error(f"Failed to notify admin about payment: {e}", exc_info=True)
 
     keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
     await update.message.reply_text(
@@ -2297,6 +2318,13 @@ def main():
         fallbacks=[
             CommandHandler("start", start),
             CommandHandler("cancel", cancel),
+            CommandHandler("stats", admin_stats),
+            CommandHandler("users", admin_users),
+            CommandHandler("profile", admin_profile),
+            CommandHandler("giveaccess", admin_giveaccess),
+            CommandHandler("addpromo", add_promo_cmd),
+            CommandHandler("deletepromo", delete_promo_cmd),
+            CommandHandler("listpromos", list_promos_cmd),
             MessageHandler(filters.ALL, fallback)
         ],
         allow_reentry=True,
