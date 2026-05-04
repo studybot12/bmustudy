@@ -1091,6 +1091,7 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data.startswith("promo_"):
         subject_key = data.split("_", 1)[1]
         context.user_data["pending_subject"] = subject_key
+        context.user_data["awaiting_promo"] = True
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}")]]
         await query.message.edit_text(t(user_id, "promo_enter"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
@@ -1167,8 +1168,10 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
     user_id = update.effective_user.id
     user = update.effective_user
 
+
     # Handle promo code text input
-    if update.message.text and not update.message.photo:
+    if update.message.text and not update.message.photo and context.user_data.get("awaiting_promo"):
+        context.user_data["awaiting_promo"] = False
         promo_code = update.message.text.strip().upper()
         discount = db.check_promo(promo_code)
         subject_key = context.user_data.get("pending_subject")
@@ -1180,11 +1183,12 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
             text = t(user_id, "promo_valid", discount=discount, price=discounted_price)
             text += "\n\n" + t(user_id, "payment_instruction",
                                subject=info["name"], price=discounted_price, card=CARD_NUMBER)
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}")]]
             await update.message.reply_text(text, parse_mode="Markdown",
                                             reply_markup=InlineKeyboardMarkup(keyboard))
         else:
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+            context.user_data["awaiting_promo"] = True
+            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}" if subject_key else "back_main")]]
             await update.message.reply_text(t(user_id, "promo_invalid"), parse_mode="Markdown",
                                             reply_markup=InlineKeyboardMarkup(keyboard))
         return PAYMENT_SCREENSHOT
