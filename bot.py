@@ -1229,7 +1229,7 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         [InlineKeyboardButton("✅ Подтвердить", callback_data=approve_cb),
          InlineKeyboardButton("❌ Отклонить", callback_data=deny_cb)]
     ])
-    name = f"{user.first_name or ""} {user.last_name or ""}".strip()
+    name = (f"{user.first_name or ''} {user.last_name or ''}").strip()
     name = name.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`").replace("[", r"\[")
     username_raw = f"@{user.username}" if user.username else "без username"
     username_safe = username_raw.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`")
@@ -1338,7 +1338,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logger.error(f"admin_action edit error: {e}")
     elif action == "deny":
-        subject_key = parts[2]
+        subject_key = "_".join(parts[2:])
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_denied"]
@@ -1712,7 +1712,6 @@ async def quiz_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         total = len(questions)
         # Safety check — prevent IndexError on last question
         if index >= total:
-            await query.answer()
             return QUIZ_SESSION
         q = questions[index]
         correct_index = q["correct"]
@@ -2225,6 +2224,7 @@ async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif pct >= 50: grade = t(user_id, "grade_ok")
             else: grade = t(user_id, "grade_bad")
             is_trial = context.user_data.get("tf_is_trial", False)
+            was_trial = is_trial
             if is_trial:
                 context.user_data["tf_is_trial"] = False
                 done = result_text + "\n\n" + t(user_id, "trial_tf_done", score=score, total=total)
@@ -2243,7 +2243,7 @@ async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ]
             await query.message.edit_text(done, parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(keyboard))
-            return SUBJECT_MENU if not is_trial else CHOOSING_SUBJECT
+            return CHOOSING_SUBJECT if was_trial else SUBJECT_MENU
         else:
             lang = db.get_user_lang(user_id) or "en"
             next_btn = "➡️ Следующий" if lang == "ru" else "➡️ Next"
@@ -2355,7 +2355,7 @@ def main():
             MAIN_MENU: [CallbackQueryHandler(main_menu_handler)],
             CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler)],
             PAYMENT_SCREENSHOT: [
-                MessageHandler(filters.PHOTO | filters.Document.ALL | filters.TEXT, receive_screenshot),
+                MessageHandler(filters.PHOTO | filters.Document.ALL | (filters.TEXT & ~filters.COMMAND), receive_screenshot),
                 CallbackQueryHandler(subject_handler),
             ],
             SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler)],
