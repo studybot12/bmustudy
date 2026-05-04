@@ -5,6 +5,7 @@ SUBJECTS = {
     "f3": {"name": "F3 — Financial Accounting"},
     "fm": {"name": "Intro to Financial Markets & Institutions"},
     "macro": {"name": "Macroeconomics"},
+    "hrm": {"name": "Human Resource Management (HRM)"},
 }
 
 # ─── STUDY MATERIALS ──────────────────────────────────────────────────────────
@@ -1065,6 +1066,173 @@ MATERIALS = {
             },
         ]
     },
+    "hrm": {
+        "name": "Human Resource Management (HRM)",
+        "chapters": [
+            {
+                "title": "Topic 1 · Introduction to HRM & HR Planning",
+                "content": (
+                    "*Human Resource Management (HRM)* = the strategic approach to managing people so the organisation achieves its goals.\n\n"
+                    "🔹 *Core HRM functions:*\n"
+                    "• Recruitment & selection · Training & development · Performance management\n"
+                    "• Compensation & benefits · Employee relations · HR planning\n\n"
+                    "🔹 *HR Planning (HRP):*\n"
+                    "Ensures the RIGHT people are in the RIGHT place at the RIGHT time.\n\n"
+                    "🔹 *Four phases of HRP:*\n"
+                    "1. Forecast demand & supply of human resources\n"
+                    "2. Establish HR objectives\n"
+                    "3. Design & implement programmes (recruitment, training, compensation)\n"
+                    "4. Monitor & evaluate outcomes\n\n"
+                    "🔹 *Three time horizons:*\n"
+                    "• Short-term (≤1 yr) — fill vacancies, recruitment campaigns\n"
+                    "• Intermediate-term (2–3 yrs) — retraining, restructuring\n"
+                    "• Long-term (3+ yrs) — succession planning, culture change\n\n"
+                    "🔹 *Demand forecasting methods:*\n"
+                    "• Managerial estimates — line managers project staffing needs\n"
+                    "• Delphi technique — panel of experts refine forecasts iteratively\n"
+                    "• Statistical (regression, Markov analysis) — quantitative models\n\n"
+                    "🔹 *Supply forecasting:*\n"
+                    "• Internal — replacement charts, succession plans, Markov analysis\n"
+                    "• External — labour market data, demographic trends"
+                )
+            },
+            {
+                "title": "Topic 2 · Recruitment, Selection & Onboarding",
+                "content": (
+                    "🔹 *Recruitment* = attracting a pool of suitable candidates.\n"
+                    "🔹 *Selection* = choosing the best candidate from that pool.\n\n"
+                    "🔹 *Recruitment process:*\n"
+                    "Job analysis → Job description → Person specification → Advertise → Screen → Interview → Offer\n\n"
+                    "🔹 *Job description* — duties, responsibilities, reporting lines, pay range.\n"
+                    "🔹 *Person specification* — qualifications, experience, skills, competencies required.\n\n"
+                    "🔹 *Selection methods:*\n"
+                    "• Structured interviews — consistent questions; reduces bias\n"
+                    "• Psychometric tests — ability, aptitude, personality measures\n"
+                    "• Assessment centres — multiple exercises; best predictor of job performance\n"
+                    "• Work sample tests — practical tasks reflecting actual job\n\n"
+                    "🔹 *AI in recruitment (modern trend):*\n"
+                    "• NLP-powered job ads (Textio) remove biased language\n"
+                    "• AI screening tools (CVViZ) contextually match CVs to roles\n"
+                    "• Game-based assessments (Pymetrics) measure traits without bias\n"
+                    "• Video AI interviews (HireVue) analyse language & body language\n\n"
+                    "🔹 *Onboarding* = integrating new hires into the organisation.\n"
+                    "Good onboarding → higher retention, faster productivity, stronger engagement.\n\n"
+                    "🔹 *Unilever case:* AI narrowed 250,000 applicants → 3,500; hiring cycle cut from 4 months to 4 weeks; saved 50,000 labour hours."
+                )
+            },
+            {
+                "title": "Topic 3 · Performance Management & Appraisal",
+                "content": (
+                    "*Performance management* = a continuous process of setting goals, monitoring progress, and developing employees.\n\n"
+                    "🔹 *Performance appraisal* = formal, regular review of an employee's performance against agreed objectives.\n\n"
+                    "🔹 *Two dimensions of performance:*\n"
+                    "• Quantitative — measurable outputs (sales targets, error rates, deadlines)\n"
+                    "• Qualitative — judgement-based (communication, teamwork, initiative)\n\n"
+                    "🔹 *Appraisal methods:*\n"
+                    "• Management by Objectives (MBO) — goals agreed jointly; reviewed at period end\n"
+                    "• Behavioural Rating Scales — assess specific observable behaviours\n"
+                    "• 360° feedback — input from manager, peers, subordinates, clients\n"
+                    "• Ranking methods — compare employees against each other\n\n"
+                    "🔹 *Common appraisal biases:*\n"
+                    "• Halo effect — one positive trait colours the whole assessment\n"
+                    "• Horn effect — one negative trait colours everything\n"
+                    "• Recency bias — recent events dominate the review\n"
+                    "• Central tendency — rater avoids extremes; gives everyone 'average'\n\n"
+                    "🔹 *Effective performance management:*\n"
+                    "Clarifies expectations · identifies training needs · motivates through recognition · supports pay decisions\n\n"
+                    "🔹 *Separation, termination & transition:*\n"
+                    "• Voluntary (resignation, retirement) vs Involuntary (redundancy, dismissal)\n"
+                    "• Fair dismissal requires valid reason + fair process\n"
+                    "• Redundancy = role no longer exists (not personal performance)"
+                )
+            },
+            {
+                "title": "Topic 4 · Training, Development & Knowledge Management",
+                "content": (
+                    "🔹 *Definitions:*\n"
+                    "• Training — planned, job-specific; improves current role performance\n"
+                    "• Development — broader, future-oriented; prepares for future roles\n"
+                    "• Education — widest scope; builds lifelong skills and values\n\n"
+                    "🔹 *Training process (systematic approach):*\n"
+                    "1. Training Needs Analysis (TNA): required skills vs actual skills = gap\n"
+                    "2. Set learning objectives\n"
+                    "3. Design and deliver training\n"
+                    "4. Evaluate effectiveness\n\n"
+                    "🔹 *Evaluation — Kirkpatrick's 4 levels:*\n"
+                    "1. Reaction — did participants enjoy it?\n"
+                    "2. Learning — did knowledge/skills improve?\n"
+                    "3. Behaviour — has on-the-job performance changed?\n"
+                    "4. Results — has the organisation benefited (ROI)?\n\n"
+                    "🔹 *AI & L&D — Real-time learning:*\n"
+                    "• On-demand, integrated into workflow (vs fixed classroom schedule)\n"
+                    "• Personalised learning journeys based on individual performance data\n"
+                    "• Gamified platforms (Vividifi): simulations, quizzes, role-plays\n"
+                    "• Hays case: real-time CRM training → support queries ↓75%, engagement ×5\n\n"
+                    "🔹 *Knowledge Management (KM):*\n"
+                    "Capturing, sharing and applying organisational knowledge to improve performance.\n"
+                    "• Explicit knowledge — documented; easy to transfer (manuals, databases)\n"
+                    "• Tacit knowledge — experience-based; hard to transfer (skills, intuition)\n"
+                    "• KM strategies: communities of practice, mentoring, knowledge databases"
+                )
+            },
+            {
+                "title": "Topic 5 · HR Technology & Innovation",
+                "content": (
+                    "*HRIS* (Human Resources Information System) = integrated software managing HR data: payroll, records, benefits, performance, recruitment.\n\n"
+                    "🔹 *Benefits of HR technology:*\n"
+                    "• Efficiency — automates payroll, leave, benefits administration\n"
+                    "• Data-driven decisions — real-time analytics on turnover, engagement, skill gaps\n"
+                    "• Enhanced employee experience — self-service portals, instant feedback\n"
+                    "• Cost savings — less admin labour; cloud eliminates on-premises infrastructure\n\n"
+                    "🔹 *Key HR technology types:*\n"
+                    "• HRIS — centralises employee data and HR processes\n"
+                    "• Recruitment software — automates job posting, screening, scheduling\n"
+                    "• Employee engagement platforms — continuous feedback, recognition, wellbeing\n"
+                    "• People analytics tools — workforce data for strategic decisions\n"
+                    "• Cloud-based HR — remote access, scalable, always updated\n\n"
+                    "🔹 *AI branches in HR:*\n"
+                    "• Machine Learning — predict turnover, identify high-potential employees\n"
+                    "• Natural Language Processing (NLP) — chatbots for HR queries, CV screening\n"
+                    "• Computer Vision — facial expression analysis in video interviews\n\n"
+                    "🔹 *Challenges of HR technology:*\n"
+                    "• Data privacy & security (GDPR compliance essential)\n"
+                    "• Resistance to change from employees and HR staff\n"
+                    "• Complex integration with existing legacy systems\n"
+                    "• Keeping pace with rapid technological change\n\n"
+                    "🔹 *Netflix case:* HRIS + AI recruitment + engagement platform → enhanced talent management, higher employee satisfaction, increased efficiency."
+                )
+            },
+            {
+                "title": "Topic 6 · Employee Relations, Ethics & Diversity",
+                "content": (
+                    "🔹 *Employee relations* = managing the relationship between employer and employees (individually and collectively).\n\n"
+                    "🔹 *Employment relationship key concepts:*\n"
+                    "• Psychological contract — unwritten expectations between employee and employer\n"
+                    "• Trade unions — collective bargaining; represent employees in negotiations\n"
+                    "• Grievance procedures — formal process for employee complaints\n"
+                    "• Disciplinary procedures — steps for addressing misconduct or poor performance\n\n"
+                    "🔹 *HR ethics:*\n"
+                    "• Fairness in recruitment, pay, and promotion decisions\n"
+                    "• Confidentiality of employee personal data\n"
+                    "• Avoiding discrimination (protected characteristics)\n"
+                    "• Transparency in performance and pay systems\n\n"
+                    "🔹 *Diversity & Inclusion (D&I):*\n"
+                    "• Diversity = mix of people (age, gender, ethnicity, background, disability)\n"
+                    "• Inclusion = creating an environment where all feel valued and can contribute\n"
+                    "• Business case for D&I: better decision-making, innovation, talent attraction\n\n"
+                    "🔹 *Managing a diverse workforce:*\n"
+                    "• Cultural sensitivity training\n"
+                    "• Mentoring programmes for under-represented groups\n"
+                    "• Flexible working policies\n"
+                    "• Bias-aware recruitment processes (blind CVs, structured interviews)\n\n"
+                    "🔹 *Work-life balance trends:*\n"
+                    "Remote work · Flexible hours · Four-day work week · Employee wellbeing programmes\n\n"
+                    "🔹 *Future of work — skills HR professionals need:*\n"
+                    "Digital savvy · People analytics · HR design thinking · Employee experience focus · Future of work awareness"
+                )
+            },
+        ]
+    },
 }
 
 
@@ -1145,6 +1313,28 @@ FLASHCARDS = {
         {"term": "Purchasing Power Parity (PPP)", "definition": "Exchange rates adjust so identical goods cost the same across countries. Explains long-run exchange rate trends. Big Mac Index is a famous example."},
         {"term": "LRAS (Long-Run Aggregate Supply)", "definition": "Vertical at the natural level of output. In the long run, output is determined by factors of production (K, L, H, A), not price level. Money is neutral in LR."},
         {"term": "Automatic Stabilisers", "definition": "Unemployment benefits and progressive taxes automatically dampen economic cycles without new policy decisions. Reduce amplitude of boom-bust cycles."},
+    ],
+    "hrm": [
+        {"term": "HRM (Human Resource Management)", "definition": "Strategic approach to managing people so the organisation achieves its goals. Functions: recruitment, training, performance, compensation, employee relations."},
+        {"term": "HR Planning (HRP)", "definition": "Ensuring the right people are in the right place at the right time. Four phases: forecast demand/supply → set objectives → implement programmes → evaluate."},
+        {"term": "Delphi Technique", "definition": "Demand forecasting method: panel of experts exchange forecasts through an intermediary; iterate until consensus emerges. Useful for uncertain, long-range predictions."},
+        {"term": "Replacement Chart", "definition": "Supply forecasting tool showing current incumbents and likely replacements for key positions. Helps identify bench strength and succession gaps."},
+        {"term": "Job Description vs Person Specification", "definition": "Job description = duties, responsibilities, pay, reporting lines. Person specification = qualifications, skills, experience required in the ideal candidate."},
+        {"term": "Assessment Centre", "definition": "Selection method using multiple exercises (role plays, group tasks, interviews, tests) over one or more days. Best predictor of future job performance."},
+        {"term": "Psychometric Test", "definition": "Standardised measure of mental ability, aptitude or personality used in selection. Provides objective, comparable data on candidates."},
+        {"term": "Performance Appraisal", "definition": "Formal, regular review of employee performance against agreed objectives. Methods: MBO, 360°, behavioural rating scales. Biases: halo/horn, recency, central tendency."},
+        {"term": "360° Feedback", "definition": "Performance data collected from manager, peers, subordinates AND the employee themselves. Provides rounded view but can be politically sensitive."},
+        {"term": "MBO (Management by Objectives)", "definition": "Goals jointly agreed between manager and employee at start of period; reviewed at end. Focuses on results, not activity. Motivating through ownership of goals."},
+        {"term": "Training Needs Analysis (TNA)", "definition": "Required skills − Actual skills = Training gap. Identifies what training is needed before designing programmes."},
+        {"term": "Kirkpatrick's 4 Levels", "definition": "Training evaluation: 1. Reaction (did they like it?) 2. Learning (knowledge gained?) 3. Behaviour (on-the-job change?) 4. Results (organisational ROI?)."},
+        {"term": "Tacit vs Explicit Knowledge", "definition": "Tacit = experience-based, hard to codify (skills, intuition). Explicit = documented, easy to transfer (manuals, databases). KM aims to capture tacit knowledge."},
+        {"term": "HRIS (Human Resources Information System)", "definition": "Integrated software managing HR functions: payroll, records, benefits, performance, recruitment. Automates admin tasks and centralises employee data."},
+        {"term": "People Analytics", "definition": "Data-driven insights to improve HR decisions: predicting turnover, identifying high-potential employees, analysing engagement trends, supporting D&I initiatives."},
+        {"term": "Psychological Contract", "definition": "Unwritten, informal expectations between employer and employee (beyond the legal contract). Breach leads to disengagement, reduced trust, and higher turnover."},
+        {"term": "Diversity & Inclusion (D&I)", "definition": "Diversity = mix of people (age, gender, ethnicity, background). Inclusion = environment where all feel valued. Business case: better decisions, innovation, talent retention."},
+        {"term": "Redundancy vs Dismissal", "definition": "Redundancy = role no longer exists (not personal). Dismissal = employee terminated due to conduct or capability. Both require fair process to avoid unfair dismissal claims."},
+        {"term": "Real-Time Learning", "definition": "On-demand, workflow-integrated learning. Delivered when needed; highly targeted; cheaper and faster to update than traditional classroom training."},
+        {"term": "Succession Planning", "definition": "Long-term HR process identifying and developing employees to fill senior roles. Reduces leadership risk; builds internal talent pipeline."},
     ],
 }
 
@@ -2279,6 +2469,119 @@ QUIZ_QUESTIONS = {
             "explanation": "Discretionary Fiscal Policy = deliberate government decisions to change G or T to influence the economy. Unlike automatic stabilisers, it requires an active legislative decision each time."
         },
     ],
+
+    "hrm": [
+        {
+            "question": "HR Planning ensures that an organisation has the right people at the right time. Which of the following BEST describes the first phase?",
+            "options": [
+                "A) Design and implement training programmes",
+                "B) Forecast demand and supply of human resources",
+                "C) Set HR objectives aligned with business strategy",
+                "D) Monitor and evaluate existing HR programmes"
+            ],
+            "correct": 1,
+            "explanation": "The four phases of HRP are: (1) Forecast demand & supply, (2) Set objectives, (3) Design & implement programmes, (4) Monitor & evaluate. Forecasting comes first — you must know the gap before setting targets."
+        },
+        {
+            "question": "The Delphi technique is used in HR planning as a method of:",
+            "options": [
+                "A) Selecting candidates using structured interviews",
+                "B) Evaluating training effectiveness",
+                "C) Forecasting future labour demand through expert consensus",
+                "D) Mapping current employee competencies"
+            ],
+            "correct": 2,
+            "explanation": "The Delphi technique gathers forecasts from a panel of experts who refine each other's predictions through an intermediary. It is particularly useful for long-range, uncertain HR demand forecasting."
+        },
+        {
+            "question": "Which selection method is generally considered the BEST predictor of future job performance?",
+            "options": [
+                "A) Unstructured interviews",
+                "B) CV screening alone",
+                "C) References from previous employers",
+                "D) Assessment centres"
+            ],
+            "correct": 3,
+            "explanation": "Assessment centres use multiple exercises (role plays, group tasks, tests, interviews) over one or more days — this breadth of evidence makes them the strongest predictor of future job performance."
+        },
+        {
+            "question": "In Unilever's AI-powered recruitment case study, what was the primary benefit of using HireVue and Pymetrics?",
+            "options": [
+                "A) Eliminating the need for human interviewers entirely",
+                "B) Reducing the hiring cycle from 4 months to 4 weeks and saving 50,000 labour hours",
+                "C) Increasing the number of candidates invited to assessment centres",
+                "D) Replacing psychometric tests with written examinations"
+            ],
+            "correct": 1,
+            "explanation": "Unilever used AI to narrow 250,000 applicants to 3,500, reducing the hiring cycle from 4 months to 4 weeks and saving 50,000 hours. The final selection was still made by human recruiters."
+        },
+        {
+            "question": "Performance appraisal bias where a single negative trait dominates the entire evaluation is called:",
+            "options": [
+                "A) Halo effect",
+                "B) Recency bias",
+                "C) Horn effect",
+                "D) Central tendency"
+            ],
+            "correct": 2,
+            "explanation": "The horn effect = one negative trait colours the whole assessment negatively. The halo effect is the opposite — one positive trait inflates the overall rating."
+        },
+        {
+            "question": "Under Kirkpatrick's model, which level evaluates whether training led to measurable improvements in organisational performance (ROI)?",
+            "options": [
+                "A) Level 1 — Reaction",
+                "B) Level 2 — Learning",
+                "C) Level 3 — Behaviour",
+                "D) Level 4 — Results"
+            ],
+            "correct": 3,
+            "explanation": "Level 4 (Results) measures the organisational impact of training — ROI, productivity, quality, profitability. Level 1 = reaction, Level 2 = knowledge gained, Level 3 = on-the-job behaviour change."
+        },
+        {
+            "question": "An HRIS (Human Resources Information System) primarily:",
+            "options": [
+                "A) Replaces all HR professionals in an organisation",
+                "B) Centralises employee data and automates routine HR tasks such as payroll and leave",
+                "C) Conducts performance appraisals automatically",
+                "D) Selects candidates using machine learning algorithms"
+            ],
+            "correct": 1,
+            "explanation": "HRIS integrates HR functions (payroll, records, benefits, performance data) into one system — automating admin tasks and freeing HR professionals for strategic work. It is NOT a replacement for HR professionals."
+        },
+        {
+            "question": "The psychological contract in employment refers to:",
+            "options": [
+                "A) The formal written employment contract signed by both parties",
+                "B) The unwritten, informal expectations between employer and employee",
+                "C) A legal agreement negotiated by trade unions",
+                "D) A psychometric test score used in recruitment"
+            ],
+            "correct": 1,
+            "explanation": "The psychological contract = unwritten mutual expectations (e.g., fair treatment, job security, career development). Breaching it leads to disengagement and higher turnover even if the formal contract is intact."
+        },
+        {
+            "question": "Which of the following BEST describes 'tacit knowledge' in the context of Knowledge Management?",
+            "options": [
+                "A) Formally documented procedures stored in a company manual",
+                "B) Data held in HR databases accessible to all employees",
+                "C) Experience-based know-how that is difficult to articulate or transfer",
+                "D) Explicit training materials used in onboarding programmes"
+            ],
+            "correct": 2,
+            "explanation": "Tacit knowledge is personal, experience-based and hard to codify (e.g., a salesperson's intuition). Explicit knowledge is documented (manuals, databases). KM strategies aim to capture and transfer tacit knowledge."
+        },
+        {
+            "question": "Real-time learning in HR technology is BEST described as:",
+            "options": [
+                "A) Annual classroom training delivered by external trainers",
+                "B) Learning that is on-demand, integrated into the workflow, and delivered when needed",
+                "C) A fixed monthly e-learning module assigned to all employees",
+                "D) Video-recorded lectures available only during working hours"
+            ],
+            "correct": 1,
+            "explanation": "Real-time learning = on-demand, highly targeted, workflow-integrated. It is cheaper, faster to update, and more effective than traditional scheduled training because employees learn at the point of need."
+        },
+    ],
 }
 
 # ─── API FUNCTIONS ────────────────────────────────────────────────────────────
@@ -2334,6 +2637,26 @@ CHEATSHEETS = {
         "7️⃣ *Trade:* NX = X−M | NX = NCO | Depreciation → exports↑\n\n"
         "📌 *Remember:* Monetary policy — Central Bank (rates, QE) | Fiscal policy — Government (taxes, spending)"
     ),
+    "hrm": (
+        "🔑 *HRM — Key Concepts & Models:*\n\n"
+        "1️⃣ *HR Planning* — 4 phases: Forecast demand/supply → Set objectives → Implement programmes → Evaluate\n"
+        "   Demand methods: Managerial estimates | Delphi technique | Statistical (Markov, regression)\n\n"
+        "2️⃣ *Recruitment & Selection*\n"
+        "   Job description (what the job is) vs Person specification (who is needed)\n"
+        "   Best predictor of performance = Assessment centres\n"
+        "   AI tools: Textio (job ads) · CVViZ (screening) · Pymetrics (assessment) · HireVue (video interviews)\n\n"
+        "3️⃣ *Performance Appraisal* — Methods: MBO | 360° | Behavioural rating scales\n"
+        "   Biases: Halo (positive skew) | Horn (negative skew) | Recency | Central tendency\n\n"
+        "4️⃣ *Training & Development*\n"
+        "   TNA: Required skills − Actual skills = Training gap\n"
+        "   Kirkpatrick's 4 levels: Reaction → Learning → Behaviour → Results (ROI)\n"
+        "   Tacit knowledge (hard to transfer) vs Explicit knowledge (documented)\n\n"
+        "5️⃣ *HR Technology*\n"
+        "   HRIS — centralises data, automates payroll/leave/benefits\n"
+        "   People Analytics — data-driven workforce decisions\n"
+        "   Challenges: GDPR/data privacy | Resistance to change | System integration\n\n"
+        "📌 *Remember:* Psychological contract = unwritten expectations | Diversity ≠ Inclusion | Real-time learning = on-demand, workflow-integrated"
+    ),
 }
 
 # ─── GLOSSARY ─────────────────────────────────────────────────────────────────
@@ -2388,6 +2711,23 @@ GLOSSARY = {
         {"term": "Crowding Out", "definition": "When government borrowing raises interest rates, reducing private sector investment."},
         {"term": "Automatic Stabilisers", "definition": "Built-in mechanisms (unemployment benefits, progressive taxes) that dampen economic cycles without new policy."},
         {"term": "Structural Unemployment", "definition": "Long-term unemployment caused by skills mismatch due to industry decline or technological change."},
+    ],
+    "hrm": [
+        {"term": "HRM", "definition": "Human Resource Management — the strategic approach to managing people to help the organisation achieve its goals. Core functions: recruitment, training, performance, compensation, employee relations."},
+        {"term": "HR Planning (HRP)", "definition": "Ensuring the right people are in the right place at the right time. Four phases: forecast demand/supply → set objectives → design programmes → monitor outcomes."},
+        {"term": "Delphi Technique", "definition": "HR demand forecasting method: a panel of experts exchange and refine forecasts through an intermediary until consensus is reached. Best for long-range, uncertain environments."},
+        {"term": "Job Description", "definition": "Document specifying a role's duties, responsibilities, reporting lines, and pay range. Answers: what does the job involve?"},
+        {"term": "Person Specification", "definition": "Document specifying the qualifications, skills, experience, and competencies required in the ideal candidate. Answers: what kind of person do we need?"},
+        {"term": "Assessment Centre", "definition": "Selection method using multiple exercises (role plays, group tasks, psychometric tests, interviews) over one or more days. The best predictor of future job performance."},
+        {"term": "Performance Appraisal", "definition": "Formal, regular review of employee performance against agreed objectives. Methods include MBO, 360° feedback, and behavioural rating scales."},
+        {"term": "360° Feedback", "definition": "Performance data collected from the employee's manager, peers, subordinates, and themselves. Provides a rounded view but can be politically sensitive."},
+        {"term": "Training Needs Analysis (TNA)", "definition": "Required skills minus actual skills = training gap. Identifies what training is needed before designing any programme."},
+        {"term": "Kirkpatrick's 4 Levels", "definition": "Training evaluation framework: Level 1 Reaction (did they like it?) → Level 2 Learning (knowledge gained?) → Level 3 Behaviour (on-the-job change?) → Level 4 Results (organisational ROI?)."},
+        {"term": "HRIS", "definition": "Human Resources Information System — integrated software that centralises employee data and automates HR processes (payroll, leave, benefits, performance records)."},
+        {"term": "Psychological Contract", "definition": "The unwritten, informal mutual expectations between employer and employee (beyond the legal contract). Breaching it causes disengagement and turnover even if the formal contract is intact."},
+        {"term": "Tacit Knowledge", "definition": "Experience-based know-how that is hard to articulate or transfer (e.g., expert intuition). Contrasted with explicit knowledge (documented procedures, manuals)."},
+        {"term": "Succession Planning", "definition": "Long-term HR process identifying and developing internal candidates to fill senior roles in the future. Reduces leadership risk and builds the talent pipeline."},
+        {"term": "Diversity & Inclusion", "definition": "Diversity = the mix of people (age, gender, ethnicity, background). Inclusion = an environment where everyone feels valued and can contribute. Business case: better decisions, innovation, and talent retention."},
     ],
 }
 
@@ -2459,6 +2799,20 @@ TRUE_FALSE = {
         {"statement": "The Money Multiplier equals the Reserve Ratio.", "answer": False, "explanation": "Money Multiplier = 1 / Reserve Ratio. With a 10% Reserve Ratio the Multiplier = 10, not 0.1. The relationship is inverse, not direct."},
         {"statement": "The identity NX = NCO means a Trade Deficit is always accompanied by a Capital Inflow.", "answer": True, "explanation": "If NX < 0 (deficit), then NCO < 0 — foreigners buy domestic assets (Capital Inflow). The Balance of Payments always nets to zero."},
     ],
+    "hrm": [
+        {"statement": "HR Planning ensures the right people are in the right place at the right time.", "answer": True, "explanation": "This is the classic definition of HR Planning (HRP). It integrates workforce forecasting with business strategy to align people with organisational needs."},
+        {"statement": "The Delphi technique involves line managers independently submitting staffing estimates with no interaction.", "answer": False, "explanation": "The Delphi technique involves a panel of experts who exchange and refine forecasts iteratively through an intermediary until consensus emerges. Managerial estimation is the independent method."},
+        {"statement": "A job description specifies the qualifications and skills required in the ideal candidate.", "answer": False, "explanation": "A job description specifies the duties, responsibilities, reporting lines, and pay of a role. The person specification specifies the qualifications and skills required in the candidate."},
+        {"statement": "Assessment centres are considered the best single predictor of future job performance.", "answer": True, "explanation": "Assessment centres use multiple exercises over one or more days, providing a broad evidence base. Research consistently shows they are the strongest predictor of job performance."},
+        {"statement": "In Unilever's AI recruitment case, the hiring cycle was reduced from 4 months to 4 weeks.", "answer": True, "explanation": "Unilever used Pymetrics and HireVue to narrow 250,000 applicants to 3,500, saving 50,000 labour hours and reducing time-to-hire from 4 months to 4 weeks."},
+        {"statement": "The halo effect in performance appraisal means one negative trait reduces the overall rating.", "answer": False, "explanation": "The halo effect = one POSITIVE trait inflates the overall rating. The HORN effect = one negative trait lowers the overall rating. They are opposite biases."},
+        {"statement": "Management by Objectives (MBO) involves goals set by the manager alone and communicated to the employee.", "answer": False, "explanation": "MBO requires goals to be JOINTLY agreed between manager and employee. Shared ownership of objectives is the key principle — it is not a top-down dictation."},
+        {"statement": "Kirkpatrick's Level 4 (Results) measures whether trainees enjoyed the training experience.", "answer": False, "explanation": "Level 1 (Reaction) measures enjoyment. Level 4 (Results) measures the organisational impact — ROI, productivity improvement, quality gains."},
+        {"statement": "Tacit knowledge is easy to document and transfer through manuals and databases.", "answer": False, "explanation": "Tacit knowledge is experience-based and hard to articulate (intuition, skill). Explicit knowledge is what can be documented. Knowledge Management strategies aim to convert tacit to explicit."},
+        {"statement": "An HRIS increases the administrative burden on HR professionals by centralising data.", "answer": False, "explanation": "HRIS REDUCES the administrative burden by automating routine tasks (payroll, leave, benefits). This frees HR professionals to focus on strategic work."},
+        {"statement": "The psychological contract refers to the formal written employment agreement signed by both parties.", "answer": False, "explanation": "The psychological contract is UNWRITTEN — it represents mutual informal expectations (job security, fair treatment, career growth). Breaching it can cause disengagement even if the legal contract is intact."},
+        {"statement": "Diversity and inclusion are the same concept.", "answer": False, "explanation": "Diversity = the mix of people (age, gender, ethnicity, background). Inclusion = creating an environment where all feel valued and can contribute. You can have diversity without inclusion."},
+    ],
 }
 
 # ─── VIDEO LINKS ──────────────────────────────────────────────────────────────
@@ -2493,6 +2847,14 @@ VIDEOS = {
         {"title": "AD-AS Model — 5 Key Concepts", "url": "https://www.youtube.com/watch?v=INsafdTVDKs", "topic": "AD-AS"},
         {"title": "Globalisation & Trade (Crash Course)", "url": "https://www.youtube.com/watch?v=JJ0nFD19eT8", "topic": "trade"},
         {"title": "Absolute vs Comparative Advantage", "url": "https://www.youtube.com/watch?v=rv6Sq0fmclY", "topic": "trade"},
+    ],
+    "hrm": [
+        {"title": "Introduction to Human Resource Management", "url": "https://www.youtube.com/watch?v=placeholder_hrm_1", "topic": "introduction"},
+        {"title": "HR Planning: Forecasting Demand & Supply", "url": "https://www.youtube.com/watch?v=placeholder_hrm_2", "topic": "hr planning"},
+        {"title": "Recruitment & Selection Process Explained", "url": "https://www.youtube.com/watch?v=placeholder_hrm_3", "topic": "recruitment"},
+        {"title": "Performance Management & Appraisal Methods", "url": "https://www.youtube.com/watch?v=placeholder_hrm_4", "topic": "performance"},
+        {"title": "AI in HR — Talent Acquisition & L&D", "url": "https://www.youtube.com/watch?v=placeholder_hrm_5", "topic": "hr technology"},
+        {"title": "Knowledge Management & Organisational Learning", "url": "https://www.youtube.com/watch?v=placeholder_hrm_6", "topic": "knowledge management"},
     ],
 }
 
