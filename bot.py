@@ -1308,7 +1308,18 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
 
     if data.startswith("materials_"):
         subject_key = data.split("_", 1)[1]
-        await send_materials(query.message, user_id, subject_key)
+        await send_materials(query.message, user_id, subject_key, index=0, edit=True)
+        return SUBJECT_MENU
+
+    if data == "chapter_noop":
+        await query.answer()
+        return SUBJECT_MENU
+
+    if data.startswith("chapter_"):
+        parts = data.split("_")
+        index = int(parts[-1])
+        subject_key = "_".join(parts[1:-1])
+        await send_materials(query.message, user_id, subject_key, index=index, edit=True)
         return SUBJECT_MENU
 
     if data.startswith("cheatsheet_"):
@@ -1463,32 +1474,36 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         return QUIZ_SESSION
 
 
-async def send_materials(message, user_id, subject_key):
+async def send_materials(message, user_id, subject_key, index=0, edit=True):
     info = get_subject_info(subject_key)
     chapters = info.get("chapters", [])
-    header = f"📘 *{info['name']}*\n{'─' * 30}\n\n"
-    await message.edit_text(header + "⏳ Loading...", parse_mode="Markdown")
+    total = len(chapters)
+    if not chapters:
+        await message.edit_text("📭 Материалы пока не добавлены.", parse_mode="Markdown")
+        return
 
-    full_text = header
-    for i, chapter in enumerate(chapters, 1):
-        full_text += f"*{i}. {chapter['title']}*\n"
-        full_text += chapter['content'] + "\n\n"
+    chapter = chapters[index]
+    text = (
+        f"📘 *{info['name']}*\n"
+        f"{'─' * 30}\n"
+        f"📄 *{index + 1}/{total}. {chapter['title']}*\n\n"
+        f"{chapter['content']}"
+    )
 
-    chunks = []
-    while len(full_text) > 4000:
-        split_at = full_text.rfind('\n\n', 0, 4000)
-        if split_at == -1:
-            split_at = 4000
-        chunks.append(full_text[:split_at])
-        full_text = full_text[split_at:]
-    chunks.append(full_text)
+    nav_row = []
+    if index > 0:
+        nav_row.append(InlineKeyboardButton("⬅️", callback_data=f"chapter_{subject_key}_{index - 1}"))
+    nav_row.append(InlineKeyboardButton(f"{index + 1} / {total}", callback_data="chapter_noop"))
+    if index < total - 1:
+        nav_row.append(InlineKeyboardButton("➡️", callback_data=f"chapter_{subject_key}_{index + 1}"))
 
-    keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
+    keyboard = [nav_row, [InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
     markup = InlineKeyboardMarkup(keyboard)
-    await message.edit_text(chunks[0], parse_mode="Markdown", reply_markup=markup if len(chunks) == 1 else None)
-    for i, chunk in enumerate(chunks[1:], 1):
-        is_last = (i == len(chunks) - 1)
-        await message.reply_text(chunk, parse_mode="Markdown", reply_markup=markup if is_last else None)
+
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
 # ── FLASHCARDS ────────────────────────────────────────────────────────────────
