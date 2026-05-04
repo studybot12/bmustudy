@@ -1093,8 +1093,12 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["pending_subject"] = subject_key
         context.user_data["awaiting_promo"] = True
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}")]]
-        await query.message.edit_text(t(user_id, "promo_enter"), parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(keyboard))
+        try:
+            await query.message.reply_text(t(user_id, "promo_enter"), parse_mode="Markdown",
+                                           reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            await query.message.chat.send_message(t(user_id, "promo_enter"), parse_mode="Markdown",
+                                                  reply_markup=InlineKeyboardMarkup(keyboard))
         return PAYMENT_SCREENSHOT
 
     if data.startswith("study_"):
