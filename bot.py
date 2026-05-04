@@ -692,6 +692,50 @@ async def admin_giveaccess(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
+async def admin_revokeaccess(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    args = context.args
+    if len(args) != 2:
+        await update.message.reply_text(
+            "Использование: /revokeaccess USER_ID SUBJECT_KEY\n"
+            "Пример: `/revokeaccess 123456789 f3`\n"
+            "Все предметы: `/revokeaccess 123456789 all`",
+            parse_mode="Markdown"
+        )
+        return
+    try:
+        target_id = int(args[0])
+    except ValueError:
+        await update.message.reply_text("❌ USER_ID должен быть числом.")
+        return
+    subject_arg = args[1].lower()
+    if subject_arg == "all":
+        for key in SUBJECTS:
+            db.revoke_access(target_id, key)
+        await update.message.reply_text(
+            f"✅ Все предметы убраны у студента `{target_id}`", parse_mode="Markdown"
+        )
+    elif subject_arg in SUBJECTS:
+        removed = db.revoke_access(target_id, subject_arg)
+        if removed:
+            await update.message.reply_text(
+                f"✅ Предмет *{SUBJECTS[subject_arg]['name']}* убран у `{target_id}`",
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(
+                f"❌ У студента `{target_id}` не было доступа к *{SUBJECTS[subject_arg]['name']}*",
+                parse_mode="Markdown"
+            )
+    else:
+        keys_list = ", ".join(f"`{k}`" for k in SUBJECTS.keys())
+        await update.message.reply_text(
+            f"❌ Неизвестный предмет: `{subject_arg}`\nДоступные: {keys_list}",
+            parse_mode="Markdown"
+        )
+
+
 async def add_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         return
@@ -1031,17 +1075,16 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         photo_url = SUBJECT_PHOTOS.get(subject_key)
         if photo_url:
             try:
-                from telegram import InputMediaPhoto
-                await query.message.edit_media(
-                    media=InputMediaPhoto(media=photo_url, caption=text, parse_mode="Markdown"),
+                await query.message.reply_photo(
+                    photo=photo_url,
+                    caption=text,
+                    parse_mode="Markdown",
                     reply_markup=markup
                 )
-                return PAYMENT_SCREENSHOT
-            except Exception:
-                pass
-        try:
-            await query.message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
-        except Exception:
+            except Exception as e:
+                logger.error(f"send photo failed: {e}")
+                await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+        else:
             await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
         return PAYMENT_SCREENSHOT
 
@@ -2326,6 +2369,14 @@ def main():
         fallbacks=[
             CommandHandler("start", start),
             CommandHandler("cancel", cancel),
+            CommandHandler("stats", admin_stats),
+            CommandHandler("users", admin_users),
+            CommandHandler("profile", admin_profile),
+            CommandHandler("giveaccess", admin_giveaccess),
+            CommandHandler("revokeaccess", admin_revokeaccess),
+            CommandHandler("addpromo", add_promo_cmd),
+            CommandHandler("deletepromo", delete_promo_cmd),
+            CommandHandler("listpromos", list_promos_cmd),
             MessageHandler(filters.ALL, fallback)
         ],
         allow_reentry=True,
@@ -2339,6 +2390,7 @@ def main():
     app.add_handler(CommandHandler("listpromos", list_promos_cmd))
     app.add_handler(CommandHandler("profile", admin_profile))
     app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
+    app.add_handler(CommandHandler("revokeaccess", admin_revokeaccess))
     app.add_handler(CommandHandler("cancel", cancel))
     app.add_handler(conv)
     app.run_polling(drop_pending_updates=True, close_loop=False)

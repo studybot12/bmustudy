@@ -130,6 +130,14 @@ class Database:
             con.execute("INSERT OR IGNORE INTO access (user_id, subject_key) VALUES (?, ?)",
                         (user_id, subject_key))
 
+    def revoke_access(self, user_id, subject_key):
+        with self._con() as con:
+            changes = con.execute(
+                "DELETE FROM access WHERE user_id=? AND subject_key=?",
+                (user_id, subject_key)
+            ).rowcount
+            return changes > 0
+
     def add_pending_payment(self, user_id, subject_key):
         with self._con() as con:
             con.execute("INSERT OR REPLACE INTO pending_payments (user_id, subject_key) VALUES (?, ?)",
