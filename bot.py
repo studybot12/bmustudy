@@ -1295,10 +1295,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
         return
     _processed_admin_actions.add(action_key)
-    try:
-        await query.answer()
-    except Exception:
-        pass
+    # NOTE: do NOT call query.answer() here — we'll answer with the alert after processing
 
     parts = query.data.split("_")
     action = parts[0]
