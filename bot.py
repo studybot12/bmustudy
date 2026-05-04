@@ -2368,8 +2368,8 @@ def main():
 
     app = Application.builder().token(token).build()
 
-    # Filter to exclude admin approve/deny callbacks from ConversationHandler
-    _not_admin_cb = ~filters.Regex(r"^(approve|deny)_")
+    # Regex string to exclude admin approve/deny callbacks from ConversationHandler
+    _not_admin_cb = r"^(?!(approve|deny)_)"
 
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
