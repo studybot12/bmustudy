@@ -1229,11 +1229,13 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         [InlineKeyboardButton("✅ Подтвердить", callback_data=approve_cb),
          InlineKeyboardButton("❌ Отклонить", callback_data=deny_cb)]
     ])
-    name = f"{user.first_name or ''} {user.last_name or ''}".strip()
-    username = f"@{user.username}" if user.username else "без username"
+    name = f"{user.first_name or ""} {user.last_name or ""}".strip()
+    name = name.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`").replace("[", r"\[")
+    username_raw = f"@{user.username}" if user.username else "без username"
+    username_safe = username_raw.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`")
     promo_text = f"\n🎁 Промокод: скидка {discount}%" if discount else ""
     admin_text = (f"💰 *Новая оплата*\n\n"
-                  f"👤 {name} ({username})\n"
+                  f"👤 {name} ({username_safe})\n"
                   f"🆔 `{user_id}`\n"
                   f"📘 Предмет: *{subject_display}*\n"
                   f"💵 Сумма: {final_price:,} сум{promo_text}")
@@ -1294,7 +1296,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     parts = query.data.split("_")
     action = parts[0]
     student_id = int(parts[1])
-    subject_key = parts[2]
+    subject_key = "_".join(parts[2:])
 
     if action == "approve":
         if subject_key == "bundle":
