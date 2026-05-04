@@ -578,6 +578,12 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text += f"\n• {info['name']}: *{count}* чел."
     await update.message.reply_text(text, parse_mode="Markdown")
 
+def _safe(text):
+    """Escape special Markdown chars in user-provided strings."""
+    for ch in ["*", "_", "`", "["]:
+        text = text.replace(ch, "\\" + ch)
+    return text
+
 async def admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         return
@@ -587,9 +593,10 @@ async def admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     text = "👥 *Список студентов:*\n\n"
     for u in users[:30]:
-        username = f"@{u['username']}" if u['username'] else "без username"
-        subjects = ", ".join(u['subjects']) if u['subjects'] else "нет"
-        text += f"• {u['first_name']} ({username}) — {subjects}\n"
+        name = _safe(u["first_name"] or "—")
+        username = f"@{_safe(u['username'])}" if u["username"] else "без username"
+        subjects = ", ".join(u["subjects"]) if u["subjects"] else "нет"
+        text += f"• {name} ({username}) — {subjects}\n"
     await update.message.reply_text(text, parse_mode="Markdown")
 
 async def admin_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -609,13 +616,14 @@ async def admin_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"❌ Студент с ID `{target_id}` не найден.", parse_mode="Markdown")
         return
     subjects = ", ".join(profile["subjects"]) if profile["subjects"] else ("нет" if (db.get_user_lang(ADMIN_ID) or "ru") == "ru" else "none")
-    username = f"@{profile['username']}" if profile["username"] else "—"
+    username = f"@{_safe(profile['username'])}" if profile["username"] else "—"
+    first_name = _safe(profile["first_name"] or "—")
     last_act = str(profile["last_activity"]) if profile["last_activity"] else "—"
     created = str(profile["created_at"])[:10] if profile["created_at"] else "—"
     text = (
         f"👤 *Профиль студента*\n\n"
         f"━━━━━━━━━━━━━━━\n"
-        f"🔹 Имя: *{profile['first_name']}*\n"
+        f"🔹 Имя: *{first_name}*\n"
         f"🔹 Username: *{username}*\n"
         f"🆔 ID: `{profile['user_id']}`\n"
         f"🌐 Язык: *{profile['lang']}*\n"
@@ -2318,13 +2326,6 @@ def main():
         fallbacks=[
             CommandHandler("start", start),
             CommandHandler("cancel", cancel),
-            CommandHandler("stats", admin_stats),
-            CommandHandler("users", admin_users),
-            CommandHandler("profile", admin_profile),
-            CommandHandler("giveaccess", admin_giveaccess),
-            CommandHandler("addpromo", add_promo_cmd),
-            CommandHandler("deletepromo", delete_promo_cmd),
-            CommandHandler("listpromos", list_promos_cmd),
             MessageHandler(filters.ALL, fallback)
         ],
         allow_reentry=True,
