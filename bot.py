@@ -667,12 +667,63 @@ async def add_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         return
     args = context.args
-    if len(args) != 2:
-        await update.message.reply_text("Использование: /addpromo КОД СКИДКА\nПример: /addpromo FRIEND50 50")
+    if len(args) < 2 or len(args) > 3:
+        await update.message.reply_text(
+            "Использование: /addpromo КОД СКИДКА [КОЛИЧЕСТВО]\n\n"
+            "Примеры:\n"
+            "`/addpromo FRIEND50 50` — без ограничений\n"
+            "`/addpromo PROMO20 20 10` — максимум 10 использований",
+            parse_mode="Markdown"
+        )
         return
-    code, discount = args[0].upper(), int(args[1])
-    db.add_promo(code, discount)
-    await update.message.reply_text(f"✅ Промокод *{code}* со скидкой *{discount}%* добавлен!", parse_mode="Markdown")
+    code = args[0].upper()
+    try:
+        discount = int(args[1])
+        max_uses = int(args[2]) if len(args) == 3 else None
+    except ValueError:
+        await update.message.reply_text("❌ Скидка и количество должны быть числами.")
+        return
+    db.add_promo(code, discount, max_uses)
+    uses_text = f"🔢 Лимит: *{max_uses}* использований" if max_uses else "♾ Без ограничений"
+    await update.message.reply_text(
+        f"✅ Промокод создан!\n\n"
+        f"🎁 Код: `{code}`\n"
+        f"💸 Скидка: *{discount}%*\n"
+        f"{uses_text}",
+        parse_mode="Markdown"
+    )
+
+
+async def delete_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    args = context.args
+    if len(args) != 1:
+        await update.message.reply_text(
+            "Использование: /deletepromo КОД\nПример: `/deletepromo FRIEND50`",
+            parse_mode="Markdown"
+        )
+        return
+    code = args[0].upper()
+    deleted = db.delete_promo(code)
+    if deleted:
+        await update.message.reply_text(f"✅ Промокод `{code}` удалён.", parse_mode="Markdown")
+    else:
+        await update.message.reply_text(f"❌ Промокод `{code}` не найден.", parse_mode="Markdown")
+
+
+async def list_promos_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
+    promos = db.get_all_promos()
+    if not promos:
+        await update.message.reply_text("📋 Активных промокодов нет.")
+        return
+    text = "📋 *Список промокодов:*\n\n"
+    for p in promos:
+        uses = f"{p['used_count']}/{p['max_uses']}" if p['max_uses'] else f"{p['used_count']}/∞"
+        text += f"• `{p['code']}` — *{p['discount']}%* · использовано: {uses}\n"
+    await update.message.reply_text(text, parse_mode="Markdown")
 
 
 # ── MAIN MENU HANDLER ─────────────────────────────────────────────────────────
@@ -1051,6 +1102,7 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         subject_key = context.user_data.get("pending_subject")
         if discount and subject_key:
             context.user_data["promo_discount"] = discount
+            context.user_data["pending_promo_code"] = promo_code
             discounted_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
             info = SUBJECTS[subject_key]
             text = t(user_id, "promo_valid", discount=discount, price=discounted_price)
@@ -1089,6 +1141,11 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         info = SUBJECTS[subject_key]
         subject_display = info["name"]
     db.add_pending_payment(user_id, subject_key)
+
+    # Increment promo usage counter when screenshot is submitted
+    if discount and context.user_data.get("pending_promo_code"):
+        db.use_promo(context.user_data["pending_promo_code"])
+        context.user_data.pop("pending_promo_code", None)
 
     approve_cb = f"approve_{user_id}_{subject_key}"
     deny_cb = f"deny_{user_id}_{subject_key}"
@@ -2226,6 +2283,8 @@ def main():
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
+    app.add_handler(CommandHandler("deletepromo", delete_promo_cmd))
+    app.add_handler(CommandHandler("listpromos", list_promos_cmd))
     app.add_handler(CommandHandler("profile", admin_profile))
     app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
     app.add_handler(CommandHandler("cancel", cancel))

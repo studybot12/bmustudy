@@ -1,7 +1,13 @@
 import sqlite3
 import os
 
-DB_PATH = os.environ.get("DB_PATH", "studybot.db")
+# On Railway: mount a Volume at /data → data persists across deploys.
+# Locally: falls back to ./studybot.db in the project folder.
+_DEFAULT_DB = "/data/studybot.db" if os.path.isdir("/data") else "studybot.db"
+DB_PATH = os.environ.get("DB_PATH", _DEFAULT_DB)
+
+# Make sure the directory exists (safety net for any path)
+os.makedirs(os.path.dirname(os.path.abspath(DB_PATH)), exist_ok=True)
 
 class Database:
     def init(self):
