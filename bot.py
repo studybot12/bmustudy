@@ -1289,10 +1289,16 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Guard against double-click: use message_id + data as key
     action_key = f"{query.message.message_id}_{query.data}"
     if action_key in _processed_admin_actions:
-        await query.answer("⚠️ Уже обработано.", show_alert=True)
+        try:
+            await query.answer("⚠️ Уже обработано.", show_alert=True)
+        except Exception:
+            pass
         return
     _processed_admin_actions.add(action_key)
-    await query.answer()
+    try:
+        await query.answer()
+    except Exception:
+        pass
 
     parts = query.data.split("_")
     action = parts[0]
@@ -1306,6 +1312,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             db.remove_pending(student_id, subject_key)
             student_lang = db.get_user_lang(student_id) or "en"
             msg = "🎉 *Доступ ко всем предметам открыт!*\n\nТеперь вам доступны все предметы в разделе «Мои предметы»." if student_lang == "ru" else "🎉 *Full Access Granted!*\n\nAll subjects are now available in 'My Subjects'."
+            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📚 Все предметы"
         elif subject_key.startswith("bundle_"):
             keys = subject_key.replace("bundle_", "").split("-")
             for key in keys:
@@ -1315,25 +1322,33 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             student_lang = db.get_user_lang(student_id) or "en"
             names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
             msg = f"🎉 *Доступ открыт!*\n\n📚 {names}" if student_lang == "ru" else f"🎉 *Access Granted!*\n\n📚 {names}"
+            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📦 {names}"
         else:
             info = SUBJECTS[subject_key]
             db.grant_access(student_id, subject_key)
             db.remove_pending(student_id, subject_key)
             student_lang = db.get_user_lang(student_id) or "en"
             msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
+            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📘 {info['name']}"
         start_hint = "\n\n▶️ Нажмите /start чтобы открыть предмет" if student_lang == "ru" else "\n\n▶️ Press /start to access your subject"
         try:
             await context.bot.send_message(student_id, msg + start_hint, parse_mode="Markdown")
-        except:
+        except Exception:
+            pass
+        try:
+            await query.answer(admin_alert, show_alert=True)
+        except Exception:
             pass
         try:
             if query.message.caption is not None:
                 await query.message.edit_caption(
-                    query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
+                    query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown",
+                    reply_markup=None
                 )
             else:
                 await query.message.edit_text(
-                    query.message.text + "\n\n✅ *Доступ выдан*", parse_mode="Markdown"
+                    query.message.text + "\n\n✅ *Доступ выдан*", parse_mode="Markdown",
+                    reply_markup=None
                 )
         except Exception as e:
             logger.error(f"admin_action edit error: {e}")
@@ -1342,18 +1357,25 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_denied"]
+        subject_display = SUBJECTS[subject_key]["name"] if subject_key in SUBJECTS else subject_key
         try:
             await context.bot.send_message(student_id, msg, parse_mode="Markdown")
-        except:
+        except Exception:
+            pass
+        try:
+            await query.answer(f"❌ Оплата отклонена!\n🆔 ID: {student_id}\n📘 {subject_display}", show_alert=True)
+        except Exception:
             pass
         try:
             if query.message.caption is not None:
                 await query.message.edit_caption(
-                    query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown"
+                    query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown",
+                    reply_markup=None
                 )
             else:
                 await query.message.edit_text(
-                    query.message.text + "\n\n❌ *Отклонено*", parse_mode="Markdown"
+                    query.message.text + "\n\n❌ *Отклонено*", parse_mode="Markdown",
+                    reply_markup=None
                 )
         except Exception as e:
             logger.error(f"admin_action edit error: {e}")
@@ -2346,31 +2368,34 @@ def main():
 
     app = Application.builder().token(token).build()
 
+    # Filter to exclude admin approve/deny callbacks from ConversationHandler
+    _not_admin_cb = ~filters.Regex(r"^(approve|deny)_")
+
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
             CHOOSING_LANG: [CallbackQueryHandler(set_language, pattern="^lang_")],
             ONBOARDING: [CallbackQueryHandler(onboarding_handler, pattern="^onboard_"),
-                         CallbackQueryHandler(main_menu_handler)],
-            MAIN_MENU: [CallbackQueryHandler(main_menu_handler)],
-            CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler)],
+                         CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
+            MAIN_MENU: [CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
+            CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler, pattern=_not_admin_cb)],
             PAYMENT_SCREENSHOT: [
                 MessageHandler(filters.PHOTO | filters.Document.ALL | (filters.TEXT & ~filters.COMMAND), receive_screenshot),
-                CallbackQueryHandler(subject_handler),
+                CallbackQueryHandler(subject_handler, pattern=_not_admin_cb),
             ],
-            SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler)],
-            QUIZ_SESSION: [CallbackQueryHandler(quiz_handler)],
-            FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler)],
-            TRIAL_SESSION: [CallbackQueryHandler(trial_handler)],
+            SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb)],
+            QUIZ_SESSION: [CallbackQueryHandler(quiz_handler, pattern=_not_admin_cb)],
+            FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler, pattern=_not_admin_cb)],
+            TRIAL_SESSION: [CallbackQueryHandler(trial_handler, pattern=_not_admin_cb)],
             AI_CHAT_SESSION: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, ai_chat_message_handler),
-                CallbackQueryHandler(subject_menu_handler),
+                CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb),
             ],
-            BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler)],
-            TF_SESSION: [CallbackQueryHandler(tf_handler)],
+            BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler, pattern=_not_admin_cb)],
+            TF_SESSION: [CallbackQueryHandler(tf_handler, pattern=_not_admin_cb)],
             EXAM_DATE_INPUT: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, fallback),
-                CallbackQueryHandler(subject_menu_handler),
+                CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb),
             ],
         },
         fallbacks=[
