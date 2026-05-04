@@ -1281,17 +1281,18 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    await query.answer()
 
     if query.from_user.id != ADMIN_ID:
+        await query.answer()
         return
 
-    # Bug 10: Guard against double-click / repeated processing
-    action_key = query.data
+    # Guard against double-click: use message_id + data as key
+    action_key = f"{query.message.message_id}_{query.data}"
     if action_key in _processed_admin_actions:
         await query.answer("⚠️ Уже обработано.", show_alert=True)
         return
     _processed_admin_actions.add(action_key)
+    await query.answer()
 
     parts = query.data.split("_")
     action = parts[0]
@@ -2388,7 +2389,7 @@ def main():
         allow_reentry=True,
     )
 
-    app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"))
+    app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"), group=-1)
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("addpromo", add_promo_cmd))
