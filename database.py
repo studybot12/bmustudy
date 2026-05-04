@@ -6,8 +6,19 @@ import os
 _DEFAULT_DB = "/data/studybot.db" if os.path.isdir("/data") else "studybot.db"
 DB_PATH = os.environ.get("DB_PATH", _DEFAULT_DB)
 
-# Make sure the directory exists (safety net for any path)
 os.makedirs(os.path.dirname(os.path.abspath(DB_PATH)), exist_ok=True)
+
+def _migrate(con):
+    """Add new columns to existing databases without data loss."""
+    migrations = [
+        "ALTER TABLE promo_codes ADD COLUMN max_uses INTEGER DEFAULT NULL",
+        "ALTER TABLE promo_codes ADD COLUMN used_count INTEGER DEFAULT 0",
+    ]
+    for sql in migrations:
+        try:
+            con.execute(sql)
+        except Exception:
+            pass  # column already exists
 
 class Database:
     def init(self):
@@ -56,6 +67,8 @@ class Database:
             CREATE TABLE IF NOT EXISTS promo_codes (
                 code TEXT PRIMARY KEY,
                 discount INTEGER,
+                max_uses INTEGER DEFAULT NULL,
+                used_count INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
             CREATE TABLE IF NOT EXISTS bookmarks (
@@ -84,6 +97,7 @@ class Database:
                 PRIMARY KEY (user_id, subject_key)
             );
         """)
+        _migrate(con)
         con.commit()
         con.close()
 
@@ -300,15 +314,47 @@ class Database:
                 """, (user_id, limit)).fetchall()
             return [{"subject_key": r[0], "score": r[1], "total": r[2], "taken_at": r[3]} for r in rows]
 
-    def add_promo(self, code, discount):
+    def add_promo(self, code, discount, max_uses=None):
         with self._con() as con:
-            con.execute("INSERT OR REPLACE INTO promo_codes (code, discount) VALUES (?, ?)",
-                        (code, discount))
+            con.execute(
+                "INSERT OR REPLACE INTO promo_codes (code, discount, max_uses, used_count) VALUES (?, ?, ?, 0)",
+                (code, discount, max_uses)
+            )
 
     def check_promo(self, code):
         with self._con() as con:
-            row = con.execute("SELECT discount FROM promo_codes WHERE code=?", (code,)).fetchone()
-            return row[0] if row else None
+            row = con.execute(
+                "SELECT discount, max_uses, used_count FROM promo_codes WHERE code=?", (code,)
+            ).fetchone()
+            if not row:
+                return None
+            discount, max_uses, used_count = row
+            if max_uses is not None and used_count >= max_uses:
+                return None
+            return discount
+
+    def use_promo(self, code):
+        with self._con() as con:
+            con.execute(
+                "UPDATE promo_codes SET used_count = used_count + 1 WHERE code=?", (code,)
+            )
+
+    def delete_promo(self, code):
+        with self._con() as con:
+            changes = con.execute(
+                "DELETE FROM promo_codes WHERE code=?", (code,)
+            ).rowcount
+            return changes > 0
+
+    def get_all_promos(self):
+        with self._con() as con:
+            rows = con.execute(
+                "SELECT code, discount, max_uses, used_count, created_at FROM promo_codes ORDER BY created_at DESC"
+            ).fetchall()
+            return [
+                {"code": r[0], "discount": r[1], "max_uses": r[2], "used_count": r[3], "created_at": r[4]}
+                for r in rows
+            ]
 
     def get_stats(self):
         with self._con() as con:

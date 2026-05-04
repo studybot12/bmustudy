@@ -1029,20 +1029,20 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         markup = InlineKeyboardMarkup(keyboard)
         photo_url = SUBJECT_PHOTOS.get(subject_key)
-        try:
-            await query.message.delete()
-        except Exception:
-            pass
         if photo_url:
             try:
-                await query.message.chat.send_photo(
-                    photo=photo_url, caption=text,
-                    parse_mode="Markdown", reply_markup=markup
+                from telegram import InputMediaPhoto
+                await query.message.edit_media(
+                    media=InputMediaPhoto(media=photo_url, caption=text, parse_mode="Markdown"),
+                    reply_markup=markup
                 )
                 return PAYMENT_SCREENSHOT
             except Exception:
                 pass
-        await query.message.chat.send_message(text, parse_mode="Markdown", reply_markup=markup)
+        try:
+            await query.message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
+        except Exception:
+            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
         return PAYMENT_SCREENSHOT
 
     if data.startswith("promo_"):
