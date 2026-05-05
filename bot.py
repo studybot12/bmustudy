@@ -10,7 +10,7 @@ from telegram.ext import (
 )
 from database import db
 from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos
-from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT
+from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT, COURSE_PRICES
 try:
     from google import genai as genai_client
     from google.genai import types as genai_types
@@ -31,7 +31,12 @@ SUBJECT_PHOTOS = {
 # ── КУРСЫ → ПРЕДМЕТЫ ──────────────────────────────────────────────────────────
 COURSE_SUBJECTS = {
     "1": ["qm"],
-    "2": ["f1", "f3", "fm", "macro"],
+    "2": ["f1", "f3", "fm", "macro", "hrm"],
+}
+
+COURSE_NAMES = {
+    "ru": {"1": "1 Курс", "2": "2 Курс"},
+    "en": {"1": "Year 1", "2": "Year 2"},
 }
 
 logger = logging.getLogger(__name__)
@@ -250,6 +255,19 @@ TEXTS = {
         "choose_course": "🎓 *Выберите курс:*\n\n━━━━━━━━━━━━━━━\nКакой курс вы проходите?",
         "course_1": "📗 1 Курс",
         "course_2": "📘 2 Курс",
+        # Course payment
+        "course_payment_instruction": (
+            "💳 *Оплата доступа — {course_name}*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "📚 *Предметы курса:*\n{subjects_list}\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "💰 Стоимость: *{price:,} сум*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "🏦 Переведите на карту:\n`{card}`\n\n"
+            "📸 После оплаты отправьте скриншот перевода 👇"
+        ),
+        "course_access_granted": "🎉 *Поздравляем! Доступ открыт!*\n\n━━━━━━━━━━━━━━━\n🎓 *{course_name}* теперь полностью доступен!\n\n📚 Предметы:\n{subjects_list}\n\n✨ Удачи в учёбе!",
+        "course_already_owned": "✅ У вас уже есть доступ к этому курсу!",
         # AI Humanizer
         # AI Detector
     },
@@ -441,6 +459,19 @@ TEXTS = {
         "choose_course": "🎓 *Choose your year:*\n\n━━━━━━━━━━━━━━━\nWhich year are you in?",
         "course_1": "📗 Year 1",
         "course_2": "📘 Year 2",
+        # Course payment
+        "course_payment_instruction": (
+            "💳 *Buy Access — {course_name}*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "📚 *Subjects included:*\n{subjects_list}\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "💰 Price: *{price:,} UZS*\n\n"
+            "━━━━━━━━━━━━━━━\n"
+            "🏦 Transfer to card:\n`{card}`\n\n"
+            "📸 After payment, send a screenshot 👇"
+        ),
+        "course_access_granted": "🎉 *Access Granted!*\n\n━━━━━━━━━━━━━━━\n🎓 *{course_name}* is now fully unlocked!\n\n📚 Subjects:\n{subjects_list}\n\n✨ Good luck with your studies!",
+        "course_already_owned": "✅ You already have access to this course!",
         # AI Humanizer
         # AI Detector
     }
@@ -920,18 +951,24 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return CHOOSING_SUBJECT
 
         elif mode == "buy":
+            lang = db.get_user_lang(user_id) or "en"
             subjects_owned = db.get_user_subjects(user_id)
-            buttons = []
-            for key in course_keys:
-                info = SUBJECTS[key]
-                if key in subjects_owned:
-                    buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
-                else:
-                    buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
-            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-            await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(buttons))
-            return CHOOSING_SUBJECT
+            all_owned = all(k in subjects_owned for k in course_keys)
+            if all_owned:
+                await query.answer(t(user_id, "course_already_owned"), show_alert=True)
+                return CHOOSING_SUBJECT
+            price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
+            course_name = COURSE_NAMES[lang][year]
+            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
+            text = t(user_id, "course_payment_instruction",
+                     course_name=course_name, subjects_list=subjects_list,
+                     price=price, card=CARD_NUMBER)
+            context.user_data["pending_subject"] = f"course_{year}"
+            context.user_data["promo_discount"] = 0
+            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+            await query.message.edit_text(text, parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            return PAYMENT_SCREENSHOT
 
         elif mode == "trial":
             buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
@@ -1053,18 +1090,24 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                               reply_markup=InlineKeyboardMarkup(buttons))
             return CHOOSING_SUBJECT
         elif mode == "buy":
+            lang = db.get_user_lang(user_id) or "en"
             subjects_owned = db.get_user_subjects(user_id)
-            buttons = []
-            for key in course_keys:
-                info = SUBJECTS[key]
-                if key in subjects_owned:
-                    buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
-                else:
-                    buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
-            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-            await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(buttons))
-            return CHOOSING_SUBJECT
+            all_owned = all(k in subjects_owned for k in course_keys)
+            if all_owned:
+                await query.answer(t(user_id, "course_already_owned"), show_alert=True)
+                return CHOOSING_SUBJECT
+            price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
+            course_name = COURSE_NAMES[lang][year]
+            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
+            text = t(user_id, "course_payment_instruction",
+                     course_name=course_name, subjects_list=subjects_list,
+                     price=price, card=CARD_NUMBER)
+            context.user_data["pending_subject"] = f"course_{year}"
+            context.user_data["promo_discount"] = 0
+            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
+            await query.message.edit_text(text, parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            return PAYMENT_SCREENSHOT
         elif mode == "trial":
             buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
                        for key in course_keys]
@@ -1345,6 +1388,12 @@ async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE)
         final_price = int(full_price * (1 - discount_pct / 100))
         names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
         subject_display = f"📦 Пакет: {names}"
+    elif subject_key and subject_key.startswith("course_"):
+        year = subject_key.split("_", 1)[1]
+        lang = db.get_user_lang(user_id) or "en"
+        course_name = COURSE_NAMES[lang][year]
+        final_price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
+        subject_display = f"🎓 {course_name}"
     else:
         final_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
         info = SUBJECTS[subject_key]
@@ -1453,6 +1502,17 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
             msg = f"🎉 *Доступ открыт!*\n\n📚 {names}" if student_lang == "ru" else f"🎉 *Access Granted!*\n\n📚 {names}"
             admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📦 {names}"
+        elif subject_key.startswith("course_"):
+            year = subject_key.split("_", 1)[1]
+            course_keys = COURSE_SUBJECTS.get(year, [])
+            for key in course_keys:
+                db.grant_access(student_id, key)
+            db.remove_pending(student_id, subject_key)
+            student_lang = db.get_user_lang(student_id) or "en"
+            course_name = COURSE_NAMES[student_lang][year]
+            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
+            msg = t(student_id, "course_access_granted", course_name=course_name, subjects_list=subjects_list)
+            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n🎓 {course_name}"
         else:
             info = SUBJECTS[subject_key]
             db.grant_access(student_id, subject_key)
@@ -1461,7 +1521,7 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
             admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📘 {info['name']}"
         # Send access granted message with inline button to open subject directly
-        if subject_key == "bundle" or subject_key.startswith("bundle_"):
+        if subject_key == "bundle" or subject_key.startswith("bundle_") or subject_key.startswith("course_"):
             open_btn_label = "📚 Открыть мои предметы" if student_lang == "ru" else "📚 Open My Courses"
             open_btn_cb = "menu_my_subjects"
         else:
