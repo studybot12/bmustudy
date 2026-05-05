@@ -594,8 +594,6 @@ async def show_main_menu(message, user_id, edit=False):
         [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial"),
          InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard")],
         [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
-        [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access"),
-         InlineKeyboardButton(t(user_id, "bundle"), callback_data="menu_bundle")],
         [InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks"),
          InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang")],
         [InlineKeyboardButton(t(user_id, "help"), callback_data="menu_help")],
@@ -914,21 +912,17 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action = query.data
 
     if action == "menu_my_subjects":
-        # Если вообще нет ни одного предмета — сразу показываем экран покупки
-        all_owned = db.get_user_subjects(user_id)
-        if not all_owned:
-            keyboard = [
-                [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
-                [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
-            ]
-            await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
-            return CHOOSING_SUBJECT
+        # Бесплатный доступ — автоматически выдаём все предметы
+        for key in SUBJECTS:
+            db.grant_access(user_id, key)
         await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
     elif action == "menu_buy_access":
-        await show_course_select(query.message, user_id, "buy", edit=True)
+        # Бесплатно — сразу выдаём доступ и ведём в мои курсы
+        for key in SUBJECTS:
+            db.grant_access(user_id, key)
+        await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
     elif action == "menu_trial":
@@ -943,42 +937,24 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         course_keys = COURSE_SUBJECTS.get(year, [])
 
         if mode == "study":
-            subjects_owned = db.get_user_subjects(user_id)
-            owned_in_course = [s for s in course_keys if s in subjects_owned]
-            if not owned_in_course:
-                keyboard = [
-                    [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
-                    [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
-                ]
-                await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
-                                              reply_markup=InlineKeyboardMarkup(keyboard))
-            else:
-                buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
-                           for s in owned_in_course]
-                buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-                await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
-                                              reply_markup=InlineKeyboardMarkup(buttons))
+            # Бесплатный доступ — показываем все предметы курса
+            buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
+                       for s in course_keys if s in SUBJECTS]
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
             return CHOOSING_SUBJECT
 
         elif mode == "buy":
-            lang = db.get_user_lang(user_id) or "en"
-            subjects_owned = db.get_user_subjects(user_id)
-            all_owned = all(k in subjects_owned for k in course_keys)
-            if all_owned:
-                await query.answer(t(user_id, "course_already_owned"), show_alert=True)
-                return CHOOSING_SUBJECT
-            price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
-            course_name = COURSE_NAMES[lang][year]
-            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
-            text = t(user_id, "course_payment_instruction",
-                     course_name=course_name, subjects_list=subjects_list,
-                     price=price, card=CARD_NUMBER)
-            context.user_data["pending_subject"] = f"course_{year}"
-            context.user_data["promo_discount"] = 0
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-            await query.message.edit_text(text, parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
-            return PAYMENT_SCREENSHOT
+            # Бесплатно — перенаправляем сразу в учёбу
+            for key in course_keys:
+                db.grant_access(user_id, key)
+            buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
+                       for s in course_keys if s in SUBJECTS]
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
 
         elif mode == "trial":
             buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
@@ -987,29 +963,6 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
                                           reply_markup=InlineKeyboardMarkup(buttons))
             return CHOOSING_SUBJECT
-
-    elif action == "menu_bundle":
-        keyboard = [
-            [InlineKeyboardButton("📦 2 предмета (-10%)" if lang == "ru" else "📦 2 subjects (-10%)", callback_data="bundle2_start")],
-            [InlineKeyboardButton("📦 4 предмета (-20%)" if lang == "ru" else "📦 4 subjects (-20%)", callback_data="bundle4_start")],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
-        ]
-        await query.message.edit_text(t(user_id, "bundle_choose"), parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(keyboard))
-        return MAIN_MENU
-
-    elif action == "bundle2_start":
-        context.user_data["bundle_type"] = 2
-        context.user_data["bundle_selected"] = []
-        await show_bundle_subject_select(query.message, user_id, context, edit=True)
-        return CHOOSING_SUBJECT
-
-    elif action == "bundle4_start":
-        context.user_data["bundle_type"] = 4
-        context.user_data["bundle_selected"] = []
-        await show_bundle_subject_select(query.message, user_id, context, edit=True)
-        return CHOOSING_SUBJECT
-
 
 
     elif action == "menu_help":
@@ -1078,11 +1031,15 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return MAIN_MENU
 
     if data == "menu_my_subjects":
+        for key in SUBJECTS:
+            db.grant_access(user_id, key)
         await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
     if data == "menu_buy_access":
-        await show_course_select(query.message, user_id, "buy", edit=True)
+        for key in SUBJECTS:
+            db.grant_access(user_id, key)
+        await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
     if data.startswith("course_"):
@@ -1090,80 +1047,20 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         mode = parts[1]
         year = parts[2]
         course_keys = COURSE_SUBJECTS.get(year, [])
-        if mode == "study":
-            subjects_owned = db.get_user_subjects(user_id)
-            owned_in_course = [s for s in course_keys if s in subjects_owned]
-            if not owned_in_course:
-                keyboard = [
-                    [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
-                    [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
-                ]
-                await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
-                                              reply_markup=InlineKeyboardMarkup(keyboard))
-            else:
-                buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
-                           for s in owned_in_course]
-                buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-                await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
-                                              reply_markup=InlineKeyboardMarkup(buttons))
-            return CHOOSING_SUBJECT
-        elif mode == "buy":
-            lang = db.get_user_lang(user_id) or "en"
-            subjects_owned = db.get_user_subjects(user_id)
-            all_owned = all(k in subjects_owned for k in course_keys)
-            if all_owned:
-                await query.answer(t(user_id, "course_already_owned"), show_alert=True)
-                return CHOOSING_SUBJECT
-            price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
-            course_name = COURSE_NAMES[lang][year]
-            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
-            text = t(user_id, "course_payment_instruction",
-                     course_name=course_name, subjects_list=subjects_list,
-                     price=price, card=CARD_NUMBER)
-            context.user_data["pending_subject"] = f"course_{year}"
-            context.user_data["promo_discount"] = 0
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-            await query.message.edit_text(text, parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
-            return PAYMENT_SCREENSHOT
-        elif mode == "trial":
-            buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
-                       for key in course_keys]
-            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-            await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(buttons))
-            return CHOOSING_SUBJECT
-
-    if data == "back_to_buy_list":
-        # Back from payment photo screen - send new message with buy list
-        subjects = db.get_user_subjects(user_id)
-        buttons = []
-        for key, info in SUBJECTS.items():
-            if key in subjects:
-                buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
-            else:
-                buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
+        # Бесплатно — всегда показываем все предметы курса
+        for key in course_keys:
+            db.grant_access(user_id, key)
+        buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
+                   for s in course_keys if s in SUBJECTS]
         buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-        try:
-            await query.message.delete()
-        except Exception:
-            pass
-        await query.message.chat.send_message(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
-                                              reply_markup=InlineKeyboardMarkup(buttons))
-        return CHOOSING_SUBJECT
-
-    if data == "menu_buy_access":
-        subjects = db.get_user_subjects(user_id)
-        buttons = []
-        for key, info in SUBJECTS.items():
-            if key in subjects:
-                buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
-            else:
-                buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
-        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-        await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
+        await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(buttons))
         return CHOOSING_SUBJECT
+
+    if data == "back_to_buy_list":
+        await show_main_menu(query.message, user_id, edit=True)
+        return MAIN_MENU
+
 
     if data.startswith("trial_pick_"):
         subject_key = data.split("trial_pick_")[1]
@@ -1200,52 +1097,6 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_tf_question(query.message, user_id, context, edit=True)
         return TF_SESSION
 
-    if data.startswith("bsel_"):
-        subject_key = data.split("bsel_")[1]
-        bundle_type = context.user_data.get("bundle_type", 2)
-        selected = context.user_data.get("bundle_selected", [])
-        owned = db.get_user_subjects(user_id)
-        if subject_key in owned:
-            await query.answer("✅ У вас уже есть этот предмет" if (db.get_user_lang(user_id) or "en") == "ru" else "✅ You already own this subject", show_alert=False)
-            return CHOOSING_SUBJECT
-        if subject_key in selected:
-            selected.remove(subject_key)
-        else:
-            if len(selected) < bundle_type:
-                selected.append(subject_key)
-            else:
-                lang = db.get_user_lang(user_id) or "en"
-                msg = f"Уже выбрано {bundle_type} предметов" if lang == "ru" else f"Already selected {bundle_type} subjects"
-                await query.answer(msg, show_alert=False)
-                return CHOOSING_SUBJECT
-        context.user_data["bundle_selected"] = selected
-        await show_bundle_subject_select(query.message, user_id, context, edit=True)
-        return CHOOSING_SUBJECT
-
-    if data == "bundle_confirm":
-        selected = context.user_data.get("bundle_selected", [])
-        bundle_type = context.user_data.get("bundle_type", 2)
-        discount = 10 if bundle_type == 2 else 20
-        full_price = PRICE_PER_SUBJECT * bundle_type
-        bundle_price = int(full_price * (1 - discount / 100))
-        save = full_price - bundle_price
-        lang = db.get_user_lang(user_id) or "en"
-        subject_names = ", ".join(SUBJECTS[k]["name"] for k in selected)
-        if bundle_type == 2:
-            text = t(user_id, "bundle2_text", full_price=full_price, bundle_price=bundle_price, save=save, card=CARD_NUMBER)
-        else:
-            text = t(user_id, "bundle4_text", count=bundle_type, full_price=full_price, bundle_price=bundle_price, save=save, card=CARD_NUMBER)
-        text += f"\n\n📚 *{subject_names}*"
-        context.user_data["pending_subject"] = f"bundle_{'-'.join(selected)}"
-        context.user_data["promo_discount"] = 0
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-        await query.message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
-        return PAYMENT_SCREENSHOT
-
-    if data.startswith("already_"):
-        await query.answer(t(user_id, "already_has_access"), show_alert=True)
-        return CHOOSING_SUBJECT
-
     if data.startswith("trial_"):
         subject_key = data.split("_", 1)[1]
         # Check if trial already used for this subject
@@ -1262,34 +1113,6 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.mark_trial_used(user_id, subject_key)
         await show_trial_question(query.message, user_id, context, edit=True)
         return TRIAL_SESSION
-
-    if data.startswith("buy_"):
-        subject_key = data.split("_", 1)[1]
-        context.user_data["pending_subject"] = subject_key
-        context.user_data["promo_discount"] = 0
-        info = SUBJECTS[subject_key]
-        text = t(user_id, "payment_instruction",
-                 subject=info["name"], price=PRICE_PER_SUBJECT, card=CARD_NUMBER)
-        keyboard = [
-            [InlineKeyboardButton(t(user_id, "enter_promo"), callback_data=f"promo_{subject_key}")],
-            [InlineKeyboardButton(t(user_id, "back"), callback_data="back_to_buy_list")]
-        ]
-        markup = InlineKeyboardMarkup(keyboard)
-        await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-        return PAYMENT_SCREENSHOT
-
-    if data.startswith("promo_"):
-        subject_key = data.split("_", 1)[1]
-        context.user_data["pending_subject"] = subject_key
-        context.user_data["awaiting_promo"] = True
-        keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}")]]
-        try:
-            await query.message.reply_text(t(user_id, "promo_enter"), parse_mode="Markdown",
-                                           reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            await query.message.chat.send_message(t(user_id, "promo_enter"), parse_mode="Markdown",
-                                                  reply_markup=InlineKeyboardMarkup(keyboard))
-        return PAYMENT_SCREENSHOT
 
     if data.startswith("study_"):
         subject_key = data.split("_", 1)[1]
@@ -2097,9 +1920,14 @@ async def trial_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["trial_index"] = next_index
         if next_index >= FREE_QUESTIONS:
             score = context.user_data["trial_score"]
-            done_text = result_text + "\n\n" + t(user_id, "trial_done", score=score)
+            lang_td = db.get_user_lang(user_id) or "en"
+            done_text = result_text + "\n\n" + (
+                f"🏁 *Пробный тест завершён!*\n\n📊 Ваш результат: *{score} / 3*\n\n✨ Теперь откройте полный курс в *Мои курсы*!"
+                if lang_td == "ru" else
+                f"🏁 *Trial Complete!*\n\n📊 Your score: *{score} / 3*\n\n✨ Open the full course in *My Courses*!"
+            )
             keyboard = [
-                [InlineKeyboardButton(t(user_id, "buy_now"), callback_data=f"buy_{subject_key}")],
+                [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
                 [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
             ]
             await query.message.edit_text(done_text, parse_mode="Markdown",
@@ -2464,9 +2292,14 @@ async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             was_trial = is_trial
             if is_trial:
                 context.user_data["tf_is_trial"] = False
-                done = result_text + "\n\n" + t(user_id, "trial_tf_done", score=score, total=total)
+                lang_tft = db.get_user_lang(user_id) or "en"
+                done = result_text + "\n\n" + (
+                    f"🏁 *Пробный True/False завершён!*\n\n📊 Результат: *{score} / {total}*\n\n✨ Откройте полный курс в *Мои курсы*!"
+                    if lang_tft == "ru" else
+                    f"🏁 *Trial True/False Complete!*\n\n📊 Score: *{score} / {total}*\n\n✨ Open the full course in *My Courses*!"
+                )
                 keyboard = [
-                    [InlineKeyboardButton(t(user_id, "buy_now"), callback_data=f"buy_{subject_key}")],
+                    [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
                     [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
                 ]
             else:
