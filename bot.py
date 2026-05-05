@@ -28,6 +28,12 @@ SUBJECT_PHOTOS = {
     "qm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/qm.png",
 }
 
+# ── КУРСЫ → ПРЕДМЕТЫ ──────────────────────────────────────────────────────────
+COURSE_SUBJECTS = {
+    "1": ["qm"],
+    "2": ["f1", "f3", "fm", "macro"],
+}
+
 logger = logging.getLogger(__name__)
 
 # ── RATE LIMITER (AI tools cooldown) ─────────────────────────────────────────
@@ -240,6 +246,10 @@ TEXTS = {
         "bundle_select_2": "Выберите 2 предмета (нажмите на каждый):",
         "bundle_selected": "✅ Выбрано: {subjects}",
         "bundle_need_more": "❗ Выберите ещё {n} предмет(а)",
+        # Course selection
+        "choose_course": "🎓 *Выберите курс:*\n\n━━━━━━━━━━━━━━━\nКакой курс вы проходите?",
+        "course_1": "📗 1 Курс",
+        "course_2": "📘 2 Курс",
         # AI Humanizer
         # AI Detector
     },
@@ -427,6 +437,10 @@ TEXTS = {
         "bundle_select_2": "Select 2 subjects (tap each one):",
         "bundle_selected": "✅ Selected: {subjects}",
         "bundle_need_more": "❗ Select {n} more subject(s)",
+        # Course selection
+        "choose_course": "🎓 *Choose your year:*\n\n━━━━━━━━━━━━━━━\nWhich year are you in?",
+        "course_1": "📗 Year 1",
+        "course_2": "📘 Year 2",
         # AI Humanizer
         # AI Detector
     }
@@ -561,6 +575,20 @@ async def show_main_menu(message, user_id, edit=False):
         await message.edit_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+
+
+async def show_course_select(message, user_id, mode, edit=False):
+    """mode: 'study' | 'buy' | 'trial'"""
+    keyboard = [
+        [InlineKeyboardButton(t(user_id, "course_1"), callback_data=f"course_{mode}_1")],
+        [InlineKeyboardButton(t(user_id, "course_2"), callback_data=f"course_{mode}_2")],
+        [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
+    ]
+    text = t(user_id, "choose_course")
+    if edit:
+        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+    else:
+        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
 
 
 # ── ADMIN COMMANDS ─────────────────────────────────────────────────────────────
@@ -855,41 +883,65 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action = query.data
 
     if action == "menu_my_subjects":
-        subjects = db.get_user_subjects(user_id)
-        if not subjects:
-            keyboard = [[InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
-                        [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-            await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(keyboard))
-        else:
-            buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")] for s in subjects if s in SUBJECTS]
-            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-            await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
-                                          reply_markup=InlineKeyboardMarkup(buttons))
+        await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
     elif action == "menu_buy_access":
-        subjects = db.get_user_subjects(user_id)
-        buttons = []
-        for key, info in SUBJECTS.items():
-            if key in subjects:
-                buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
-            else:
-                buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
-        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-        await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(buttons))
+        await show_course_select(query.message, user_id, "buy", edit=True)
         return CHOOSING_SUBJECT
 
     elif action == "menu_trial":
-        buttons = [[InlineKeyboardButton(f"🎯 {info['name']}", callback_data=f"trial_pick_{key}")] for key, info in SUBJECTS.items()]
-        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
-        await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
-                                      reply_markup=InlineKeyboardMarkup(buttons))
+        await show_course_select(query.message, user_id, "trial", edit=True)
         return CHOOSING_SUBJECT
 
+    elif action.startswith("course_"):
+        # course_{mode}_{year}  e.g. course_study_1, course_buy_2, course_trial_1
+        parts = action.split("_", 2)  # ['course', mode, year]
+        mode = parts[1]
+        year = parts[2]
+        course_keys = COURSE_SUBJECTS.get(year, [])
+
+        if mode == "study":
+            subjects_owned = db.get_user_subjects(user_id)
+            owned_in_course = [s for s in course_keys if s in subjects_owned]
+            if not owned_in_course:
+                keyboard = [
+                    [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
+                    [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
+                ]
+                await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
+                                              reply_markup=InlineKeyboardMarkup(keyboard))
+            else:
+                buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
+                           for s in owned_in_course]
+                buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+                await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
+                                              reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
+
+        elif mode == "buy":
+            subjects_owned = db.get_user_subjects(user_id)
+            buttons = []
+            for key in course_keys:
+                info = SUBJECTS[key]
+                if key in subjects_owned:
+                    buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
+                else:
+                    buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
+
+        elif mode == "trial":
+            buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
+                       for key in course_keys]
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
+
     elif action == "menu_bundle":
-        lang = db.get_user_lang(user_id) or "en"
         keyboard = [
             [InlineKeyboardButton("📦 2 предмета (-10%)" if lang == "ru" else "📦 2 subjects (-10%)", callback_data="bundle2_start")],
             [InlineKeyboardButton("📦 4 предмета (-20%)" if lang == "ru" else "📦 4 subjects (-20%)", callback_data="bundle4_start")],
@@ -977,6 +1029,49 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
+
+    if data.startswith("course_"):
+        parts = data.split("_", 2)
+        mode = parts[1]
+        year = parts[2]
+        course_keys = COURSE_SUBJECTS.get(year, [])
+        if mode == "study":
+            subjects_owned = db.get_user_subjects(user_id)
+            owned_in_course = [s for s in course_keys if s in subjects_owned]
+            if not owned_in_course:
+                keyboard = [
+                    [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
+                    [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
+                ]
+                await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
+                                              reply_markup=InlineKeyboardMarkup(keyboard))
+            else:
+                buttons = [[InlineKeyboardButton(f"📘 {SUBJECTS[s]['name']}", callback_data=f"study_{s}")]
+                           for s in owned_in_course]
+                buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+                await query.message.edit_text(t(user_id, "choose_subject_study"), parse_mode="Markdown",
+                                              reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
+        elif mode == "buy":
+            subjects_owned = db.get_user_subjects(user_id)
+            buttons = []
+            for key in course_keys:
+                info = SUBJECTS[key]
+                if key in subjects_owned:
+                    buttons.append([InlineKeyboardButton(f"✅ {info['name']}", callback_data=f"already_{key}")])
+                else:
+                    buttons.append([InlineKeyboardButton(f"🛒 {info['name']}", callback_data=f"buy_{key}")])
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_subject_buy"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
+        elif mode == "trial":
+            buttons = [[InlineKeyboardButton(f"🎯 {SUBJECTS[key]['name']}", callback_data=f"trial_pick_{key}")]
+                       for key in course_keys]
+            buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+            await query.message.edit_text(t(user_id, "choose_trial_subject"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(buttons))
+            return CHOOSING_SUBJECT
 
     if data == "back_to_buy_list":
         # Back from payment photo screen - send new message with buy list
@@ -1119,20 +1214,7 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton(t(user_id, "back"), callback_data="back_to_buy_list")]
         ]
         markup = InlineKeyboardMarkup(keyboard)
-        photo_url = SUBJECT_PHOTOS.get(subject_key)
-        if photo_url:
-            try:
-                await query.message.reply_photo(
-                    photo=photo_url,
-                    caption=text,
-                    parse_mode="Markdown",
-                    reply_markup=markup
-                )
-            except Exception as e:
-                logger.error(f"send photo failed: {e}")
-                await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
-        else:
-            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
+        await query.message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
         return PAYMENT_SCREENSHOT
 
     if data.startswith("promo_"):
