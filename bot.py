@@ -143,7 +143,7 @@ TEXTS = {
             "🤖 ИИ-преподаватель — задай любой вопрос\n"
             "📊 Прогресс — следи за своим ростом\n\n"
             "━━━━━━━━━━━━━━━\n"
-            "👇 Выберите предмет и начните подготовку"
+            "👇 Купите доступ и начните подготовку прямо сейчас!"
         ),
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Выберите режим обучения:_",
         "study_materials": "📖 Теории",
@@ -347,7 +347,7 @@ TEXTS = {
             "🤖 AI Tutor — ask anything, get answered\n"
             "📊 Progress — track your growth\n\n"
             "━━━━━━━━━━━━━━━\n"
-            "👇 Choose a subject and start preparing"
+            "👇 Buy access and start preparing right now!"
         ),
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Choose a study mode:_",
         "study_materials": "📖 Theories",
@@ -914,6 +914,16 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action = query.data
 
     if action == "menu_my_subjects":
+        # Если вообще нет ни одного предмета — сразу показываем экран покупки
+        all_owned = db.get_user_subjects(user_id)
+        if not all_owned:
+            keyboard = [
+                [InlineKeyboardButton(t(user_id, "buy_access"), callback_data="menu_buy_access")],
+                [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]
+            ]
+            await query.message.edit_text(t(user_id, "no_subjects"), parse_mode="Markdown",
+                                          reply_markup=InlineKeyboardMarkup(keyboard))
+            return CHOOSING_SUBJECT
         await show_course_select(query.message, user_id, "study", edit=True)
         return CHOOSING_SUBJECT
 
