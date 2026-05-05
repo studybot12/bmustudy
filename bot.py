@@ -26,11 +26,12 @@ SUBJECT_PHOTOS = {
     "macro": "https://raw.githubusercontent.com/studybot12/bmustudy/main/macro.png",
     "hrm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/hrm.png",
     "qm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/qm.png",
+    "ibm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/ibm.png",
 }
 
 # ── КУРСЫ → ПРЕДМЕТЫ ──────────────────────────────────────────────────────────
 COURSE_SUBJECTS = {
-    "1": ["qm"],
+    "1": ["qm", "ibm"],
     "2": ["f1", "f3", "fm", "macro", "hrm"],
 }
 
