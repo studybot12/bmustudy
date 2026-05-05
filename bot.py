@@ -25,6 +25,7 @@ SUBJECT_PHOTOS = {
     "fm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/fm.png",
     "macro": "https://raw.githubusercontent.com/studybot12/bmustudy/main/macro.png",
     "hrm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/hrm.png",
+    "qm": "https://raw.githubusercontent.com/studybot12/bmustudy/main/qm.png",
 }
 
 logger = logging.getLogger(__name__)

@@ -6,6 +6,7 @@ SUBJECTS = {
     "fm": {"name": "Intro to Financial Markets & Institutions"},
     "macro": {"name": "Macroeconomics"},
     "hrm": {"name": "Human Resource Management (HRM)"},
+    "qm": {"name": "Quantitative Methods (QM)"},
 }
 
 # ─── STUDY MATERIALS ──────────────────────────────────────────────────────────
@@ -1233,6 +1234,224 @@ MATERIALS = {
             },
         ]
     },
+    "qm": {
+        "name": "Quantitative Methods (QM)",
+        "chapters": [
+            {
+                "title": "Topic 1 · Introduction to Statistics & Data",
+                "content": (
+                    "*Statistics* = the science of collecting, organising, presenting, analysing, and interpreting data to support decision-making.\n\n"
+                    "🔹 *Two branches:*\n"
+                    "• Descriptive statistics — summarises and describes data (tables, charts, averages)\n"
+                    "• Inferential statistics — draws conclusions about a population based on a sample\n\n"
+                    "🔹 *Key terms:*\n"
+                    "• Population — the complete set of all items of interest\n"
+                    "• Sample — a subset of the population selected for study\n"
+                    "• Variable — a characteristic that takes different values\n"
+                    "• Observation — one recorded value of a variable\n\n"
+                    "🔹 *Types of variables:*\n"
+                    "• Qualitative (categorical) — non-numeric; e.g. gender, industry\n"
+                    "• Quantitative — numeric; discrete (countable) or continuous (any value)\n\n"
+                    "🔹 *Levels of measurement:*\n"
+                    "• Nominal — categories, no order (e.g. region, colour)\n"
+                    "• Ordinal — ordered categories, unequal gaps (e.g. ratings)\n"
+                    "• Interval — equal gaps, no true zero (e.g. temperature °C)\n"
+                    "• Ratio — equal gaps + true zero (e.g. revenue, age)\n\n"
+                    "🔹 *Data types:*\n"
+                    "• Primary — collected first-hand (surveys, experiments)\n"
+                    "• Secondary — already exists (databases, government records)"
+                )
+            },
+            {
+                "title": "Topic 2 · Measures of Central Tendency",
+                "content": (
+                    "*Measures of central tendency* describe the typical or central value in a dataset.\n\n"
+                    "🔹 *Mean:*  x̄ = Σx / n\n"
+                    "• Uses all data; sensitive to outliers\n"
+                    "• Best for: symmetric, continuous data\n\n"
+                    "🔹 *Median:*\n"
+                    "• Middle value when sorted; average of two middle values if n is even\n"
+                    "• Not affected by outliers\n"
+                    "• Best for: skewed distributions (e.g. house prices, salaries)\n\n"
+                    "🔹 *Mode:*\n"
+                    "• Most frequently occurring value\n"
+                    "• Only measure suitable for categorical (nominal) data\n"
+                    "• Dataset can be unimodal, bimodal, or have no mode\n\n"
+                    "🔹 *Weighted Mean:*  x̄_w = Σ(w·x) / Σw\n"
+                    "Used when values differ in importance (e.g. GPA, portfolio return)\n\n"
+                    "🔹 *Which to use?*\n"
+                    "• Symmetric data → Mean\n"
+                    "• Skewed data → Median\n"
+                    "• Categorical data → Mode\n\n"
+                    "🔹 *Example:* Data: 4, 7, 7, 9, 13\n"
+                    "Mean = 40/5 = 8 | Median = 7 | Mode = 7"
+                )
+            },
+            {
+                "title": "Topic 3 · Measures of Dispersion",
+                "content": (
+                    "*Measures of dispersion* describe how spread out data is around the centre.\n\n"
+                    "🔹 *Range:*  Max − Min\n"
+                    "Simple but very sensitive to outliers.\n\n"
+                    "🔹 *Variance (s²):*\n"
+                    "s² = Σ(x − x̄)² / (n − 1)\n"
+                    "Average squared deviation from the mean. Uses (n−1) for samples (Bessel's correction).\n\n"
+                    "🔹 *Standard Deviation (s):*\n"
+                    "s = √s²\n"
+                    "• Same units as original data — most widely used spread measure\n"
+                    "• Small s → data clustered near mean\n"
+                    "• Large s → data widely spread\n\n"
+                    "🔹 *Coefficient of Variation (CV):*\n"
+                    "CV = (s / x̄) × 100%\n"
+                    "Relative dispersion — compares variability across different datasets or units.\n\n"
+                    "🔹 *Interquartile Range (IQR):*\n"
+                    "IQR = Q3 − Q1 (middle 50% of data)\n"
+                    "Resistant to outliers. Used in box plots.\n"
+                    "Outlier rule: values below Q1 − 1.5×IQR or above Q3 + 1.5×IQR\n\n"
+                    "🔹 *Empirical Rule (Normal data):*\n"
+                    "±1σ → 68% | ±2σ → 95% | ±3σ → 99.7%"
+                )
+            },
+            {
+                "title": "Topic 4 · Probability Fundamentals",
+                "content": (
+                    "*Probability* = likelihood of an event occurring.\n"
+                    "P(A) = favourable outcomes / total possible outcomes\n"
+                    "Range: 0 ≤ P(A) ≤ 1\n\n"
+                    "🔹 *Core rules:*\n"
+                    "• Complement:  P(A') = 1 − P(A)\n"
+                    "• Addition:  P(A or B) = P(A) + P(B) − P(A and B)\n"
+                    "• Mutually exclusive:  P(A or B) = P(A) + P(B)\n"
+                    "• Multiplication:  P(A and B) = P(A) × P(B|A)\n"
+                    "• Independent events:  P(A and B) = P(A) × P(B)\n\n"
+                    "🔹 *Conditional probability:*\n"
+                    "P(A|B) = P(A and B) / P(B)\n"
+                    "Probability of A, given B has already occurred.\n\n"
+                    "🔹 *Bayes' Theorem:*\n"
+                    "P(A|B) = [P(B|A) × P(A)] / P(B)\n"
+                    "Updates probability using new evidence.\n\n"
+                    "🔹 *Types of probability:*\n"
+                    "• Classical — equally likely outcomes (coins, dice)\n"
+                    "• Empirical — based on observed frequencies\n"
+                    "• Subjective — based on expert judgement\n\n"
+                    "🔹 *Independent vs Mutually Exclusive:*\n"
+                    "• Independent: P(A) unchanged by B occurring\n"
+                    "• Mutually exclusive: cannot both occur; P(A and B) = 0"
+                )
+            },
+            {
+                "title": "Topic 5 · Probability Distributions",
+                "content": (
+                    "A *probability distribution* lists all possible outcomes of a random variable and their probabilities.\n\n"
+                    "🔹 *Binomial Distribution (discrete):*\n"
+                    "• n independent trials, each with probability p of success\n"
+                    "• P(X=k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ\n"
+                    "• Mean = np | Variance = np(1−p)\n"
+                    "• Example: P(exactly 3 defects in 10 items) when p = 0.1\n\n"
+                    "🔹 *Poisson Distribution (discrete):*\n"
+                    "• Models rare events over a fixed interval\n"
+                    "• P(X=k) = e⁻λ × λᵏ / k!\n"
+                    "• Mean = Variance = λ\n"
+                    "• Example: arrivals per hour, defects per metre\n\n"
+                    "🔹 *Normal Distribution (continuous):*\n"
+                    "• Bell-shaped, symmetric; defined by μ and σ\n"
+                    "• Total area under curve = 1\n"
+                    "• Empirical rule: 68% / 95% / 99.7% within 1/2/3 σ\n\n"
+                    "🔹 *Standard Normal (Z-distribution):*\n"
+                    "Z = (X − μ) / σ\n"
+                    "Converts any normal variable to Z ~ N(0,1).\n"
+                    "Use Z-tables to find probabilities.\n\n"
+                    "🔹 *Uniform Distribution (continuous):*\n"
+                    "All values equally likely between a and b.\n"
+                    "Mean = (a+b)/2"
+                )
+            },
+            {
+                "title": "Topic 6 · Sampling & Confidence Intervals",
+                "content": (
+                    "🔹 *Sampling methods:*\n"
+                    "• Simple random — every item has equal chance\n"
+                    "• Systematic — every kth item from a list\n"
+                    "• Stratified — sample from each subgroup (stratum) separately\n"
+                    "• Cluster — randomly select whole groups\n"
+                    "• Convenience — easy access; prone to bias (non-probability)\n\n"
+                    "🔹 *Sampling distribution of x̄:*\n"
+                    "Distribution of sample means across all possible samples.\n"
+                    "Standard Error:  SE = σ / √n\n"
+                    "Larger n → smaller SE → more precise estimates\n\n"
+                    "🔹 *Central Limit Theorem (CLT):*\n"
+                    "For n ≥ 30, x̄ is approximately normally distributed regardless of the population's shape.\n"
+                    "Fundamental theorem underlying inferential statistics.\n\n"
+                    "🔹 *Confidence Intervals (σ known):*\n"
+                    "CI = x̄ ± Z × (σ / √n)\n"
+                    "• 90% CI → Z = 1.645\n"
+                    "• 95% CI → Z = 1.960\n"
+                    "• 99% CI → Z = 2.576\n\n"
+                    "🔹 *Confidence Intervals (σ unknown, use t):*\n"
+                    "CI = x̄ ± t × (s / √n)   with df = n − 1\n\n"
+                    "🔹 *Interpretation:*\n"
+                    "'We are 95% confident the true population mean falls within this interval.'\n"
+                    "(NOT: 95% probability the mean is in this specific interval)"
+                )
+            },
+            {
+                "title": "Topic 7 · Hypothesis Testing",
+                "content": (
+                    "*Hypothesis testing* = formal procedure to assess whether sample evidence supports a claim about the population.\n\n"
+                    "🔹 *5 Steps:*\n"
+                    "1. State H₀ (null) and H₁ (alternative)\n"
+                    "2. Set significance level α (typically 0.05)\n"
+                    "3. Identify test statistic (Z or t)\n"
+                    "4. Calculate test statistic from sample\n"
+                    "5. Reject H₀ if test stat > critical value  OR  p-value < α\n\n"
+                    "🔹 *Hypotheses:*\n"
+                    "• H₀: no effect / status quo  (e.g. μ = 50)\n"
+                    "• H₁: what we want to prove  (e.g. μ ≠ 50, μ > 50, μ < 50)\n\n"
+                    "🔹 *Test statistics:*\n"
+                    "Z = (x̄ − μ₀) / (σ/√n)   — σ known or n ≥ 30\n"
+                    "t = (x̄ − μ₀) / (s/√n)   — σ unknown, n < 30; df = n−1\n\n"
+                    "🔹 *p-value:*\n"
+                    "Probability of the observed result (or more extreme) if H₀ is true.\n"
+                    "p < α → reject H₀ (statistically significant)\n"
+                    "p ≥ α → fail to reject H₀\n\n"
+                    "🔹 *Tails:*\n"
+                    "• Two-tailed: H₁: μ ≠ μ₀  (test both directions)\n"
+                    "• One-tailed: H₁: μ > μ₀ or μ < μ₀\n\n"
+                    "🔹 *Error types:*\n"
+                    "• Type I (α): reject true H₀ — false positive\n"
+                    "• Type II (β): keep false H₀ — false negative\n"
+                    "• Power = 1 − β = P(correctly rejecting false H₀)"
+                )
+            },
+            {
+                "title": "Topic 8 · Correlation & Simple Linear Regression",
+                "content": (
+                    "🔹 *Correlation:*\n"
+                    "Measures strength and direction of linear relationship between X and Y.\n\n"
+                    "Pearson's r: ranges −1 to +1\n"
+                    "• r = +1: perfect positive | r = −1: perfect negative | r = 0: none\n"
+                    "• |r| > 0.7: strong | 0.4–0.7: moderate | < 0.4: weak\n\n"
+                    "⚠️ Correlation ≠ Causation\n\n"
+                    "🔹 *Simple Linear Regression:*\n"
+                    "Ŷ = a + bX\n"
+                    "• a = intercept (Y when X = 0)\n"
+                    "• b = slope (change in Y per 1-unit increase in X)\n\n"
+                    "🔹 *Calculating coefficients:*\n"
+                    "b = [nΣXY − ΣXΣY] / [nΣX² − (ΣX)²]\n"
+                    "a = ȳ − b·x̄\n\n"
+                    "🔹 *Goodness of fit — R²:*\n"
+                    "R² = r²\n"
+                    "Proportion of variation in Y explained by X.\n"
+                    "R² = 0.85 → X explains 85% of variation in Y\n\n"
+                    "🔹 *Residuals:*\n"
+                    "e = Actual Y − Predicted Ŷ\n"
+                    "Good fit: residuals are small, random, and show no pattern.\n\n"
+                    "🔹 *Regression assumptions:*\n"
+                    "Linearity · Independence · Homoscedasticity · Normality of residuals"
+                )
+            },
+        ]
+    },
 }
 
 
@@ -1335,6 +1554,28 @@ FLASHCARDS = {
         {"term": "Redundancy vs Dismissal", "definition": "Redundancy = role no longer exists (not personal). Dismissal = employee terminated due to conduct or capability. Both require fair process to avoid unfair dismissal claims."},
         {"term": "Real-Time Learning", "definition": "On-demand, workflow-integrated learning. Delivered when needed; highly targeted; cheaper and faster to update than traditional classroom training."},
         {"term": "Succession Planning", "definition": "Long-term HR process identifying and developing employees to fill senior roles. Reduces leadership risk; builds internal talent pipeline."},
+    ],
+    "qm": [
+        {"term": "Descriptive Statistics", "definition": "Summarises and describes data using tables, charts, and numerical measures (mean, median, standard deviation). Does NOT generalise beyond the data."},
+        {"term": "Inferential Statistics", "definition": "Uses sample data to draw conclusions (inferences) about a population. Includes hypothesis testing and confidence intervals."},
+        {"term": "Population vs Sample", "definition": "Population = complete set of all items of interest. Sample = subset selected for study. We use samples to estimate population parameters."},
+        {"term": "Levels of Measurement", "definition": "Nominal (categories, no order) → Ordinal (order, unequal gaps) → Interval (equal gaps, no true zero) → Ratio (equal gaps + true zero)."},
+        {"term": "Mean", "definition": "x̄ = Σx / n. Arithmetic average. Uses all values; sensitive to outliers. Best for symmetric, continuous data."},
+        {"term": "Median", "definition": "Middle value when data is sorted. Not affected by outliers. Best for skewed data (e.g. salaries, house prices)."},
+        {"term": "Mode", "definition": "Most frequently occurring value. Only measure suitable for categorical (nominal) data. A dataset can be unimodal, bimodal, or have no mode."},
+        {"term": "Standard Deviation", "definition": "s = √[Σ(x−x̄)²/(n−1)]. Measures spread around the mean. Same units as data. Small s = clustered; Large s = spread out."},
+        {"term": "Coefficient of Variation (CV)", "definition": "CV = (s/x̄) × 100%. Relative measure of dispersion. Useful for comparing variability across datasets with different units or scales."},
+        {"term": "IQR (Interquartile Range)", "definition": "IQR = Q3 − Q1. Middle 50% of data. Resistant to outliers. Outlier rule: values beyond Q1 − 1.5×IQR or Q3 + 1.5×IQR."},
+        {"term": "Binomial Distribution", "definition": "Discrete distribution for n independent trials each with probability p. Mean = np; Variance = np(1−p). Example: number of defectives in a batch."},
+        {"term": "Poisson Distribution", "definition": "Discrete distribution for rare events in a fixed interval. Mean = Variance = λ. Example: customer arrivals per hour."},
+        {"term": "Normal Distribution", "definition": "Continuous, bell-shaped, symmetric distribution defined by μ and σ. Empirical rule: 68% within ±1σ, 95% within ±2σ, 99.7% within ±3σ."},
+        {"term": "Z-score", "definition": "Z = (X − μ) / σ. Standardises any normal variable to N(0,1). Used with Z-tables to find probabilities."},
+        {"term": "Central Limit Theorem (CLT)", "definition": "For n ≥ 30, the sampling distribution of x̄ is approximately normal regardless of the population's shape. Foundation of inferential statistics."},
+        {"term": "Confidence Interval", "definition": "CI = x̄ ± Z × (σ/√n). Range likely to contain the true population mean. 95% CI uses Z = 1.96. Wider CI = less precision but more confidence."},
+        {"term": "Hypothesis Testing", "definition": "H₀ (null) vs H₁ (alternative). Reject H₀ if test statistic > critical value OR p-value < α. Type I error = reject true H₀; Type II = keep false H₀."},
+        {"term": "p-value", "definition": "Probability of obtaining the observed result (or more extreme) assuming H₀ is true. p < α (e.g. 0.05) → reject H₀ (statistically significant)."},
+        {"term": "Pearson's r (Correlation)", "definition": "Measures linear relationship: −1 ≤ r ≤ +1. |r| > 0.7 strong; 0.4–0.7 moderate; < 0.4 weak. Correlation ≠ Causation."},
+        {"term": "R² (Coefficient of Determination)", "definition": "R² = r². Proportion of variation in Y explained by X in regression. R² = 0.80 means X explains 80% of variation in Y."},
     ],
 }
 
@@ -2582,6 +2823,88 @@ QUIZ_QUESTIONS = {
             "explanation": "Real-time learning = on-demand, highly targeted, workflow-integrated. It is cheaper, faster to update, and more effective than traditional scheduled training because employees learn at the point of need."
         },
     ],
+    "qm": [
+        {
+            "question": "A researcher surveys 200 students from a university to estimate the average study hours of all 10,000 students. The 200 students represent:",
+            "options": ["A) The population", "B) A parameter", "C) A sample", "D) A census"],
+            "correct": 2,
+            "explanation": "The 200 students are a sample — a subset selected from the population (all 10,000 students). A parameter describes the population; a statistic describes the sample."
+        },
+        {
+            "question": "Which level of measurement has equal intervals between values but NO true zero point?",
+            "options": ["A) Nominal", "B) Ordinal", "C) Interval", "D) Ratio"],
+            "correct": 2,
+            "explanation": "Interval scale: equal gaps between values but no true zero. Example: temperature in °C — 0°C does not mean 'no temperature'. Ratio scale has a true zero (e.g. revenue, height)."
+        },
+        {
+            "question": "A dataset is: 3, 5, 5, 7, 20. Which measure of central tendency is MOST appropriate given the outlier?",
+            "options": ["A) Mean", "B) Mode", "C) Median", "D) Weighted mean"],
+            "correct": 2,
+            "explanation": "The value 20 is an outlier that pulls the mean upward (mean = 8). The median (5) is not affected by outliers and better represents the typical value in skewed data."
+        },
+        {
+            "question": "The standard deviation of a dataset is 12 and the mean is 60. What is the Coefficient of Variation (CV)?",
+            "options": ["A) 5%", "B) 20%", "C) 50%", "D) 72%"],
+            "correct": 1,
+            "explanation": "CV = (s / x̄) × 100% = (12 / 60) × 100% = 20%. The CV measures relative dispersion and is useful for comparing variability across datasets with different scales or units."
+        },
+        {
+            "question": "P(A) = 0.4 and P(B) = 0.3. If A and B are independent, what is P(A and B)?",
+            "options": ["A) 0.70", "B) 0.58", "C) 0.12", "D) 0.10"],
+            "correct": 2,
+            "explanation": "For independent events: P(A and B) = P(A) × P(B) = 0.4 × 0.3 = 0.12. Independence means knowing B occurred gives no information about A."
+        },
+        {
+            "question": "A binomial distribution has n = 10 trials and probability of success p = 0.3. What is the mean?",
+            "options": ["A) 0.3", "B) 3.0", "C) 2.1", "D) 7.0"],
+            "correct": 1,
+            "explanation": "Mean of binomial distribution = np = 10 × 0.3 = 3.0. Variance = np(1−p) = 10 × 0.3 × 0.7 = 2.1. Standard deviation = √2.1 ≈ 1.45."
+        },
+        {
+            "question": "The Central Limit Theorem states that for large samples (n ≥ 30), the sampling distribution of x̄ is:",
+            "options": [
+                "A) Identical to the population distribution",
+                "B) Approximately normal regardless of the population's shape",
+                "C) Always skewed to the right",
+                "D) Uniform between the minimum and maximum values"
+            ],
+            "correct": 1,
+            "explanation": "The CLT is the foundation of inferential statistics: for n ≥ 30, x̄ is approximately normally distributed regardless of how the population is distributed. This allows us to use Z/t tests."
+        },
+        {
+            "question": "A 95% confidence interval for a population mean is (48, 56). What does this mean?",
+            "options": [
+                "A) There is a 95% probability that the true mean is exactly 52",
+                "B) 95% of all data values fall between 48 and 56",
+                "C) We are 95% confident that the true population mean falls between 48 and 56",
+                "D) The sample mean has a 95% chance of equalling the population mean"
+            ],
+            "correct": 2,
+            "explanation": "A confidence interval is a range estimate. We are 95% confident (in our method) that the interval 48 to 56 contains the true population mean. The mean is fixed — it is our estimate that has uncertainty."
+        },
+        {
+            "question": "In hypothesis testing, a Type I error occurs when:",
+            "options": [
+                "A) We fail to reject H₀ when H₀ is actually false",
+                "B) We reject H₀ when H₀ is actually true",
+                "C) The p-value is greater than α",
+                "D) The sample size is too small"
+            ],
+            "correct": 1,
+            "explanation": "Type I error = rejecting a true H₀ (false positive). Its probability equals α (significance level). Type II error = failing to reject a false H₀ (false negative), probability = β."
+        },
+        {
+            "question": "A regression equation is Ŷ = 5 + 3X, and R² = 0.81. Which interpretation is correct?",
+            "options": [
+                "A) For every 1-unit increase in Y, X increases by 3",
+                "B) For every 1-unit increase in X, Y increases by 3; X explains 81% of variation in Y",
+                "C) The correlation between X and Y is 0.81",
+                "D) The intercept is 3 and the slope is 5"
+            ],
+            "correct": 1,
+            "explanation": "In Ŷ = a + bX: a = 5 (intercept), b = 3 (slope — Y increases by 3 for each 1-unit increase in X). R² = 0.81 means X explains 81% of variation in Y. Note: r = √0.81 = 0.9, not 0.81."
+        },
+    ],
 }
 
 # ─── API FUNCTIONS ────────────────────────────────────────────────────────────
@@ -2657,6 +2980,32 @@ CHEATSHEETS = {
         "   Challenges: GDPR/data privacy | Resistance to change | System integration\n\n"
         "📌 *Remember:* Psychological contract = unwritten expectations | Diversity ≠ Inclusion | Real-time learning = on-demand, workflow-integrated"
     ),
+    "qm": (
+        "🔑 *Quantitative Methods — Key Formulas:*\n\n"
+        "1️⃣ *Central Tendency*\n"
+        "   Mean: x̄ = Σx/n | Weighted Mean: x̄_w = Σ(wx)/Σw\n"
+        "   Median = middle value (sorted) | Mode = most frequent\n\n"
+        "2️⃣ *Dispersion*\n"
+        "   Variance: s² = Σ(x−x̄)²/(n−1) | Std Dev: s = √s²\n"
+        "   CV = (s/x̄)×100% | IQR = Q3−Q1\n"
+        "   Empirical rule: ±1σ=68%, ±2σ=95%, ±3σ=99.7%\n\n"
+        "3️⃣ *Probability*\n"
+        "   P(A') = 1−P(A) | P(A or B) = P(A)+P(B)−P(A and B)\n"
+        "   P(A and B) = P(A)×P(B) if independent\n"
+        "   P(A|B) = P(A and B)/P(B)\n\n"
+        "4️⃣ *Distributions*\n"
+        "   Binomial: Mean=np, Var=np(1−p)\n"
+        "   Poisson: Mean=Var=λ\n"
+        "   Z-score: Z = (X−μ)/σ\n\n"
+        "5️⃣ *Inference*\n"
+        "   SE = σ/√n | CI = x̄ ± Z×(σ/√n)\n"
+        "   Z-test: Z=(x̄−μ₀)/(σ/√n) | t-test: t=(x̄−μ₀)/(s/√n)\n"
+        "   Reject H₀ if p < α\n\n"
+        "6️⃣ *Regression*\n"
+        "   Ŷ = a + bX | b = [nΣXY−ΣXΣY]/[nΣX²−(ΣX)²]\n"
+        "   a = ȳ − b·x̄ | R² = r² (proportion of Y explained by X)\n\n"
+        "📌 *Remember:* Correlation ≠ Causation | Type I = reject true H₀ | Type II = keep false H₀"
+    ),
 }
 
 # ─── GLOSSARY ─────────────────────────────────────────────────────────────────
@@ -2728,6 +3077,22 @@ GLOSSARY = {
         {"term": "Tacit Knowledge", "definition": "Experience-based know-how that is hard to articulate or transfer (e.g., expert intuition). Contrasted with explicit knowledge (documented procedures, manuals)."},
         {"term": "Succession Planning", "definition": "Long-term HR process identifying and developing internal candidates to fill senior roles in the future. Reduces leadership risk and builds the talent pipeline."},
         {"term": "Diversity & Inclusion", "definition": "Diversity = the mix of people (age, gender, ethnicity, background). Inclusion = an environment where everyone feels valued and can contribute. Business case: better decisions, innovation, and talent retention."},
+    ],
+    "qm": [
+        {"term": "Descriptive Statistics", "definition": "Methods that summarise and describe data — tables, charts, mean, median, standard deviation. Does NOT make inferences beyond the observed data."},
+        {"term": "Inferential Statistics", "definition": "Methods that use sample data to draw conclusions about a population — includes confidence intervals and hypothesis testing."},
+        {"term": "Population vs Sample", "definition": "Population = all items of interest. Sample = subset selected for study. Parameters describe populations; statistics describe samples."},
+        {"term": "Mean", "definition": "x̄ = Σx/n. Arithmetic average. Sensitive to outliers. Best for symmetric, continuous data."},
+        {"term": "Median", "definition": "Middle value in sorted data. Resistant to outliers. Best for skewed distributions."},
+        {"term": "Standard Deviation", "definition": "s = √[Σ(x−x̄)²/(n−1)]. Measures spread around the mean in the same units as the data."},
+        {"term": "Normal Distribution", "definition": "Symmetric, bell-shaped continuous distribution defined by mean μ and standard deviation σ. Empirical rule: 68/95/99.7% within 1/2/3 standard deviations."},
+        {"term": "Z-score", "definition": "Z = (X−μ)/σ. Standardises a value to the standard normal distribution N(0,1). Used to find probabilities from Z-tables."},
+        {"term": "Central Limit Theorem", "definition": "For n ≥ 30, the sampling distribution of x̄ is approximately normal regardless of the population's shape. Enables use of Z and t tests."},
+        {"term": "Confidence Interval", "definition": "CI = x̄ ± Z×(σ/√n). A range likely to contain the true population mean at a given confidence level (e.g. 95% uses Z=1.96)."},
+        {"term": "Hypothesis Testing", "definition": "Formal procedure: state H₀ and H₁ → set α → calculate test statistic → compare to critical value or p-value → reject or fail to reject H₀."},
+        {"term": "Type I & Type II Errors", "definition": "Type I (α): reject true H₀ (false positive). Type II (β): fail to reject false H₀ (false negative). Power = 1−β."},
+        {"term": "Pearson's r", "definition": "Correlation coefficient: −1 ≤ r ≤ +1. Measures strength and direction of linear relationship. r=0 means no linear relationship. Correlation ≠ Causation."},
+        {"term": "Simple Linear Regression", "definition": "Ŷ = a + bX. b = slope (change in Y per unit X). a = intercept. R² = proportion of Y's variation explained by X."},
     ],
 }
 
@@ -2813,6 +3178,20 @@ TRUE_FALSE = {
         {"statement": "The psychological contract refers to the formal written employment agreement signed by both parties.", "answer": False, "explanation": "The psychological contract is UNWRITTEN — it represents mutual informal expectations (job security, fair treatment, career growth). Breaching it can cause disengagement even if the legal contract is intact."},
         {"statement": "Diversity and inclusion are the same concept.", "answer": False, "explanation": "Diversity = the mix of people (age, gender, ethnicity, background). Inclusion = creating an environment where all feel valued and can contribute. You can have diversity without inclusion."},
     ],
+    "qm": [
+        {"statement": "Descriptive statistics are used to draw conclusions about a population based on a sample.", "answer": False, "explanation": "Inferential statistics draw conclusions about a population from a sample. Descriptive statistics simply summarise the data at hand — they do not generalise beyond the dataset."},
+        {"statement": "Ratio data has equal intervals AND a true zero point.", "answer": True, "explanation": "Ratio is the highest level of measurement: equal intervals between values AND a meaningful zero (e.g. revenue, height, weight). Zero means 'none of the quantity'. Interval data lacks a true zero."},
+        {"statement": "The median is more appropriate than the mean when data is heavily skewed.", "answer": True, "explanation": "Outliers pull the mean towards them, making it unrepresentative. The median (middle value) is not affected by extreme values, so it better represents the typical value in skewed distributions."},
+        {"statement": "Standard deviation is measured in squared units, unlike variance.", "answer": False, "explanation": "Variance is in squared units (e.g. £²). Standard deviation is the square root of variance, bringing it back to the original units (e.g. £). This makes standard deviation easier to interpret."},
+        {"statement": "If P(A) = 0.3 and P(B) = 0.4 and A and B are mutually exclusive, then P(A or B) = 0.12.", "answer": False, "explanation": "For mutually exclusive events: P(A or B) = P(A) + P(B) = 0.3 + 0.4 = 0.7. The multiplication rule (0.3×0.4=0.12) applies to independent events finding P(A AND B), not mutually exclusive ones."},
+        {"statement": "For a binomial distribution with n=20 and p=0.5, the mean is 10.", "answer": True, "explanation": "Mean of binomial = np = 20 × 0.5 = 10. Variance = np(1−p) = 20 × 0.5 × 0.5 = 5. Standard deviation = √5 ≈ 2.24."},
+        {"statement": "The Central Limit Theorem requires the population to be normally distributed.", "answer": False, "explanation": "The CLT states that for large enough samples (n ≥ 30), x̄ is approximately normal REGARDLESS of the population's shape. This is what makes the theorem so powerful and widely applicable."},
+        {"statement": "A 99% confidence interval is narrower than a 95% confidence interval for the same data.", "answer": False, "explanation": "Higher confidence requires a WIDER interval. 99% CI uses Z=2.576 vs 1.96 for 95%. To be more confident the true mean is captured, you must widen the range."},
+        {"statement": "A p-value of 0.03 means we reject H₀ at the 5% significance level.", "answer": True, "explanation": "p = 0.03 < α = 0.05, so we reject H₀. The result is statistically significant at the 5% level. The p-value is the probability of getting this result (or more extreme) if H₀ were true."},
+        {"statement": "A Type II error means rejecting the null hypothesis when it is actually true.", "answer": False, "explanation": "Type II error = FAILING to reject H₀ when it is actually false (false negative). Type I error = rejecting H₀ when it is true (false positive). Type I probability = α."},
+        {"statement": "If the correlation coefficient r = 0.9, then R² = 0.81, meaning X explains 81% of the variation in Y.", "answer": True, "explanation": "R² = r² = 0.9² = 0.81. This is the coefficient of determination — 81% of the variation in Y is explained by X in the regression model."},
+        {"statement": "In a regression equation Ŷ = 4 + 2X, the slope means Y increases by 4 for each unit increase in X.", "answer": False, "explanation": "In Ŷ = a + bX, the SLOPE is b = 2 (Y increases by 2 per unit increase in X). The INTERCEPT is a = 4 (value of Y when X = 0). Slope and intercept are often confused."},
+    ],
 }
 
 # ─── VIDEO LINKS ──────────────────────────────────────────────────────────────
@@ -2855,6 +3234,15 @@ VIDEOS = {
         {"title": "Performance Management & Appraisal Methods", "url": "https://www.youtube.com/watch?v=placeholder_hrm_4", "topic": "performance"},
         {"title": "AI in HR — Talent Acquisition & L&D", "url": "https://www.youtube.com/watch?v=placeholder_hrm_5", "topic": "hr technology"},
         {"title": "Knowledge Management & Organisational Learning", "url": "https://www.youtube.com/watch?v=placeholder_hrm_6", "topic": "knowledge management"},
+    ],
+    "qm": [
+        {"title": "Statistics Intro: Mean, Median & Mode (Khan Academy)", "url": "https://www.youtube.com/watch?v=uhxtUt_-GyM", "topic": "central tendency"},
+        {"title": "Standard Deviation & Variance Explained", "url": "https://www.youtube.com/watch?v=SzZ6GpcfoQY", "topic": "dispersion"},
+        {"title": "Probability — Basic Rules Explained", "url": "https://www.youtube.com/watch?v=KzfWUEJjG18", "topic": "probability"},
+        {"title": "Normal Distribution & Z-scores (Crash Course Statistics)", "url": "https://www.youtube.com/watch?v=rzFX5NWojp0", "topic": "normal distribution"},
+        {"title": "Central Limit Theorem Explained", "url": "https://www.youtube.com/watch?v=YAlJCEDH2uY", "topic": "sampling"},
+        {"title": "Hypothesis Testing — Step by Step", "url": "https://www.youtube.com/watch?v=VK-rnA3-41c", "topic": "hypothesis testing"},
+        {"title": "Correlation and Regression Explained", "url": "https://www.youtube.com/watch?v=GhrxgbQnEEU", "topic": "regression"},
     ],
 }
 
