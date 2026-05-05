@@ -1067,6 +1067,14 @@ async def subject_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_main_menu(query.message, user_id, edit=True)
         return MAIN_MENU
 
+    if data == "menu_my_subjects":
+        await show_course_select(query.message, user_id, "study", edit=True)
+        return CHOOSING_SUBJECT
+
+    if data == "menu_buy_access":
+        await show_course_select(query.message, user_id, "buy", edit=True)
+        return CHOOSING_SUBJECT
+
     if data.startswith("course_"):
         parts = data.split("_", 2)
         mode = parts[1]
