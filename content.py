@@ -7,6 +7,7 @@ SUBJECTS = {
     "macro": {"name": "Macroeconomics"},
     "hrm": {"name": "Human Resource Management (HRM)"},
     "qm": {"name": "Quantitative Methods (QM)"},
+    "ibm": {"name": "Introduction to Business & Management (IBM)"},
 }
 
 # ─── STUDY MATERIALS ──────────────────────────────────────────────────────────
@@ -1594,6 +1595,89 @@ MATERIALS = {
             },
         ]
     },
+    "ibm": {
+        "name": "Introduction to Business & Management (IBM)",
+        "chapters": [
+            {
+                "title": "W7 · Price & Pricing Strategies",
+                "content": (
+                    "*Price* = the amount paid by customers for a product. It is the only element of the marketing mix that produces revenue.\n\n"
+                    "🔹 *Price Elasticity of Demand (PED):*\n"
+                    "• PED = % change in quantity demanded ÷ % change in price\n"
+                    "• Inelastic (0 < PED < 1): demand changes less than price → raise price = more revenue\n"
+                    "• Elastic (PED > 1): demand changes more than price → raise price = less revenue\n"
+                    "• Drivers: necessities, number of substitutes, brand loyalty\n\n"
+                    "🔹 *Pricing Strategies:*\n"
+                    "• Price Skimming — high initial price (early adopters); recover R&D; then reduce over lifecycle (e.g. Apple iPhone)\n"
+                    "• Penetration Pricing — low initial price to grab market share; normalise later (e.g. Disney+ 2019)\n"
+                    "• Loss Leader — sell below cost to draw customers; profit on other items (e.g. Sony PS5)\n"
+                    "• Premium Pricing — permanently high to signal exclusivity/quality\n"
+                    "• Cost-Plus — add markup % to unit cost\n"
+                    "• Competition-Based — set price relative to rivals\n"
+                    "• Price Discrimination — different prices for same product by segment/time/location\n"
+                    "• Freemium — base product free; charge for premium features\n"
+                    "• Bundle Pricing — group of products at combined discount\n"
+                    "• Promotional Pricing — temporary discounts e.g. BOGOF"
+                )
+            },
+            {
+                "title": "W8 · Place & Distribution",
+                "content": (
+                    "*Place* = getting the product to the right consumer, at the right time, in the right location.\n\n"
+                    "🔹 *Key Intermediaries:*\n"
+                    "• Wholesalers — buy large quantities from producers; break bulk for retailers\n"
+                    "• Retailers — final link; sell directly to consumers\n"
+                    "• Agents — negotiate between buyers & sellers; do not own goods\n\n"
+                    "🔹 *Distribution Channels:*\n"
+                    "• Zero-Level (Direct) — producer sells straight to consumer (e.g. Uzairways website, Apple store)\n"
+                    "• One-Level — producer → retailer → consumer (fashion, electronics)\n"
+                    "• Two-Level — producer → wholesaler → retailer → consumer (small pharmacies, FMCG)\n"
+                    "• Online marketplace — digital platform with multiple sellers (e.g. Uzum, Amazon)\n\n"
+                    "🔹 *Physical Distribution* = moving product from manufacturer to final customer\n\n"
+                    "🔹 *Amazon Case:* 750,000+ robots; same/next-day delivery; 37.8% US e-commerce share. "
+                    "Distribution = competitive advantage, not just a cost."
+                )
+            },
+            {
+                "title": "W9–10 · Promotion & Promotional Mix",
+                "content": (
+                    "*Promotion* = systematic use of advertising, sales promotion, personal selling, and PR to inform, persuade, and remind consumers.\n\n"
+                    "🔹 *ATL (Above the Line)* — mass media; no direct consumer contact:\n"
+                    "• TV advertising — highest recall, emotional impact, expensive\n"
+                    "• Radio — local targeting, audio-only, cost-effective\n"
+                    "• Cinema — captive audience, high attention, cannot skip\n"
+                    "• Sponsorship — links brand to values (e.g. Olympics, Rio 2016 → 5.4× ROI)\n"
+                    "• Newspaper/Magazine — credible, detailed info, referenceable\n\n"
+                    "🔹 *BTL (Below the Line)* — targeted, direct contact:\n"
+                    "• Sales Promotion — BOGOF, discounts, loyalty points; quick but short-term\n"
+                    "• Personal Selling — direct persuasion; high impact, time-consuming\n"
+                    "• Direct Mail / Digital Marketing — targeted; 'junk mail' stigma risk\n"
+                    "• Public Relations (PR) — reputation management; low cost, high trust, no control\n\n"
+                    "🔹 *Nikon Coolpix Case:* integrated ATL+BTL mix → 30% sales increase despite only $2M budget.\n\n"
+                    "🔹 *Cadbury Gorilla:* $12M ad, no product shown → 9% sales increase. Emotion > information."
+                )
+            },
+            {
+                "title": "W11–12 · Operations & Project Management",
+                "content": (
+                    "*Operations Management* = the part of a business that transforms inputs into outputs customers will buy.\n"
+                    "Inputs → Process → Outputs (finished goods, services, added value)\n\n"
+                    "🔹 *Production Methods:*\n"
+                    "• Job Production — one unique item at a time; high skill, high cost (e.g. Aston Martin DB11, wedding cakes)\n"
+                    "• Batch Production — groups of identical items through each stage; machines reset between batches (e.g. bakery rolls, uniforms)\n"
+                    "• Flow Production — continuous stream on assembly line; very low unit cost; standardised (e.g. Coca-Cola, cars)\n"
+                    "• Mass Customization — flow line + customer choice at final stage via FMS; low cost + variety (e.g. Dell laptops, Nike By You)\n\n"
+                    "🔹 *Choosing a method:* depends on market size, capital, labour skills, customer needs\n\n"
+                    "🔹 *Project Management:* temporary activity with defined start/end, goals, budget, responsibilities.\n"
+                    "Four elements: Resources · Time · Budget · Scope\n\n"
+                    "🔹 *Critical Path Analysis (CPA):* identifies tasks, sequences them, finds the shortest project duration.\n"
+                    "Critical path = tasks that MUST finish on time or whole project is delayed.\n\n"
+                    "🔹 *Gantt Chart:* visual timeline showing tasks against calendar time.\n\n"
+                    "🔹 *Why projects fail:* Vague scope · Poor management · Communication gaps · Incompetent team"
+                )
+            },
+        ]
+    },
 }
 
 
@@ -1718,6 +1802,25 @@ FLASHCARDS = {
         {"term": "p-value", "definition": "Probability of obtaining the observed result (or more extreme) assuming H₀ is true. p < α (e.g. 0.05) → reject H₀ (statistically significant)."},
         {"term": "Pearson's r (Correlation)", "definition": "Measures linear relationship: −1 ≤ r ≤ +1. |r| > 0.7 strong; 0.4–0.7 moderate; < 0.4 weak. Correlation ≠ Causation."},
         {"term": "R² (Coefficient of Determination)", "definition": "R² = r². Proportion of variation in Y explained by X in regression. R² = 0.80 means X explains 80% of variation in Y."},
+    ],
+    "ibm": [
+        {"term": "Price Skimming", "definition": "Setting a high initial price targeting early adopters; price reduces over the product lifecycle to capture more price-sensitive segments. Used by Apple, pharmaceuticals."},
+        {"term": "Penetration Pricing", "definition": "Low launch price to rapidly gain market share; increase price once loyalty is established. Example: Disney+ entering Netflix's market in 2019."},
+        {"term": "Loss Leader Pricing", "definition": "Selling a product below cost to attract customers who then buy profitable items. Example: Sony PS5 sold at a loss; profit recovered through game and PS Plus sales."},
+        {"term": "Price Elasticity of Demand (PED)", "definition": "PED = % change in quantity demanded ÷ % change in price. Inelastic (PED < 1): revenue rises with price increase. Elastic (PED > 1): revenue falls with price increase."},
+        {"term": "Distribution Channel", "definition": "The route a product takes from producer to final consumer. Zero-level (direct), One-level (retailer), Two-level (wholesaler + retailer), or online marketplace."},
+        {"term": "Wholesaler", "definition": "Buys in bulk from producers and sells in smaller quantities to retailers. Acts as a logistics bridge; example: pharmaceutical importer supplying regional pharmacies."},
+        {"term": "Retailer", "definition": "The final link in the distribution chain; sells directly to consumers. Provides location convenience, variety, and 'touch and feel' experience."},
+        {"term": "ATL (Above the Line)", "definition": "Paid mass media advertising with no direct consumer contact. Examples: TV, radio, cinema, sponsorship, newspapers. Goal: brand awareness at scale."},
+        {"term": "BTL (Below the Line)", "definition": "Targeted promotional methods with direct consumer contact. Examples: sales promotion, personal selling, direct mail, digital marketing, PR."},
+        {"term": "Sales Promotion", "definition": "Short-term incentives to encourage immediate purchase. Examples: BOGOF, discounts, loyalty points. Quick results but effect is short-lived."},
+        {"term": "Public Relations (PR)", "definition": "Managing the company's reputation with the public. Low cost, high trust, but the business has no control over the message once released."},
+        {"term": "Job Production", "definition": "Making one unique item at a time, fully finished before the next starts. High unit cost, skilled labour, strong worker motivation. Examples: Aston Martin, wedding cakes."},
+        {"term": "Batch Production", "definition": "A group of identical items moves through each stage together. Machines reset between batches. Lower unit cost than job but higher than flow. Example: bakery rolls."},
+        {"term": "Flow Production", "definition": "Items move continuously through stages on an assembly line. Very low unit cost, consistent quality, but inflexible. Example: Coca-Cola bottling plant."},
+        {"term": "Mass Customization", "definition": "High-volume flow production + customer choice at final stage via flexible manufacturing systems. Low cost + variety. Example: Dell laptops, Nike By You."},
+        {"term": "Critical Path Analysis (CPA)", "definition": "Planning technique identifying all tasks, their sequence, and the shortest time to complete a project. The critical path = tasks that must not be delayed."},
+        {"term": "Gantt Chart", "definition": "Visual project management tool showing tasks plotted against a calendar timeline. Makes scheduling and progress tracking easy."},
     ],
 }
 
@@ -3047,6 +3150,78 @@ QUIZ_QUESTIONS = {
             "explanation": "In Ŷ = a + bX: a = 5 (intercept), b = 3 (slope — Y increases by 3 for each 1-unit increase in X). R² = 0.81 means X explains 81% of variation in Y. Note: r = √0.81 = 0.9, not 0.81."
         },
     ],
+    "ibm": [
+        {
+            "question": "A company sets a high initial price to recover R&D costs quickly, then reduces it over time. Which strategy is this?",
+            "options": ["A) Penetration Pricing", "B) Price Skimming", "C) Loss Leader", "D) Cost-Plus"],
+            "correct": 1,
+            "explanation": "Price Skimming starts high to target early adopters and recover costs, then price reduces as the product matures — exactly as Apple does with iPhones."
+        },
+        {
+            "question": "If PED = 0.4 for a product, what happens to total revenue when the price is raised?",
+            "options": ["A) Revenue falls", "B) Revenue stays the same", "C) Revenue rises", "D) Cannot be determined"],
+            "correct": 2,
+            "explanation": "PED = 0.4 is inelastic (< 1). Demand falls by less than the price rises, so total revenue increases. Rule: inelastic demand → raise price → more revenue."
+        },
+        {
+            "question": "Sony sells the PS5 at below cost. Which pricing strategy does this illustrate?",
+            "options": ["A) Price Discrimination", "B) Premium Pricing", "C) Freemium", "D) Loss Leader"],
+            "correct": 3,
+            "explanation": "Loss Leader: the console is sold below cost to draw customers into the PlayStation ecosystem, where games ($70) and PS Plus subscriptions ($15/mo) generate substantial profit."
+        },
+        {
+            "question": "In which distribution channel does the producer sell DIRECTLY to the consumer with NO intermediaries?",
+            "options": ["A) Two-Level Channel", "B) One-Level Channel", "C) Zero-Level Channel", "D) Agent Channel"],
+            "correct": 2,
+            "explanation": "Zero-Level (Direct) channel: no intermediaries. The producer sells straight to the consumer, e.g. Uzairways.com selling tickets directly, or Apple's own website."
+        },
+        {
+            "question": "A wholesaler's PRIMARY role in the distribution chain is to:",
+            "options": [
+                "A) Sell single units directly to final consumers",
+                "B) Buy in large quantities and break bulk for retailers",
+                "C) Negotiate between buyers and sellers for a commission",
+                "D) Advertise products on behalf of the producer"
+            ],
+            "correct": 1,
+            "explanation": "Wholesalers buy large volumes from producers and sell smaller quantities to retailers. They act as a logistics bridge — without them, small retailers would have to buy directly from giant manufacturers."
+        },
+        {
+            "question": "TV, cinema, and radio advertising are all examples of:",
+            "options": ["A) BTL promotion", "B) Personal Selling", "C) ATL promotion", "D) Sales Promotion"],
+            "correct": 2,
+            "explanation": "ATL (Above the Line) = paid mass media where the business has no direct contact with individual consumers. TV, cinema, radio, sponsorship, and newspaper are all ATL."
+        },
+        {
+            "question": "Which promotional tool has LOW cost but HIGH trust, yet the business has NO control over the message?",
+            "options": ["A) Television Advertising", "B) Sponsorship", "C) Sales Promotion", "D) Public Relations (PR)"],
+            "correct": 3,
+            "explanation": "PR is low cost and highly trusted because it appears as third-party news. However, once a story is released, the business cannot control how media or the public interpret it."
+        },
+        {
+            "question": "Aston Martin builds each car by hand, one at a time, with an engineer signing every engine. This is:",
+            "options": ["A) Flow Production", "B) Batch Production", "C) Job Production", "D) Mass Customization"],
+            "correct": 2,
+            "explanation": "Job Production = making one unique item at a time. High skill, high unit cost, but total flexibility. Aston Martin DB11 is the classic textbook example."
+        },
+        {
+            "question": "A Coca-Cola bottling plant runs 24/7 with bottles moving continuously along a conveyor. This is:",
+            "options": ["A) Job Production", "B) Batch Production", "C) Mass Customization", "D) Flow Production"],
+            "correct": 3,
+            "explanation": "Flow Production = continuous stream of standardised products. Very low unit cost, consistent quality, but inflexible. Suitable for large, stable demand — like Coca-Cola."
+        },
+        {
+            "question": "In Critical Path Analysis, the 'critical path' refers to:",
+            "options": [
+                "A) The most expensive sequence of activities",
+                "B) The sequence of activities with the most resources",
+                "C) The sequence that must be completed on time to avoid project delay",
+                "D) The first activities that must be started"
+            ],
+            "correct": 2,
+            "explanation": "The critical path is the longest chain of dependent tasks. Any delay to a critical activity delays the entire project. Non-critical activities have 'float' — some slack time."
+        },
+    ],
 }
 
 # ─── API FUNCTIONS ────────────────────────────────────────────────────────────
@@ -3148,6 +3323,30 @@ CHEATSHEETS = {
         "   a = ȳ − b·x̄ | R² = r² (proportion of Y explained by X)\n\n"
         "📌 *Remember:* Correlation ≠ Causation | Type I = reject true H₀ | Type II = keep false H₀"
     ),
+    "ibm": (
+        "🔑 *IBM — Marketing 4Ps & Operations:*\n\n"
+        "1️⃣ *Price*\n"
+        "   PED = %ΔQd ÷ %ΔP | Inelastic (< 1): raise price = more revenue\n"
+        "   Skimming → high initial, reduce later (Apple)\n"
+        "   Penetration → low launch, increase later (Disney+)\n"
+        "   Loss Leader → below cost to attract (PS5)\n\n"
+        "2️⃣ *Place*\n"
+        "   Channels: Zero (direct) → One (retailer) → Two (wholesaler + retailer)\n"
+        "   Wholesaler = breaks bulk | Retailer = final link | Agent = commission\n\n"
+        "3️⃣ *Promotion*\n"
+        "   ATL = mass media (TV, radio, cinema, sponsorship) — brand awareness\n"
+        "   BTL = targeted (PR, personal selling, sales promo, direct mail)\n"
+        "   Mix: inform + persuade + remind\n\n"
+        "4️⃣ *Operations*\n"
+        "   Job: unique, high cost, skilled (Aston Martin)\n"
+        "   Batch: groups, medium cost (bakery)\n"
+        "   Flow: continuous, low cost, standardised (Coca-Cola)\n"
+        "   Mass Custom: flow + choice (Dell, Nike)\n\n"
+        "5️⃣ *Project Management*\n"
+        "   CPA = critical path = shortest project duration\n"
+        "   Gantt chart = tasks vs time | Float = slack time on non-critical tasks\n\n"
+        "📌 *Remember:* Price is the only P that generates revenue | ATL = no direct contact | Critical path delay = project delay"
+    ),
 }
 
 # ─── GLOSSARY ─────────────────────────────────────────────────────────────────
@@ -3235,6 +3434,40 @@ GLOSSARY = {
         {"term": "Type I & Type II Errors", "definition": "Type I (α): reject true H₀ (false positive). Type II (β): fail to reject false H₀ (false negative). Power = 1−β."},
         {"term": "Pearson's r", "definition": "Correlation coefficient: −1 ≤ r ≤ +1. Measures strength and direction of linear relationship. r=0 means no linear relationship. Correlation ≠ Causation."},
         {"term": "Simple Linear Regression", "definition": "Ŷ = a + bX. b = slope (change in Y per unit X). a = intercept. R² = proportion of Y's variation explained by X."},
+    ],
+    "ibm": [
+        {"term": "Price", "definition": "The amount paid by customers for a product. The only element of the marketing mix that generates revenue."},
+        {"term": "Price Elasticity of Demand (PED)", "definition": "PED = % change in Qd ÷ % change in price. Inelastic (< 1): demand changes less than price. Elastic (> 1): demand changes more than price."},
+        {"term": "Price Skimming", "definition": "High initial price targeting early adopters; price reduced over time as the product matures. Used in electronics and pharmaceuticals (e.g. Apple iPhone)."},
+        {"term": "Penetration Pricing", "definition": "Low launch price to rapidly gain market share; price normalised once loyalty is established (e.g. Disney+ 2019 entered at 50% below Netflix)."},
+        {"term": "Loss Leader Pricing", "definition": "Selling a product below cost to attract customers who then purchase other high-margin products (e.g. Sony PS5 sold at a loss; profit from games and PS Plus)."},
+        {"term": "Premium Pricing", "definition": "Permanently high price to signal exclusivity and superior quality. Used by luxury brands."},
+        {"term": "Cost-Plus Pricing", "definition": "Unit cost + fixed markup percentage = selling price. Simple but ignores market conditions."},
+        {"term": "Price Discrimination", "definition": "Charging different prices for the same product to different segments (by time, location, or demographics)."},
+        {"term": "Freemium Pricing", "definition": "Base product offered free; premium features require payment. Common in apps and software."},
+        {"term": "Bundle Pricing", "definition": "Multiple products sold together at a discount vs. buying each separately."},
+        {"term": "Place (Distribution)", "definition": "Getting the right product to the right consumer, at the right time and location. Encompasses channels, logistics, and intermediaries."},
+        {"term": "Distribution Channel", "definition": "The route a product takes from producer to final consumer. Zero-level (direct), one-level (retailer), two-level (wholesaler + retailer)."},
+        {"term": "Wholesaler", "definition": "Buys large quantities from producers and sells in smaller quantities to retailers. 'Breaks bulk' and acts as a logistics bridge."},
+        {"term": "Retailer", "definition": "The final link in the distribution chain; sells directly to consumers. Provides location convenience and variety."},
+        {"term": "Agent", "definition": "Intermediary who negotiates between buyers and sellers for a commission. Does not own the goods."},
+        {"term": "Promotion", "definition": "Systematic use of advertising, sales promotion, personal selling, and PR to inform, persuade, and remind consumers."},
+        {"term": "ATL (Above the Line)", "definition": "Paid mass media communication with no direct individual contact: TV, radio, cinema, sponsorship, newspapers. Goal: mass brand awareness."},
+        {"term": "BTL (Below the Line)", "definition": "Targeted promotional methods with direct consumer contact: sales promotion, personal selling, direct mail, PR, digital marketing."},
+        {"term": "Advertising", "definition": "Paid, mass communication to build awareness. TV = highest reach and recall but most expensive. Radio = local targeting, low cost."},
+        {"term": "Sponsorship", "definition": "Payment to associate the brand with an event, team, or individual. Long-term brand equity builder (e.g. Olympics: $1 spent → $5.40 media value)."},
+        {"term": "Sales Promotion", "definition": "Short-term incentives for immediate purchase: BOGOF, discounts, loyalty points. Quick results but effect is temporary."},
+        {"term": "Public Relations (PR)", "definition": "Managing company reputation via media. Low cost, high trust, but no control over the message once released."},
+        {"term": "Personal Selling", "definition": "Direct, face-to-face persuasion. Highest impact of all promotional tools but most time-consuming and costly per contact."},
+        {"term": "Operations Management", "definition": "The part of a business that transforms inputs (materials, labour, energy) into outputs (goods, services, added value) that customers will buy."},
+        {"term": "Job Production", "definition": "Making one unique item at a time, fully finished before the next starts. High unit cost, skilled labour, strong motivation. Example: Aston Martin DB11."},
+        {"term": "Batch Production", "definition": "A group of identical items moves through each stage together. Machines reset between batches. Medium unit cost. Example: bakery rolls."},
+        {"term": "Flow Production", "definition": "Items move continuously along an assembly line. Very low unit cost, consistent quality, inflexible. Example: Coca-Cola bottling plant."},
+        {"term": "Mass Customization", "definition": "High-volume flow + customer choice at final stage via flexible manufacturing systems. Low cost + variety. Example: Dell laptops, Nike By You."},
+        {"term": "Project Management", "definition": "A temporary activity with a defined start/end, clear goals, defined responsibilities, and a set budget. Four elements: Resources, Time, Budget, Scope."},
+        {"term": "Critical Path Analysis (CPA)", "definition": "Planning technique identifying all tasks, sequencing them, and finding the shortest project completion time. Critical path tasks must not be delayed."},
+        {"term": "Gantt Chart", "definition": "Visual tool showing project tasks plotted against calendar time. Makes scheduling and progress tracking clear and simple."},
+        {"term": "Float (Slack)", "definition": "The amount of time a non-critical activity can be delayed without affecting the overall project end date."},
     ],
 }
 
@@ -3334,6 +3567,20 @@ TRUE_FALSE = {
         {"statement": "If the correlation coefficient r = 0.9, then R² = 0.81, meaning X explains 81% of the variation in Y.", "answer": True, "explanation": "R² = r² = 0.9² = 0.81. This is the coefficient of determination — 81% of the variation in Y is explained by X in the regression model."},
         {"statement": "In a regression equation Ŷ = 4 + 2X, the slope means Y increases by 4 for each unit increase in X.", "answer": False, "explanation": "In Ŷ = a + bX, the SLOPE is b = 2 (Y increases by 2 per unit increase in X). The INTERCEPT is a = 4 (value of Y when X = 0). Slope and intercept are often confused."},
     ],
+    "ibm": [
+        {"statement": "Price is the only element of the marketing mix that generates revenue.", "answer": True, "explanation": "Price directly produces revenue. Product, Place, and Promotion are all costs. This is why pricing decisions are so critical to profitability."},
+        {"statement": "Inelastic demand means consumers are very sensitive to price changes.", "answer": False, "explanation": "Inelastic demand (PED < 1) means consumers are NOT very sensitive — demand changes LESS than price. Elastic demand (PED > 1) means high sensitivity."},
+        {"statement": "Penetration pricing sets a high initial price to recover R&D costs quickly.", "answer": False, "explanation": "That describes Price Skimming. Penetration Pricing sets a LOW launch price to rapidly gain market share, then normalises the price once loyalty is established."},
+        {"statement": "A loss leader strategy means the business intentionally loses money on a product to attract customers.", "answer": True, "explanation": "Loss Leader pricing sells a product below cost to draw customers in. The business recovers the loss through sales of other high-margin products (e.g. PS5 → games → PS Plus)."},
+        {"statement": "In a zero-level distribution channel, the producer sells via a retailer to the consumer.", "answer": False, "explanation": "Zero-level = DIRECT channel with NO intermediaries. The producer sells straight to the consumer (e.g. Uzairways.com). A one-level channel involves a retailer."},
+        {"statement": "A wholesaler sells products directly to final consumers.", "answer": False, "explanation": "Wholesalers sell to RETAILERS, not directly to consumers. They buy in bulk from producers and break bulk for retailers. Retailers are the final link to consumers."},
+        {"statement": "ATL (Above the Line) promotion allows a business to directly contact individual consumers.", "answer": False, "explanation": "ATL = mass media (TV, radio, cinema) — no direct contact with individuals. BTL (Below the Line) = direct contact, e.g. personal selling, direct mail, targeted digital ads."},
+        {"statement": "Public Relations (PR) is the most expensive promotional tool but gives the business full control over the message.", "answer": False, "explanation": "PR is LOW cost but the business has NO control over how the message is interpreted once released. TV advertising is the most expensive, not PR."},
+        {"statement": "Flow production is the most suitable method for producing hand-built, unique luxury cars like Aston Martin.", "answer": False, "explanation": "Aston Martin uses JOB production — one unique item at a time. Flow production is for standardised, high-volume products like Coca-Cola. Applying flow to Aston Martin would eliminate their uniqueness."},
+        {"statement": "In Critical Path Analysis, a delay to a non-critical activity will always delay the entire project.", "answer": False, "explanation": "Non-critical activities have 'float' (slack time) — they can be delayed without affecting the overall project end date. Only delays to activities ON the critical path delay the whole project."},
+        {"statement": "Mass customization combines high-volume production with the ability to offer individual customer choices.", "answer": True, "explanation": "Mass customization uses flexible manufacturing systems (FMS) to add customer-specific features at the final assembly stage, while still benefiting from low unit costs of high-volume component production."},
+        {"statement": "Sponsorship is an example of BTL (Below the Line) promotion.", "answer": False, "explanation": "Sponsorship is ATL — it is paid mass communication with no direct individual consumer contact. The brand is associated with an event or athlete reaching a large audience, e.g. Olympics sponsorship."},
+    ],
 }
 
 # ─── VIDEO LINKS ──────────────────────────────────────────────────────────────
@@ -3385,6 +3632,14 @@ VIDEOS = {
         {"title": "Central Limit Theorem Explained", "url": "https://www.youtube.com/watch?v=YAlJCEDH2uY", "topic": "sampling"},
         {"title": "Hypothesis Testing — Step by Step", "url": "https://www.youtube.com/watch?v=VK-rnA3-41c", "topic": "hypothesis testing"},
         {"title": "Correlation and Regression Explained", "url": "https://www.youtube.com/watch?v=GhrxgbQnEEU", "topic": "regression"},
+    ],
+    "ibm": [
+        {"title": "Pricing Strategies Explained", "url": "https://www.youtube.com/watch?v=szX5jBYQa-8", "topic": "pricing"},
+        {"title": "Price Elasticity of Demand (PED)", "url": "https://www.youtube.com/watch?v=MXxNbJNQkz8", "topic": "elasticity"},
+        {"title": "Distribution Channels Explained", "url": "https://www.youtube.com/watch?v=sz58Y_BLH5Q", "topic": "place"},
+        {"title": "The Promotional Mix — ATL vs BTL", "url": "https://www.youtube.com/watch?v=placeholder_ibm_4", "topic": "promotion"},
+        {"title": "Methods of Production (Job, Batch, Flow, Mass Custom)", "url": "https://www.youtube.com/watch?v=KHGPUa13OAc", "topic": "operations"},
+        {"title": "Critical Path Analysis Explained", "url": "https://www.youtube.com/watch?v=placeholder_ibm_6", "topic": "project management"},
     ],
 }
 
