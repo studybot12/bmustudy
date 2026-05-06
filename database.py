@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import date, timedelta
 
 # On Railway: mount a Volume at /data → data persists across deploys.
 # Locally: falls back to ./studybot.db in the project folder.
@@ -422,11 +423,13 @@ class Database:
     def get_all_users_with_subjects(self):
         with self._con() as con:
             users = con.execute("SELECT user_id, username, first_name FROM users").fetchall()
+            all_access = con.execute("SELECT user_id, subject_key FROM access").fetchall()
+            access_map = {}
+            for user_id, subject_key in all_access:
+                access_map.setdefault(user_id, []).append(subject_key)
             result = []
             for u in users:
-                subjects = [r[0] for r in con.execute(
-                    "SELECT subject_key FROM access WHERE user_id=?", (u[0],)).fetchall()]
-                result.append({"user_id": u[0], "username": u[1], "first_name": u[2], "subjects": subjects})
+                result.append({"user_id": u[0], "username": u[1], "first_name": u[2], "subjects": access_map.get(u[0], [])})
             return result
 
     # ── XP / Streak / Leaderboard ─────────────────────────────────────────────
@@ -446,7 +449,6 @@ class Database:
             return {"xp": row[0], "level": row[1], "streak": row[2], "last_activity": row[3]}
  
     def add_xp(self, user_id, amount):
-        from datetime import date, timedelta
         today = date.today()
         with self._con() as con:
             row = con.execute(

@@ -3,7 +3,7 @@ import logging
 import os
 import random
 import time
-from datetime import datetime
+from datetime import datetime, date
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, CommandHandler, MessageHandler, CallbackQueryHandler,
@@ -60,12 +60,11 @@ def check_ai_rate_limit(user_id: int) -> float:
 # ── ADMIN ACTION GUARD (prevent double-click) ─────────────────────────────────
 _processed_admin_actions: set = set()
 
-(CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT, PAYMENT_SCREENSHOT,
+(CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
  AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT,
- ONBOARDING) = range(13)
+ ONBOARDING) = range(12)
 
-FREE_QUESTIONS = 3
 QUIZ_QUESTIONS_COUNT = 20
 
 TEXTS = {
@@ -575,8 +574,7 @@ async def onboarding_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
     elif action == "onboard_3":
         text = TEXTS[lang]["onboarding_3"]
         keyboard = [
-                [InlineKeyboardButton(t(user_id, "trial_quiz"), callback_data="menu_trial")],
-            [InlineKeyboardButton(TEXTS[lang]["onboarding_start"], callback_data="onboard_skip")],
+                    [InlineKeyboardButton(TEXTS[lang]["onboarding_start"], callback_data="onboard_skip")],
         ]
         await query.message.edit_text(text, parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
@@ -612,18 +610,7 @@ async def show_main_menu(message, user_id, edit=False):
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
-async def show_course_select(message, user_id, mode, edit=False):
-    """mode: 'study' | 'buy' | 'trial'"""
-    keyboard = [
-        [InlineKeyboardButton(t(user_id, "course_1"), callback_data=f"course_{mode}_1")],
-        [InlineKeyboardButton(t(user_id, "course_2"), callback_data=f"course_{mode}_2")],
-        [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
-    ]
-    text = t(user_id, "choose_course")
-    if edit:
-        await message.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
-    else:
-        await message.reply_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+
 
 
 # ── ADMIN COMMANDS ─────────────────────────────────────────────────────────────
@@ -800,71 +787,6 @@ async def admin_revokeaccess(update: Update, context: ContextTypes.DEFAULT_TYPE)
             parse_mode="Markdown"
         )
 
-
-async def add_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id != ADMIN_ID:
-        return
-    args = context.args
-    if len(args) < 2 or len(args) > 3:
-        await update.message.reply_text(
-            "Использование: /addpromo КОД СКИДКА [КОЛИЧЕСТВО]\n\n"
-            "Примеры:\n"
-            "`/addpromo FRIEND50 50` — без ограничений\n"
-            "`/addpromo PROMO20 20 10` — максимум 10 использований",
-            parse_mode="Markdown"
-        )
-        return
-    code = args[0].upper()
-    try:
-        discount = int(args[1])
-        max_uses = int(args[2]) if len(args) == 3 else None
-    except ValueError:
-        await update.message.reply_text("❌ Скидка и количество должны быть числами.")
-        return
-    db.add_promo(code, discount, max_uses)
-    uses_text = f"🔢 Лимит: *{max_uses}* использований" if max_uses else "♾ Без ограничений"
-    await update.message.reply_text(
-        f"✅ Промокод создан!\n\n"
-        f"🎁 Код: `{code}`\n"
-        f"💸 Скидка: *{discount}%*\n"
-        f"{uses_text}",
-        parse_mode="Markdown"
-    )
-
-
-async def delete_promo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id != ADMIN_ID:
-        return
-    args = context.args
-    if len(args) != 1:
-        await update.message.reply_text(
-            "Использование: /deletepromo КОД\nПример: `/deletepromo FRIEND50`",
-            parse_mode="Markdown"
-        )
-        return
-    code = args[0].upper()
-    deleted = db.delete_promo(code)
-    if deleted:
-        await update.message.reply_text(f"✅ Промокод `{code}` удалён.", parse_mode="Markdown")
-    else:
-        await update.message.reply_text(f"❌ Промокод `{code}` не найден.", parse_mode="Markdown")
-
-
-async def list_promos_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id != ADMIN_ID:
-        return
-    promos = db.get_all_promos()
-    if not promos:
-        await update.message.reply_text("📋 Активных промокодов нет.")
-        return
-    text = "📋 *Список промокодов:*\n\n"
-    for p in promos:
-        uses = f"{p['used_count']}/{p['max_uses']}" if p['max_uses'] else f"{p['used_count']}/∞"
-        text += f"• `{p['code']}` — *{p['discount']}%* · использовано: {uses}\n"
-    await update.message.reply_text(text, parse_mode="Markdown")
-
-
-# ── BROADCAST ────────────────────────────────────────────────────────────────
 
 async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
@@ -1055,165 +977,6 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
-async def show_bundle_subject_select(message, user_id, context, edit=False):
-    bundle_type = context.user_data.get("bundle_type", 2)
-    selected = context.user_data.get("bundle_selected", [])
-    lang = db.get_user_lang(user_id) or "en"
-    owned = db.get_user_subjects(user_id)
-    buttons = []
-    for key, info in SUBJECTS.items():
-        if key in owned:
-            label = f"✅ {info['name']}"
-        elif key in selected:
-            label = f"☑️ {info['name']}"
-        else:
-            label = f"📘 {info['name']}"
-        buttons.append([InlineKeyboardButton(label, callback_data=f"bsel_{key}")])
-
-    need = bundle_type - len(selected)
-    if lang == "ru":
-        header = f"📦 Выберите *{bundle_type}* предмета\n✅ Выбрано: {len(selected)}/{bundle_type}"
-        confirm_label = "✅ Подтвердить выбор"
-        back_label = "← Назад"
-    else:
-        header = f"📦 Select *{bundle_type}* subjects\n✅ Selected: {len(selected)}/{bundle_type}"
-        confirm_label = "✅ Confirm selection"
-        back_label = "← Back"
-
-    if len(selected) == bundle_type:
-        buttons.append([InlineKeyboardButton(confirm_label, callback_data="bundle_confirm")])
-    buttons.append([InlineKeyboardButton(back_label, callback_data="back_main")])
-
-    markup = InlineKeyboardMarkup(buttons)
-    if edit:
-        await message.edit_text(header, parse_mode="Markdown", reply_markup=markup)
-    else:
-        await message.reply_text(header, parse_mode="Markdown", reply_markup=markup)
-
-
-# ── PAYMENT ───────────────────────────────────────────────────────────────────
-
-async def receive_screenshot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    user = update.effective_user
-
-
-    # Handle promo code text input
-    if update.message.text and not update.message.photo and context.user_data.get("awaiting_promo"):
-        context.user_data["awaiting_promo"] = False
-        promo_code = update.message.text.strip().upper()
-        discount = db.check_promo(promo_code)
-        subject_key = context.user_data.get("pending_subject")
-        if discount and subject_key:
-            context.user_data["promo_discount"] = discount
-            context.user_data["pending_promo_code"] = promo_code
-            discounted_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
-            info = SUBJECTS[subject_key]
-            text = t(user_id, "promo_valid", discount=discount, price=discounted_price)
-            text += "\n\n" + t(user_id, "payment_instruction",
-                               subject=info["name"], price=discounted_price, card=CARD_NUMBER)
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}")]]
-            await update.message.reply_text(text, parse_mode="Markdown",
-                                            reply_markup=InlineKeyboardMarkup(keyboard))
-        else:
-            context.user_data["awaiting_promo"] = True
-            keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"buy_{subject_key}" if subject_key else "back_main")]]
-            await update.message.reply_text(t(user_id, "promo_invalid"), parse_mode="Markdown",
-                                            reply_markup=InlineKeyboardMarkup(keyboard))
-        return PAYMENT_SCREENSHOT
-
-    subject_key = context.user_data.get("pending_subject")
-    if not subject_key:
-        await show_main_menu(update.message, user_id)
-        return MAIN_MENU
-
-    discount = context.user_data.get("promo_discount", 0)
-    if subject_key == "bundle":
-        count = len(SUBJECTS)
-        full_price = PRICE_PER_SUBJECT * count
-        final_price = int(full_price * 0.8)
-        subject_display = "🎓 Пакет ВСЕ ПРЕДМЕТЫ"
-    elif subject_key and subject_key.startswith("bundle_"):
-        keys = subject_key.replace("bundle_", "").split("-")
-        bundle_type = len(keys)
-        discount_pct = 10 if bundle_type == 2 else 20
-        full_price = PRICE_PER_SUBJECT * bundle_type
-        final_price = int(full_price * (1 - discount_pct / 100))
-        names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
-        subject_display = f"📦 Пакет: {names}"
-    elif subject_key and subject_key.startswith("course_"):
-        year = subject_key.split("_", 1)[1]
-        lang = db.get_user_lang(user_id) or "en"
-        course_name = COURSE_NAMES[lang][year]
-        final_price = COURSE_PRICES.get(year, PRICE_PER_SUBJECT)
-        subject_display = f"🎓 {course_name}"
-    else:
-        final_price = int(PRICE_PER_SUBJECT * (1 - discount / 100))
-        info = SUBJECTS[subject_key]
-        subject_display = info["name"]
-    db.add_pending_payment(user_id, subject_key)
-
-    # Increment promo usage counter when screenshot is submitted
-    if discount and context.user_data.get("pending_promo_code"):
-        db.use_promo(context.user_data["pending_promo_code"])
-        context.user_data.pop("pending_promo_code", None)
-
-    approve_cb = f"approve_{user_id}_{subject_key}"
-    deny_cb = f"deny_{user_id}_{subject_key}"
-    admin_keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✅ Подтвердить", callback_data=approve_cb),
-         InlineKeyboardButton("❌ Отклонить", callback_data=deny_cb)]
-    ])
-    name = (f"{user.first_name or ''} {user.last_name or ''}").strip()
-    name = name.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`").replace("[", r"\[")
-    username_raw = f"@{user.username}" if user.username else "без username"
-    username_safe = username_raw.replace("_", r"\_").replace("*", r"\*").replace("`", r"\`")
-    promo_text = f"\n🎁 Промокод: скидка {discount}%" if discount else ""
-    admin_text = (f"💰 *Новая оплата*\n\n"
-                  f"👤 {name} ({username_safe})\n"
-                  f"🆔 `{user_id}`\n"
-                  f"📘 Предмет: *{subject_display}*\n"
-                  f"💵 Сумма: {final_price:,} сум{promo_text}")
-
-    try:
-        if update.message.photo:
-            await context.bot.send_photo(
-                chat_id=ADMIN_ID,
-                photo=update.message.photo[-1].file_id,
-                caption=admin_text,
-                parse_mode="Markdown",
-                reply_markup=admin_keyboard
-            )
-        elif update.message.document:
-            await context.bot.send_document(
-                chat_id=ADMIN_ID,
-                document=update.message.document.file_id,
-                caption=admin_text,
-                parse_mode="Markdown",
-                reply_markup=admin_keyboard
-            )
-        else:
-            # Fallback: student sent text instead of photo
-            await context.bot.send_message(
-                chat_id=ADMIN_ID,
-                text=admin_text + "\n\n⚠️ Студент не прислал фото — прислал текст.",
-                parse_mode="Markdown",
-                reply_markup=admin_keyboard
-            )
-    except Exception as e:
-        logger.error(f"Failed to notify admin about payment: {e}", exc_info=True)
-
-    keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
-    await update.message.reply_text(
-        t(user_id, "screenshot_received"),
-        parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
-    return MAIN_MENU
-
-
-# ── ADMIN APPROVE/DENY ────────────────────────────────────────────────────────
-
 async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
 
@@ -1307,7 +1070,16 @@ async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.remove_pending(student_id, subject_key)
         student_lang = db.get_user_lang(student_id) or "en"
         msg = TEXTS[student_lang]["access_denied"]
-        subject_display = SUBJECTS[subject_key]["name"] if subject_key in SUBJECTS else subject_key
+        if subject_key == "bundle":
+            subject_display = "🎓 Все предметы"
+        elif subject_key.startswith("bundle_"):
+            keys = subject_key.replace("bundle_", "").split("-")
+            subject_display = "📦 " + ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
+        elif subject_key.startswith("course_"):
+            year = subject_key.split("_", 1)[1]
+            subject_display = f"🎓 Курс {year}"
+        else:
+            subject_display = SUBJECTS[subject_key]["name"] if subject_key in SUBJECTS else subject_key
         try:
             await context.bot.send_message(student_id, msg, parse_mode="Markdown")
         except Exception:
@@ -1410,7 +1182,7 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
             text = t(user_id, "quiz_history_title", subject=SUBJECTS[subject_key]["name"])
             for i, h in enumerate(history, 1):
                 pct = int(h["score"] / h["total"] * 100)
-                date = h["taken_at"][:10] if h["taken_at"] else "—"
+                date_str = h["taken_at"][:10] if h["taken_at"] else "—"
                 emoji = "🌟" if pct >= 90 else "👍" if pct >= 70 else "📚" if pct >= 50 else "💪"
                 text += f"{emoji} {date}: *{h['score']}/{h['total']}* ({pct}%)\n"
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
@@ -1479,7 +1251,6 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         # Check if plan already exists
         existing = db.get_exam_plan(user_id, subject_key)
         if existing:
-            from datetime import date
             try:
                 exam_dt = datetime.strptime(existing["exam_date"], "%d.%m.%Y").date()
                 days_left = (exam_dt - date.today()).days
@@ -1839,7 +1610,7 @@ async def trial_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"🏁 *Trial Complete!*\n\n📊 Your score: *{score} / 3*\n\n✨ Open the full course in *My Courses*!"
             )
             keyboard = [
-                [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
+                [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="back_main")],
                 [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
             ]
             await query.message.edit_text(done_text, parse_mode="Markdown",
@@ -2211,7 +1982,7 @@ async def tf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f"🏁 *Trial True/False Complete!*\n\n📊 Score: *{score} / {total}*\n\n✨ Open the full course in *My Courses*!"
                 )
                 keyboard = [
-                    [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="menu_my_subjects")],
+                    [InlineKeyboardButton(t(user_id, "my_subjects"), callback_data="back_main")],
                     [InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")],
                 ]
             else:
@@ -2262,7 +2033,6 @@ async def fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             subject_key = context.user_data.get("examplan_subject")
             date_str = update.message.text.strip()
             context.user_data["awaiting_exam_date"] = False
-            from datetime import date
             try:
                 exam_dt = datetime.strptime(date_str, "%d.%m.%Y").date()
                 if exam_dt <= date.today():
@@ -2339,10 +2109,6 @@ def main():
                          CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
             MAIN_MENU: [CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
             CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler, pattern=_not_admin_cb)],
-            PAYMENT_SCREENSHOT: [
-                MessageHandler(filters.PHOTO | filters.Document.ALL | (filters.TEXT & ~filters.COMMAND), receive_screenshot),
-                CallbackQueryHandler(subject_handler, pattern=_not_admin_cb),
-            ],
             SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb)],
             QUIZ_SESSION: [CallbackQueryHandler(quiz_handler, pattern=_not_admin_cb)],
             FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler, pattern=_not_admin_cb)],
@@ -2366,9 +2132,6 @@ def main():
             CommandHandler("profile", admin_profile),
             CommandHandler("giveaccess", admin_giveaccess),
             CommandHandler("revokeaccess", admin_revokeaccess),
-            CommandHandler("addpromo", add_promo_cmd),
-            CommandHandler("deletepromo", delete_promo_cmd),
-            CommandHandler("listpromos", list_promos_cmd),
             CommandHandler("broadcast", broadcast_cmd),
             MessageHandler(filters.ALL, fallback)
         ],
@@ -2378,9 +2141,6 @@ def main():
     app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"), group=-1)
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
-    app.add_handler(CommandHandler("addpromo", add_promo_cmd))
-    app.add_handler(CommandHandler("deletepromo", delete_promo_cmd))
-    app.add_handler(CommandHandler("listpromos", list_promos_cmd))
     app.add_handler(CommandHandler("profile", admin_profile))
     app.add_handler(CommandHandler("giveaccess", admin_giveaccess))
     app.add_handler(CommandHandler("revokeaccess", admin_revokeaccess))
