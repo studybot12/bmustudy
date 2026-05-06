@@ -11,7 +11,7 @@ from telegram.ext import (
 )
 from database import db
 from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos
-from config import ADMIN_ID, CARD_NUMBER, PRICE_PER_SUBJECT, COURSE_PRICES
+from config import ADMIN_ID
 try:
     from google import genai as genai_client
     from google.genai import types as genai_types
@@ -57,15 +57,13 @@ def check_ai_rate_limit(user_id: int) -> float:
     _ai_last_call[user_id] = now
     return 0
 
-# ── ADMIN ACTION GUARD (prevent double-click) ─────────────────────────────────
-_processed_admin_actions: set = set()
-
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
  AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT,
  ONBOARDING) = range(12)
 
 QUIZ_QUESTIONS_COUNT = 20
+FREE_QUESTIONS = 3  # количество вопросов в демо-тесте
 
 TEXTS = {
     "ru": {
@@ -104,10 +102,8 @@ TEXTS = {
         ),
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\nВыберите курс:",
         "my_subjects": "💎 Мои курсы",
-        "buy_access": "💳 Купить доступ",
         "trial_quiz": "🆓 Демо-тест",
         "help": "💬 Поддержка",
-        "choose_subject_buy": "🛒 *Купить доступ*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
         "choose_subject_study": (
             "💎 *Мои курсы*\n\n"
             "━━━━━━━━━━━━━━━\n"
@@ -121,31 +117,13 @@ TEXTS = {
         "trial_choose_type": "🎯 *Пробный режим: {subject}*\n\n━━━━━━━━━━━━━━━\nЧто хотите попробовать?",
         "trial_type_mcq": "✏️ MCQ Тест (3 вопроса)",
         "trial_type_tf": "⚡ True / False (5 вопросов)",
-        "trial_tf_done": "🏁 *Пробный True/False завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Ваш результат: *{score} / {total}*\n\n━━━━━━━━━━━━━━━\n💎 *Полная версия включает:*\n✏️ 20 вопросов MCQ\n⚡ True/False полный\n📖 Теории\n🃏 Флэшкарты\n📊 История и прогресс\n🤖 ИИ-преподаватель\n\n👇 Купите доступ прямо сейчас!",
+        "trial_tf_done": "🏁 *Пробный True/False завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Ваш результат: *{score} / {total}*\n\n✨ Всё бесплатно — открой полный курс в *Мои курсы*!",
         "admin_profile_not_found": "❌ Студент с ID `{user_id}` не найден.",
         "admin_profile_text": "👤 *Профиль студента*\n\n━━━━━━━━━━━━━━━\n🔹 Имя: *{first_name}*\n🔹 Username: *{username}*\n🆔 ID: `{user_id}`\n🌐 Язык: *{lang}*\n📅 Регистрация: *{created_at}*\n\n━━━━━━━━━━━━━━━\n📚 *Предметы:* {subjects}\n\n📊 *Активность:*\n✏️ Тестов пройдено: *{tests}*\n📈 Средний балл: *{avg}%*\n⚡ XP: *{xp}*\n🏅 Уровень: *{level}*\n🔥 Серия: *{streak}* дней\n📆 Последняя активность: *{last_activity}*",
         "admin_giveaccess_usage": "Использование: /giveaccess USER_ID SUBJECT_KEY\nПример: /giveaccess 123456789 f1\nДля всех предметов: /giveaccess 123456789 all",
         "admin_giveaccess_done": "✅ Доступ к *{subject}* выдан студенту `{user_id}`",
         "admin_giveaccess_all_done": "✅ Доступ ко *всем предметам* выдан студенту `{user_id}`",
-        "payment_instruction": "💳 *Оплата доступа*\n\n📘 Предмет: *{subject}*\n💰 Стоимость: *{price:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n━━━━━━━━━━━━━━━\n📸 После оплаты отправьте скриншот перевода 👇",
-        "screenshot_received": "✅ *Скриншот получен!*\n\n⏳ Ваша оплата на проверке\n🕐 Обычно до *30 минут*\n\n━━━━━━━━━━━━━━━\n🔔 Вы получите уведомление как только доступ откроется.",
-        "access_granted": "🎉 *Поздравляем! Доступ открыт!*\n\n━━━━━━━━━━━━━━━\n📘 Предмет *{subject}* теперь доступен!\n\n✨ Удачи в учёбе!",
-        "access_denied": "❌ *Оплата не подтверждена*\n\n━━━━━━━━━━━━━━━\nПожалуйста, свяжитесь с администратором.",
-        "no_subjects": (
-            "💎 *Мои курсы*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "У вас пока нет активных курсов.\n\n"
-            "*Что входит в каждый курс:*\n\n"
-            "✏️ MCQ Тесты — тренируй и закрепляй\n"
-            "⚡ True / False — быстрая проверка знаний\n"
-            "📖 Теории — весь материал по предмету\n"
-            "🃏 Флэшкарты — повторяй термины эффективно\n"
-            "🎬 Видео — визуальное объяснение тем\n"
-            "🤖 ИИ-преподаватель — задай любой вопрос\n"
-            "📊 Прогресс — следи за своим ростом\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "👇 Купите доступ и начните подготовку прямо сейчас!"
-        ),
+        "help_text": "💬 *Поддержка*\n\n━━━━━━━━━━━━━━━\n📩 По любым вопросам:\n👤 Напишите администратору: @user\n\n⏰ Бот работает 24/7",
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Выберите режим обучения:_",
         "study_materials": "📖 Теории",
         "flashcards": "🃏 Флэшкарты",
@@ -163,7 +141,7 @@ TEXTS = {
         "prev_card": "⬅️ Предыдущая",
         "finish_flashcards": "✅ Завершить",
         "flashcards_done": "🎉 *Флэшкарты пройдены!*\n\n━━━━━━━━━━━━━━━\n💪 Отличная работа! Удачи на экзамене!",
-        "help_text": "💬 *Поддержка*\n\n━━━━━━━━━━━━━━━\n📩 По вопросам оплаты и доступа:\n👤 Напишите администратору: @user\n\n⏰ Бот работает 24/7\n✅ Доступ открывается в течение 30 минут после оплаты",
+        "help_text": "💬 *Поддержка*\n\n━━━━━━━━━━━━━━━\n📩 По любым вопросам:\n👤 Напишите администратору: @user\n\n⏰ Бот работает 24/7",
         "already_has_access": "✅ У вас уже есть доступ к этому предмету!",
         "restart_quiz": "🔄 Пройти снова",
         "back_to_subject": "📘 К предмету",
@@ -172,15 +150,10 @@ TEXTS = {
         "grade_ok": "📚 *Неплохо!* Ещё немного практики.",
         "grade_bad": "💪 *Не сдавайтесь!* Изучите материал и попробуйте снова.",
         "trial_question": "🎯 *Пробный тест: {subject}*\n\n━━━━━━━━━━━━━━━\n📌 Вопрос *{num}* из *3*\n\n{question}",
-        "trial_done": "🏁 *Пробный тест завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Ваш результат: *{score} / 3*\n\n━━━━━━━━━━━━━━━\n💎 *Полная версия включает:*\n✏️ 20 вопросов MCQ\n📖 Полный конспект\n🃏 Флэшкарты\n📊 История и прогресс\n🤖 ИИ-преподаватель\n\n👇 Купите доступ прямо сейчас!",
-        "buy_now": "💳 Купить полный доступ",
+        "trial_done": "🏁 *Пробный тест завершён!*\n\n━━━━━━━━━━━━━━━\n📊 Ваш результат: *{score} / 3*\n\n✨ Всё доступно бесплатно — открой полный курс в *Мои курсы*!",
         "progress_text": "📊 *Прогресс — {subject}*\n\n━━━━━━━━━━━━━━━\n✏️ Тестов пройдено: *{tests}*\n📈 Средний балл: *{avg}%*\n🏆 Лучший результат: *{best}%*\n🃏 Флэшкарт изучено: *{cards}*",
         "no_progress": "📊 *Прогресс пока пуст*\n\n━━━━━━━━━━━━━━━\nПройдите первый тест чтобы увидеть статистику! ✏️",
-        "promo_enter": "🎁 *Промокод*\n\n━━━━━━━━━━━━━━━\nВведите ваш промокод:",
-        "promo_valid": "🎉 *Промокод активирован!*\n\n━━━━━━━━━━━━━━━\n💸 Скидка: *{discount}%*\n💰 Цена со скидкой: *{price:,} сум*",
-        "promo_invalid": "❌ *Промокод не найден*\n\nПопробуйте другой код или нажмите Назад.",
-        "enter_promo": "🎁 У меня есть промокод",
-        "stats_title": "📈 *Статистика — BMU Study Hub*\n\n━━━━━━━━━━━━━━━\n👥 Студентов: *{users}*\n💰 Оплат: *{paid}*\n💵 Выручка: *{revenue:,} сум*\n\n━━━━━━━━━━━━━━━\n📘 По предметам:",
+        "stats_title": "📈 *Статистика — BMU Study Hub*\n\n━━━━━━━━━━━━━━━\n👥 Студентов: *{users}*\n\n━━━━━━━━━━━━━━━\n📘 По предметам:",
         # AI Chat
         "ai_chat": "🤖 ИИ-преподаватель",
         "ai_chat_intro": "🤖 *ИИ-преподаватель*\n_Предмет: {subject}_\n\n━━━━━━━━━━━━━━━\nЗадайте любой вопрос — я объясню, приведу примеры и помогу разобраться!\n\n💬 _Введите вопрос:_",
@@ -242,33 +215,10 @@ TEXTS = {
         "quiz_comparison": "📈 Прогресс +{delta}% по сравнению с прошлым разом!",
         "quiz_regression": "📉 В прошлый раз было лучше на {delta}%. Не сдавайся!",
         "quiz_same": "➡️ Такой же результат как в прошлый раз.",
-        # Bundle
-        "bundle": "🎓 Пакеты предметов",
-        "bundle_text": "🎓 *Пакет «Все предметы»*\n\n━━━━━━━━━━━━━━━\n📚 Включает все {count} предмета\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум* (скидка 20%!)\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
-        "bundle_already": "✅ У вас уже есть доступ ко всем предметам!",
-        "bundle_choose": "🎓 *Пакеты предметов*\n\n━━━━━━━━━━━━━━━\nВыберите пакет:\n\n📦 *2 предмета* — скидка *10%*\n📦 *4 предмета* — скидка *20%*",
-        "bundle2_text": "📦 *Пакет 2 предмета (-10%)*\n\n━━━━━━━━━━━━━━━\nВыберите 2 предмета:\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
-        "bundle4_text": "📦 *Пакет 4 предмета (-20%)*\n\n━━━━━━━━━━━━━━━\n📚 Все {count} предмета\n\n💰 Обычная цена: *{full_price:,} сум*\n🔥 Цена пакета: *{bundle_price:,} сум*\n💸 Экономия: *{save:,} сум*\n\n━━━━━━━━━━━━━━━\n🏦 Переведите на карту:\n`{card}`\n\n📸 После оплаты отправьте скриншот 👇",
-        "bundle_select_2": "Выберите 2 предмета (нажмите на каждый):",
-        "bundle_selected": "✅ Выбрано: {subjects}",
-        "bundle_need_more": "❗ Выберите ещё {n} предмет(а)",
         # Course selection
         "choose_course": "🎓 *Выберите курс:*\n\n━━━━━━━━━━━━━━━\nКакой курс вы проходите?",
         "course_1": "📗 1 Курс",
         "course_2": "📘 2 Курс",
-        # Course payment
-        "course_payment_instruction": (
-            "💳 *Оплата доступа — {course_name}*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "📚 *Предметы курса:*\n{subjects_list}\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "💰 Стоимость: *{price:,} сум*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "🏦 Переведите на карту:\n`{card}`\n\n"
-            "📸 После оплаты отправьте скриншот перевода 👇"
-        ),
-        "course_access_granted": "🎉 *Поздравляем! Доступ открыт!*\n\n━━━━━━━━━━━━━━━\n🎓 *{course_name}* теперь полностью доступен!\n\n📚 Предметы:\n{subjects_list}\n\n✨ Удачи в учёбе!",
-        "course_already_owned": "✅ У вас уже есть доступ к этому курсу!",
         # AI Humanizer
         # AI Detector
     },
@@ -308,10 +258,8 @@ TEXTS = {
         ),
         "main_menu": "🎓 *BMU Study Hub*\n_British Management University_\n\n━━━━━━━━━━━━━━━\nChoose your year:",
         "my_subjects": "💎 My Courses",
-        "buy_access": "💳 Buy Access",
         "trial_quiz": "🆓 Demo Test",
         "help": "💬 Support",
-        "choose_subject_buy": "🛒 *Buy Access*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
         "choose_subject_study": (
             "💎 *My Courses*\n\n"
             "━━━━━━━━━━━━━━━\n"
@@ -325,31 +273,12 @@ TEXTS = {
         "trial_choose_type": "🎯 *Free Trial: {subject}*\n\n━━━━━━━━━━━━━━━\nWhat would you like to try?",
         "trial_type_mcq": "✏️ MCQ Test (3 questions)",
         "trial_type_tf": "⚡ True / False (5 questions)",
-        "trial_tf_done": "🏁 *Free Trial True/False Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Your score: *{score} / {total}*\n\n━━━━━━━━━━━━━━━\n💎 *Full version includes:*\n✏️ 20 MCQ questions\n⚡ Full True/False\n📖 Theories\n🃏 Flashcards\n📊 History & progress\n🤖 AI Tutor\n\n👇 Buy access now!",
+        "trial_tf_done": "🏁 *Free Trial True/False Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Your score: *{score} / {total}*\n\n✨ Everything is free — open the full course in *My Courses*!",
         "admin_profile_not_found": "❌ Student with ID `{user_id}` not found.",
         "admin_profile_text": "👤 *Student Profile*\n\n━━━━━━━━━━━━━━━\n🔹 Name: *{first_name}*\n🔹 Username: *{username}*\n🆔 ID: `{user_id}`\n🌐 Language: *{lang}*\n📅 Registered: *{created_at}*\n\n━━━━━━━━━━━━━━━\n📚 *Subjects:* {subjects}\n\n📊 *Activity:*\n✏️ Tests taken: *{tests}*\n📈 Average score: *{avg}%*\n⚡ XP: *{xp}*\n🏅 Level: *{level}*\n🔥 Streak: *{streak}* days\n📆 Last activity: *{last_activity}*",
         "admin_giveaccess_usage": "Usage: /giveaccess USER_ID SUBJECT_KEY\nExample: /giveaccess 123456789 f1\nFor all subjects: /giveaccess 123456789 all",
         "admin_giveaccess_done": "✅ Access to *{subject}* granted to student `{user_id}`",
         "admin_giveaccess_all_done": "✅ Access to *all subjects* granted to student `{user_id}`",
-        "payment_instruction": "💳 *Purchase Access*\n\n📘 Subject: *{subject}*\n💰 Price: *{price:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n━━━━━━━━━━━━━━━\n📸 After payment, send a screenshot 👇",
-        "screenshot_received": "✅ *Screenshot received!*\n\n⏳ Your payment is under review\n🕐 Usually within *30 minutes*\n\n━━━━━━━━━━━━━━━\n🔔 You'll get a notification once access is granted.",
-        "access_granted": "🎉 *Congratulations! Access Granted!*\n\n━━━━━━━━━━━━━━━\n📘 *{subject}* is now available!\n\n✨ Good luck with your studies!",
-        "access_denied": "❌ *Payment Not Confirmed*\n\n━━━━━━━━━━━━━━━\nPlease contact the administrator.",
-        "no_subjects": (
-            "💎 *My Courses*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "You don't have any active courses yet.\n\n"
-            "*What's included in every course:*\n\n"
-            "✏️ MCQ Tests — practise and consolidate\n"
-            "⚡ True / False — quick knowledge checks\n"
-            "📖 Theories — full study material\n"
-            "🃏 Flashcards — revise terms effectively\n"
-            "🎬 Videos — visual topic explanations\n"
-            "🤖 AI Tutor — ask anything, get answered\n"
-            "📊 Progress — track your growth\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "👇 Buy access and start preparing right now!"
-        ),
         "subject_menu": "📘 *{subject}*\n\n━━━━━━━━━━━━━━━\n_Choose a study mode:_",
         "study_materials": "📖 Theories",
         "flashcards": "🃏 Flashcards",
@@ -367,7 +296,7 @@ TEXTS = {
         "prev_card": "⬅️ Previous",
         "finish_flashcards": "✅ Finish",
         "flashcards_done": "🎉 *Flashcards Complete!*\n\n━━━━━━━━━━━━━━━\n💪 Great work! Good luck on your exam!",
-        "help_text": "💬 *Support*\n\n━━━━━━━━━━━━━━━\n📩 For payment & access issues:\n👤 Contact the admin: @user\n\n⏰ Bot runs 24/7\n✅ Access granted within 30 minutes of payment",
+        "help_text": "💬 *Support*\n\n━━━━━━━━━━━━━━━\n📩 For any questions:\n👤 Contact the admin: @user\n\n⏰ Bot runs 24/7",
         "already_has_access": "✅ You already have access to this subject!",
         "restart_quiz": "🔄 Try Again",
         "back_to_subject": "📘 Back to Subject",
@@ -376,15 +305,10 @@ TEXTS = {
         "grade_ok": "📚 *Not bad!* A bit more practice needed.",
         "grade_bad": "💪 *Don't give up!* Study the material and try again.",
         "trial_question": "🎯 *Free Trial: {subject}*\n\n━━━━━━━━━━━━━━━\n📌 Question *{num}* of *3*\n\n{question}",
-        "trial_done": "🏁 *Trial Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Your score: *{score} / 3*\n\n━━━━━━━━━━━━━━━\n💎 *Full version includes:*\n✏️ 20 MCQ questions\n📖 Full study notes\n🃏 Flashcards\n📊 History & progress\n🤖 AI Tutor\n\n👇 Buy access now!",
-        "buy_now": "💳 Buy Full Access",
+        "trial_done": "🏁 *Trial Complete!*\n\n━━━━━━━━━━━━━━━\n📊 Your score: *{score} / 3*\n\n✨ Everything is free — open the full course in *My Courses*!",
         "progress_text": "📊 *Progress — {subject}*\n\n━━━━━━━━━━━━━━━\n✏️ Tests taken: *{tests}*\n📈 Average score: *{avg}%*\n🏆 Best result: *{best}%*\n🃏 Flashcards studied: *{cards}*",
         "no_progress": "📊 *No progress yet*\n\n━━━━━━━━━━━━━━━\nTake your first test to see stats! ✏️",
-        "promo_enter": "🎁 *Promo Code*\n\n━━━━━━━━━━━━━━━\nEnter your promo code:",
-        "promo_valid": "🎉 *Promo Code Applied!*\n\n━━━━━━━━━━━━━━━\n💸 Discount: *{discount}%*\n💰 New price: *{price:,} UZS*",
-        "promo_invalid": "❌ *Promo code not found*\n\nTry another code or press Back.",
-        "enter_promo": "🎁 I have a promo code",
-        "stats_title": "📈 *Statistics — BMU Study Hub*\n\n━━━━━━━━━━━━━━━\n👥 Students: *{users}*\n💰 Paid accesses: *{paid}*\n💵 Revenue: *{revenue:,} UZS*\n\n━━━━━━━━━━━━━━━\n📘 By subject:",
+        "stats_title": "📈 *Statistics — BMU Study Hub*\n\n━━━━━━━━━━━━━━━\n👥 Students: *{users}*\n\n━━━━━━━━━━━━━━━\n📘 By subject:",
         # AI Chat
         "ai_chat": "🤖 AI Tutor",
         "ai_chat_intro": "🤖 *AI Tutor*\n_{subject}_\n\n━━━━━━━━━━━━━━━\nAsk any question — I'll explain clearly with examples!\n\n💬 _Enter your question:_",
@@ -446,33 +370,10 @@ TEXTS = {
         "quiz_comparison": "📈 Progress +{delta}% compared to last time!",
         "quiz_regression": "📉 Last time was {delta}% better. Keep going!",
         "quiz_same": "➡️ Same result as last time.",
-        # Bundle
-        "bundle": "🎓 Subject Bundles",
-        "bundle_text": "🎓 *All Subjects Bundle*\n\n━━━━━━━━━━━━━━━\n📚 Includes all {count} subjects\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS* (20% off!)\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
-        "bundle_already": "✅ You already have access to all subjects!",
-        "bundle_choose": "🎓 *Subject Bundles*\n\n━━━━━━━━━━━━━━━\nChoose a bundle:\n\n📦 *2 subjects* — *10%* discount\n📦 *4 subjects* — *20%* discount",
-        "bundle2_text": "📦 *2-Subject Bundle (-10%)*\n\n━━━━━━━━━━━━━━━\nChoose 2 subjects:\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
-        "bundle4_text": "📦 *4-Subject Bundle (-20%)*\n\n━━━━━━━━━━━━━━━\n📚 All {count} subjects\n\n💰 Regular price: *{full_price:,} UZS*\n🔥 Bundle price: *{bundle_price:,} UZS*\n💸 You save: *{save:,} UZS*\n\n━━━━━━━━━━━━━━━\n🏦 Transfer to card:\n`{card}`\n\n📸 After payment, send a screenshot 👇",
-        "bundle_select_2": "Select 2 subjects (tap each one):",
-        "bundle_selected": "✅ Selected: {subjects}",
-        "bundle_need_more": "❗ Select {n} more subject(s)",
         # Course selection
         "choose_course": "🎓 *Choose your year:*\n\n━━━━━━━━━━━━━━━\nWhich year are you in?",
         "course_1": "📗 Year 1",
         "course_2": "📘 Year 2",
-        # Course payment
-        "course_payment_instruction": (
-            "💳 *Buy Access — {course_name}*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "📚 *Subjects included:*\n{subjects_list}\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "💰 Price: *{price:,} UZS*\n\n"
-            "━━━━━━━━━━━━━━━\n"
-            "🏦 Transfer to card:\n`{card}`\n\n"
-            "📸 After payment, send a screenshot 👇"
-        ),
-        "course_access_granted": "🎉 *Access Granted!*\n\n━━━━━━━━━━━━━━━\n🎓 *{course_name}* is now fully unlocked!\n\n📚 Subjects:\n{subjects_list}\n\n✨ Good luck with your studies!",
-        "course_already_owned": "✅ You already have access to this course!",
         # AI Humanizer
         # AI Detector
     }
@@ -620,11 +521,7 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     stats = db.get_stats()
     lang = "ru"
-    text = TEXTS[lang]["stats_title"].format(
-        users=stats["users"],
-        paid=stats["paid"],
-        revenue=stats["revenue"]
-    )
+    text = TEXTS[lang]["stats_title"].format(users=stats["users"])
     for key, info in SUBJECTS.items():
         count = stats["by_subject"].get(key, 0)
         text += f"\n• {info['name']}: *{count}* чел."
@@ -977,131 +874,6 @@ async def show_subject_menu(message, user_id, subject_key, edit=False):
         await message.reply_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
-async def admin_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-
-    if query.from_user.id != ADMIN_ID:
-        await query.answer()
-        return
-
-    # Guard against double-click: use message_id + data as key
-    action_key = f"{query.message.message_id}_{query.data}"
-    if action_key in _processed_admin_actions:
-        try:
-            await query.answer("⚠️ Уже обработано.", show_alert=True)
-        except Exception:
-            pass
-        return
-    _processed_admin_actions.add(action_key)
-    # NOTE: do NOT call query.answer() here — we'll answer with the alert after processing
-
-    parts = query.data.split("_")
-    action = parts[0]
-    student_id = int(parts[1])
-    subject_key = "_".join(parts[2:])
-
-    if action == "approve":
-        if subject_key == "bundle":
-            for key in SUBJECTS:
-                db.grant_access(student_id, key)
-            db.remove_pending(student_id, subject_key)
-            student_lang = db.get_user_lang(student_id) or "en"
-            msg = "🎉 *Доступ ко всем предметам открыт!*\n\nТеперь вам доступны все предметы в разделе «Мои предметы»." if student_lang == "ru" else "🎉 *Full Access Granted!*\n\nAll subjects are now available in 'My Subjects'."
-            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📚 Все предметы"
-        elif subject_key.startswith("bundle_"):
-            keys = subject_key.replace("bundle_", "").split("-")
-            for key in keys:
-                if key in SUBJECTS:
-                    db.grant_access(student_id, key)
-            db.remove_pending(student_id, subject_key)
-            student_lang = db.get_user_lang(student_id) or "en"
-            names = ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
-            msg = f"🎉 *Доступ открыт!*\n\n📚 {names}" if student_lang == "ru" else f"🎉 *Access Granted!*\n\n📚 {names}"
-            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📦 {names}"
-        elif subject_key.startswith("course_"):
-            year = subject_key.split("_", 1)[1]
-            course_keys = COURSE_SUBJECTS.get(year, [])
-            for key in course_keys:
-                db.grant_access(student_id, key)
-            db.remove_pending(student_id, subject_key)
-            student_lang = db.get_user_lang(student_id) or "en"
-            course_name = COURSE_NAMES[student_lang][year]
-            subjects_list = "\n".join(f"• {SUBJECTS[k]['name']}" for k in course_keys)
-            msg = t(student_id, "course_access_granted", course_name=course_name, subjects_list=subjects_list)
-            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n🎓 {course_name}"
-        else:
-            info = SUBJECTS[subject_key]
-            db.grant_access(student_id, subject_key)
-            db.remove_pending(student_id, subject_key)
-            student_lang = db.get_user_lang(student_id) or "en"
-            msg = TEXTS[student_lang]["access_granted"].format(subject=info["name"])
-            admin_alert = f"✅ Доступ выдан!\n🆔 ID: {student_id}\n📘 {info['name']}"
-        # Send access granted message with inline button to open subject directly
-        if subject_key == "bundle" or subject_key.startswith("bundle_") or subject_key.startswith("course_"):
-            open_btn_label = "📚 Открыть мои предметы" if student_lang == "ru" else "📚 Open My Courses"
-            open_btn_cb = "menu_my_subjects"
-        else:
-            open_btn_label = f"📘 Открыть {SUBJECTS[subject_key]['name']}" if student_lang == "ru" else f"📘 Open {SUBJECTS[subject_key]['name']}"
-            open_btn_cb = f"study_{subject_key}"
-        open_markup = InlineKeyboardMarkup([[InlineKeyboardButton(open_btn_label, callback_data=open_btn_cb)]])
-        try:
-            await context.bot.send_message(student_id, msg, parse_mode="Markdown", reply_markup=open_markup)
-        except Exception:
-            pass
-        try:
-            await query.answer(admin_alert, show_alert=True)
-        except Exception:
-            pass
-        try:
-            if query.message.caption is not None:
-                await query.message.edit_caption(
-                    query.message.caption + "\n\n✅ *Доступ выдан*", parse_mode="Markdown",
-                    reply_markup=None
-                )
-            else:
-                await query.message.edit_text(
-                    query.message.text + "\n\n✅ *Доступ выдан*", parse_mode="Markdown",
-                    reply_markup=None
-                )
-        except Exception as e:
-            logger.error(f"admin_action edit error: {e}")
-    elif action == "deny":
-        subject_key = "_".join(parts[2:])
-        db.remove_pending(student_id, subject_key)
-        student_lang = db.get_user_lang(student_id) or "en"
-        msg = TEXTS[student_lang]["access_denied"]
-        if subject_key == "bundle":
-            subject_display = "🎓 Все предметы"
-        elif subject_key.startswith("bundle_"):
-            keys = subject_key.replace("bundle_", "").split("-")
-            subject_display = "📦 " + ", ".join(SUBJECTS[k]["name"] for k in keys if k in SUBJECTS)
-        elif subject_key.startswith("course_"):
-            year = subject_key.split("_", 1)[1]
-            subject_display = f"🎓 Курс {year}"
-        else:
-            subject_display = SUBJECTS[subject_key]["name"] if subject_key in SUBJECTS else subject_key
-        try:
-            await context.bot.send_message(student_id, msg, parse_mode="Markdown")
-        except Exception:
-            pass
-        try:
-            await query.answer(f"❌ Оплата отклонена!\n🆔 ID: {student_id}\n📘 {subject_display}", show_alert=True)
-        except Exception:
-            pass
-        try:
-            if query.message.caption is not None:
-                await query.message.edit_caption(
-                    query.message.caption + "\n\n❌ *Отклонено*", parse_mode="Markdown",
-                    reply_markup=None
-                )
-            else:
-                await query.message.edit_text(
-                    query.message.text + "\n\n❌ *Отклонено*", parse_mode="Markdown",
-                    reply_markup=None
-                )
-        except Exception as e:
-            logger.error(f"admin_action edit error: {e}")
-
 
 # ── SUBJECT MENU HANDLER ──────────────────────────────────────────────────────
 
@@ -1184,7 +956,7 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
                 pct = int(h["score"] / h["total"] * 100)
                 date_str = h["taken_at"][:10] if h["taken_at"] else "—"
                 emoji = "🌟" if pct >= 90 else "👍" if pct >= 70 else "📚" if pct >= 50 else "💪"
-                text += f"{emoji} {date}: *{h['score']}/{h['total']}* ({pct}%)\n"
+                text += f"{emoji} {date_str}: *{h['score']}/{h['total']}* ({pct}%)\n"
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data=f"back_subject_{subject_key}")]]
         await query.message.edit_text(text, parse_mode="Markdown",
                                       reply_markup=InlineKeyboardMarkup(keyboard))
@@ -2098,30 +1870,27 @@ def main():
 
     app = Application.builder().token(token).build()
 
-    # Regex string to exclude admin approve/deny callbacks from ConversationHandler
-    _not_admin_cb = r"^(?!(approve|deny)_)"
-
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
             CHOOSING_LANG: [CallbackQueryHandler(set_language, pattern="^lang_")],
             ONBOARDING: [CallbackQueryHandler(onboarding_handler, pattern="^onboard_"),
-                         CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
-            MAIN_MENU: [CallbackQueryHandler(main_menu_handler, pattern=_not_admin_cb)],
-            CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler, pattern=_not_admin_cb)],
-            SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb)],
-            QUIZ_SESSION: [CallbackQueryHandler(quiz_handler, pattern=_not_admin_cb)],
-            FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler, pattern=_not_admin_cb)],
-            TRIAL_SESSION: [CallbackQueryHandler(trial_handler, pattern=_not_admin_cb)],
+                         CallbackQueryHandler(main_menu_handler)],
+            MAIN_MENU: [CallbackQueryHandler(main_menu_handler)],
+            CHOOSING_SUBJECT: [CallbackQueryHandler(subject_handler)],
+            SUBJECT_MENU: [CallbackQueryHandler(subject_menu_handler)],
+            QUIZ_SESSION: [CallbackQueryHandler(quiz_handler)],
+            FLASHCARD_SESSION: [CallbackQueryHandler(flashcard_handler)],
+            TRIAL_SESSION: [CallbackQueryHandler(trial_handler)],
             AI_CHAT_SESSION: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, ai_chat_message_handler),
-                CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb),
+                CallbackQueryHandler(subject_menu_handler),
             ],
-            BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler, pattern=_not_admin_cb)],
-            TF_SESSION: [CallbackQueryHandler(tf_handler, pattern=_not_admin_cb)],
+            BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler)],
+            TF_SESSION: [CallbackQueryHandler(tf_handler)],
             EXAM_DATE_INPUT: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, fallback),
-                CallbackQueryHandler(subject_menu_handler, pattern=_not_admin_cb),
+                CallbackQueryHandler(subject_menu_handler),
             ],
         },
         fallbacks=[
@@ -2138,7 +1907,6 @@ def main():
         allow_reentry=True,
     )
 
-    app.add_handler(CallbackQueryHandler(admin_action, pattern="^(approve|deny)_"), group=-1)
     app.add_handler(CommandHandler("stats", admin_stats))
     app.add_handler(CommandHandler("users", admin_users))
     app.add_handler(CommandHandler("profile", admin_profile))
