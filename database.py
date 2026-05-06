@@ -96,6 +96,13 @@ class Database:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, subject_key)
             );
+            CREATE TABLE IF NOT EXISTS user_xp (
+                user_id INTEGER PRIMARY KEY,
+                xp INTEGER DEFAULT 0,
+                level INTEGER DEFAULT 1,
+                streak INTEGER DEFAULT 0,
+                last_activity DATE
+            );
         """)
         _migrate(con)
         con.commit()
@@ -367,12 +374,14 @@ class Database:
     def get_stats(self):
         with self._con() as con:
             users = con.execute("SELECT COUNT(*) FROM users").fetchone()[0]
-            paid = con.execute("SELECT COUNT(*) FROM access").fetchone()[0]
+            paid = con.execute("SELECT COUNT(DISTINCT user_id) FROM access").fetchone()[0]
+            revenue_row = con.execute("SELECT COUNT(DISTINCT user_id) FROM pending_payments").fetchone()
+            revenue = 0  # Actual revenue tracking requires payment records; approximate here
             by_subject = {}
             rows = con.execute("SELECT subject_key, COUNT(*) FROM access GROUP BY subject_key").fetchall()
             for r in rows:
                 by_subject[r[0]] = r[1]
-            return {"users": users, "paid": paid, "by_subject": by_subject}
+            return {"users": users, "paid": paid, "revenue": revenue, "by_subject": by_subject}
 
     def get_student_profile(self, user_id):
         """Full profile for admin: user info + subjects + xp + activity."""
@@ -424,7 +433,6 @@ class Database:
  
     def get_or_create_xp(self, user_id):
         with self._con() as con:
-            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             row = con.execute(
                 "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
                 (user_id,)
@@ -441,7 +449,6 @@ class Database:
         from datetime import date, timedelta
         today = date.today()
         with self._con() as con:
-            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             row = con.execute(
                 "SELECT xp, level, streak, last_activity FROM user_xp WHERE user_id=?",
                 (user_id,)
@@ -491,7 +498,6 @@ class Database:
  
     def get_leaderboard(self, limit=10):
         with self._con() as con:
-            con.execute("""CREATE TABLE IF NOT EXISTS user_xp (user_id INTEGER PRIMARY KEY, xp INTEGER DEFAULT 0, level INTEGER DEFAULT 1, streak INTEGER DEFAULT 0, last_activity DATE)""")
             rows = con.execute("""
                 SELECT u.user_id, u.first_name, u.username, x.xp, x.level, x.streak
                 FROM users u JOIN user_xp x ON u.user_id = x.user_id

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import random
@@ -592,7 +593,7 @@ async def onboarding_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def show_main_menu(message, user_id, edit=False):
     lang = db.get_user_lang(user_id) or "ru"
-    # Выдаём доступ ко всем предметам автоматически
+    # Выдаём доступ ко всем предметам автоматически (бот бесплатный)
     for key in SUBJECTS:
         db.grant_access(user_id, key)
     keyboard = [
@@ -635,7 +636,7 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = TEXTS[lang]["stats_title"].format(
         users=stats["users"],
         paid=stats["paid"],
-        revenue=stats["paid"] * PRICE_PER_SUBJECT
+        revenue=stats["revenue"]
     )
     for key, info in SUBJECTS.items():
         count = stats["by_subject"].get(key, 0)
@@ -884,7 +885,6 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     progress_msg = await update.message.reply_text(f"📤 Начинаю рассылку... (0/{len(users)})")
     sent = 0
     failed = 0
-    import asyncio
     for i, user in enumerate(users):
         try:
             await context.bot.send_message(
