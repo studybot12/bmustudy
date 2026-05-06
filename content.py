@@ -3143,11 +3143,146 @@ QUIZ_QUESTIONS = {
             "options": [
                 "A) For every 1-unit increase in Y, X increases by 3",
                 "B) For every 1-unit increase in X, Y increases by 3; X explains 81% of variation in Y",
-                "C) The correlation between X and Y is 0.81",
+                "C) The correlation coefficient between X and Y is 0.81",
                 "D) The intercept is 3 and the slope is 5"
             ],
             "correct": 1,
-            "explanation": "In Ŷ = a + bX: a = 5 (intercept), b = 3 (slope — Y increases by 3 for each 1-unit increase in X). R² = 0.81 means X explains 81% of variation in Y. Note: r = √0.81 = 0.9, not 0.81."
+            "explanation": "In Ŷ = a + bX: a = 5 (intercept), b = 3 (slope). R² = 0.81 means X explains 81% of variation in Y. Note: r = √0.81 = 0.9 — the correlation coefficient, not R²."
+        },
+        {
+            "question": "A dataset has values: 10, 12, 14, 16, 18. What is the variance (sample)?",
+            "options": ["A) 4", "B) 8", "C) 10", "D) 14"],
+            "correct": 2,
+            "explanation": "Mean = 14. Deviations²: (10−14)²=16, (12−14)²=4, (14−14)²=0, (16−14)²=4, (18−14)²=16. Sum=40. Sample variance = 40/(5−1) = 10. Standard deviation = √10 ≈ 3.16."
+        },
+        {
+            "question": "Which of the following is an example of DISCRETE data?",
+            "options": [
+                "A) The height of students in cm",
+                "B) The temperature at noon each day",
+                "C) The number of customers who visited a shop",
+                "D) The time taken to complete a task"
+            ],
+            "correct": 2,
+            "explanation": "Discrete data can only take specific, countable values (0, 1, 2, 3…). The number of customers is always a whole number. Height, temperature, and time are continuous — they can take any value within a range."
+        },
+        {
+            "question": "A survey shows r = −0.85 between hours of sleep and number of errors. Which statement is correct?",
+            "options": [
+                "A) More sleep causes fewer errors",
+                "B) There is a strong positive linear relationship",
+                "C) There is a strong negative linear relationship",
+                "D) Sleep and errors are independent"
+            ],
+            "correct": 2,
+            "explanation": "r = −0.85 indicates a strong negative linear relationship — as sleep increases, errors tend to decrease. However, correlation does not prove causation. A third variable could explain both."
+        },
+        {
+            "question": "The interquartile range (IQR) of a dataset is Q3 − Q1 = 20. What does this measure?",
+            "options": [
+                "A) The total range from minimum to maximum",
+                "B) The spread of the middle 50% of the data",
+                "C) The average deviation from the mean",
+                "D) The difference between the mean and median"
+            ],
+            "correct": 1,
+            "explanation": "The IQR covers the middle 50% of the data (from the 25th to 75th percentile). It is resistant to outliers, unlike the full range. A larger IQR indicates greater spread in the central portion of the data."
+        },
+        {
+            "question": "If the p-value of a hypothesis test is 0.02 and α = 0.05, which conclusion is correct?",
+            "options": [
+                "A) Fail to reject H₀ — the result is not significant",
+                "B) Reject H₀ — the result is statistically significant at the 5% level",
+                "C) Reject H₀ — the result is statistically significant at the 1% level",
+                "D) The test is inconclusive"
+            ],
+            "correct": 1,
+            "explanation": "p = 0.02 < α = 0.05, so we reject H₀. The result is significant at the 5% level. However, p = 0.02 > 0.01, so we would NOT reject H₀ at the 1% level. Always compare p to the stated α."
+        },
+        {
+            "question": "A normal distribution has μ = 50 and σ = 10. What percentage of values fall between 30 and 70?",
+            "options": ["A) 68%", "B) 90%", "C) 95%", "D) 99.7%"],
+            "correct": 2,
+            "explanation": "30 and 70 are exactly 2 standard deviations from the mean (50 ± 20 = 50 ± 2×10). The empirical rule states that ±2σ covers approximately 95% of values in a normal distribution."
+        },
+        {
+            "question": "A Poisson distribution is used to model the number of emails received per hour, with λ = 5. What is the variance?",
+            "options": ["A) 2.24", "B) 5", "C) 10", "D) 25"],
+            "correct": 1,
+            "explanation": "For a Poisson distribution, the mean AND variance both equal λ. So if λ = 5, then mean = 5 and variance = 5. Standard deviation = √5 ≈ 2.24."
+        },
+        {
+            "question": "Two events A and B are mutually exclusive. If P(A) = 0.3 and P(B) = 0.25, what is P(A or B)?",
+            "options": ["A) 0.075", "B) 0.45", "C) 0.55", "D) 0.475"],
+            "correct": 2,
+            "explanation": "Mutually exclusive events cannot occur together — P(A and B) = 0. So P(A or B) = P(A) + P(B) = 0.3 + 0.25 = 0.55. Do not subtract P(A and B) since it is zero."
+        },
+        {
+            "question": "The standard error of the mean (SE) is calculated as:",
+            "options": ["A) SE = σ × √n", "B) SE = σ / √n", "C) SE = s / n", "D) SE = x̄ / σ"],
+            "correct": 1,
+            "explanation": "SE = σ / √n. As sample size increases, the standard error decreases — meaning larger samples give more precise estimates of the population mean. This is why bigger samples are better."
+        },
+        {
+            "question": "A researcher uses a t-test instead of a Z-test. This is most appropriate when:",
+            "options": [
+                "A) The sample size is large (n > 100)",
+                "B) The population standard deviation is known",
+                "C) The sample size is small (n < 30) and population σ is unknown",
+                "D) The data is categorical"
+            ],
+            "correct": 2,
+            "explanation": "The t-test is used when n < 30 and/or the population σ is unknown (using sample s instead). For large samples with known σ, use the Z-test. The t-distribution has heavier tails to account for the extra uncertainty."
+        },
+        {
+            "question": "What does a Pearson's r value of 0 indicate?",
+            "options": [
+                "A) A perfect negative relationship",
+                "B) No relationship of any kind between the variables",
+                "C) No LINEAR relationship between the variables",
+                "D) The variables are identical"
+            ],
+            "correct": 2,
+            "explanation": "r = 0 means no LINEAR relationship. The variables could still have a strong non-linear (e.g. curved) relationship. Always plot a scatter diagram before concluding there is no relationship at all."
+        },
+        {
+            "question": "In a positively skewed distribution, which ordering is correct?",
+            "options": [
+                "A) Mean < Median < Mode",
+                "B) Mode < Median < Mean",
+                "C) Mean = Median = Mode",
+                "D) Mode > Mean > Median"
+            ],
+            "correct": 1,
+            "explanation": "In a positively (right) skewed distribution, the long tail pulls the mean to the right. Order: Mode < Median < Mean. In a negatively skewed distribution, it reverses: Mean < Median < Mode."
+        },
+        {
+            "question": "A weighted mean is used when:",
+            "options": [
+                "A) All values in the dataset are the same",
+                "B) Some values are more important or more frequent than others",
+                "C) The data is normally distributed",
+                "D) Outliers need to be removed"
+            ],
+            "correct": 1,
+            "explanation": "Weighted mean = Σ(wx) / Σw. It is used when different values have different levels of importance or frequency. Example: calculating a GPA where different modules have different credit weights."
+        },
+        {
+            "question": "If H₀: μ = 100 and the test statistic falls in the rejection region, the correct conclusion is:",
+            "options": [
+                "A) The population mean is definitely not 100",
+                "B) We have proven H₀ is wrong",
+                "C) We reject H₀ — there is sufficient evidence against it at the chosen significance level",
+                "D) We accept H₁ as proven"
+            ],
+            "correct": 2,
+            "explanation": "Hypothesis testing never 'proves' anything. We say: 'we reject H₀ at the X% significance level — there is sufficient statistical evidence against it.' We never accept H₁; we only fail to reject or reject H₀."
+        },
+        {
+            "question": "The regression line Ŷ = 2 + 4X is fitted to data. If X = 5, what is the predicted value of Y?",
+            "options": ["A) 10", "B) 18", "C) 22", "D) 30"],
+            "correct": 2,
+            "explanation": "Ŷ = 2 + 4(5) = 2 + 20 = 22. The intercept (a = 2) is the value of Y when X = 0. The slope (b = 4) means Y increases by 4 for each additional unit of X."
         },
     ],
     "ibm": [
@@ -3220,6 +3355,131 @@ QUIZ_QUESTIONS = {
             ],
             "correct": 2,
             "explanation": "The critical path is the longest chain of dependent tasks. Any delay to a critical activity delays the entire project. Non-critical activities have 'float' — some slack time."
+        },
+        {
+            "question": "Price Elasticity of Demand (PED) is calculated as:",
+            "options": [
+                "A) % change in price ÷ % change in quantity demanded",
+                "B) % change in quantity demanded ÷ % change in price",
+                "C) change in price × change in quantity",
+                "D) change in quantity ÷ change in income"
+            ],
+            "correct": 1,
+            "explanation": "PED = % change in Qd ÷ % change in price. If PED > 1 = elastic (demand is sensitive to price). If PED < 1 = inelastic (demand changes less than price). This formula is fundamental to all pricing decisions."
+        },
+        {
+            "question": "Disney+ launched at a significantly lower price than Netflix to attract subscribers quickly. Which pricing strategy is this?",
+            "options": ["A) Price Skimming", "B) Premium Pricing", "C) Penetration Pricing", "D) Loss Leader"],
+            "correct": 2,
+            "explanation": "Penetration Pricing: low launch price to rapidly capture market share. Disney+ used this to compete with Netflix — entering at ~$6.99 vs Netflix's ~$13.99. Price was gradually raised once subscriber base was established."
+        },
+        {
+            "question": "Which of the following BEST describes an Agent in a distribution channel?",
+            "options": [
+                "A) A business that buys goods in bulk and sells to retailers",
+                "B) An intermediary who negotiates sales for a commission without owning the goods",
+                "C) A retailer who sells directly to consumers",
+                "D) A manufacturer who distributes its own products"
+            ],
+            "correct": 1,
+            "explanation": "An Agent negotiates between buyers and sellers but never takes ownership of the goods. They earn a commission on sales. Unlike wholesalers (who own the goods), agents carry no inventory risk."
+        },
+        {
+            "question": "Which pricing strategy involves permanently setting prices HIGH to signal luxury and exclusivity?",
+            "options": ["A) Cost-Plus Pricing", "B) Penetration Pricing", "C) Premium Pricing", "D) Price Discrimination"],
+            "correct": 2,
+            "explanation": "Premium Pricing = high price permanently to communicate quality and exclusivity. Examples: Rolex, Louis Vuitton, Ferrari. The high price itself is part of the brand's appeal — lowering it would damage the brand image."
+        },
+        {
+            "question": "A bakery produces 500 bread rolls, fully bakes them, then switches to croissants. This production method is:",
+            "options": ["A) Job Production", "B) Flow Production", "C) Batch Production", "D) Mass Customization"],
+            "correct": 2,
+            "explanation": "Batch Production: a group of identical items goes through each stage together. The equipment is reset between batches. Medium unit cost. Examples: bakeries, uniform manufacturers, print runs."
+        },
+        {
+            "question": "Dell allows customers to configure their laptop online (choose RAM, storage, colour) before it is built. This is:",
+            "options": ["A) Job Production", "B) Batch Production", "C) Flow Production", "D) Mass Customization"],
+            "correct": 3,
+            "explanation": "Mass Customization: high-volume production (like flow) combined with customer choice at the final stage using flexible manufacturing systems. Low unit cost + individual variety. Examples: Dell laptops, Nike By You, personalised M&Ms."
+        },
+        {
+            "question": "Which of the four Ps of the marketing mix is the ONLY one that directly generates revenue?",
+            "options": ["A) Product", "B) Place", "C) Promotion", "D) Price"],
+            "correct": 3,
+            "explanation": "Price is the only P that generates revenue — all other Ps represent costs. This makes pricing decisions critically important: even a 1% improvement in price can have a larger impact on profit than a 1% increase in volume."
+        },
+        {
+            "question": "A university charges lower tuition for students from low-income families while charging full price to other students. This is:",
+            "options": ["A) Loss Leader Pricing", "B) Price Discrimination", "C) Penetration Pricing", "D) Bundle Pricing"],
+            "correct": 1,
+            "explanation": "Price Discrimination = charging different prices for the same product/service to different customer segments. Condition: the segments must be separable and arbitrage (resale) must be prevented. Airlines, cinemas, and utilities commonly use this."
+        },
+        {
+            "question": "Which of the following is an example of BTL (Below the Line) promotion?",
+            "options": [
+                "A) A 30-second TV advertisement during the Super Bowl",
+                "B) A billboard on a motorway",
+                "C) A loyalty card offering points for every purchase",
+                "D) Sponsoring the Olympics"
+            ],
+            "correct": 2,
+            "explanation": "BTL = targeted, direct-contact promotion: loyalty programmes, personal selling, direct mail, sales promotions (BOGOF, coupons), PR. TV, billboards, and sponsorship are ATL (mass media, no direct individual contact)."
+        },
+        {
+            "question": "In project management, 'float' (or slack) refers to:",
+            "options": [
+                "A) The total budget allocated to the project",
+                "B) The time a non-critical activity can be delayed without affecting the end date",
+                "C) The number of resources assigned to the critical path",
+                "D) The difference between planned and actual costs"
+            ],
+            "correct": 1,
+            "explanation": "Float = the amount of delay a non-critical activity can absorb without delaying the overall project. Critical path activities have zero float — any delay there delays the project. Managing float helps project managers prioritise."
+        },
+        {
+            "question": "A business sells software free of charge but charges for premium features. This is:",
+            "options": ["A) Bundle Pricing", "B) Loss Leader", "C) Freemium Pricing", "D) Price Discrimination"],
+            "correct": 2,
+            "explanation": "Freemium: the core product is free to attract a large user base; revenue comes from users who upgrade to premium features. Examples: Spotify (free with ads vs Premium), LinkedIn, Dropbox. The free tier creates habit and switching costs."
+        },
+        {
+            "question": "A Gantt chart is primarily used to:",
+            "options": [
+                "A) Calculate the critical path of a project",
+                "B) Show tasks plotted against a calendar timeline",
+                "C) Estimate the budget for each project activity",
+                "D) Identify which activities can run in parallel"
+            ],
+            "correct": 1,
+            "explanation": "A Gantt chart is a visual scheduling tool — tasks are shown as horizontal bars on a calendar timeline. It makes it easy to see what is happening when, track progress, and spot overlapping or sequential tasks."
+        },
+        {
+            "question": "The operations function of a business transforms inputs into outputs. Which of the following is an INPUT?",
+            "options": [
+                "A) A finished product sold to customers",
+                "B) The profit generated from sales",
+                "C) Raw materials, labour, and energy",
+                "D) Customer satisfaction ratings"
+            ],
+            "correct": 2,
+            "explanation": "Operations = Inputs → Process → Outputs. Inputs include raw materials, labour, energy, machinery, information, and capital. Outputs are the finished goods or services. The goal is to add value: output value > input cost."
+        },
+        {
+            "question": "Which method of promotion involves a company paying to be associated with a sports event or team?",
+            "options": ["A) Sales Promotion", "B) Personal Selling", "C) Sponsorship", "D) Public Relations"],
+            "correct": 2,
+            "explanation": "Sponsorship = paying to link the brand with an event, sport, team, or individual. It is ATL and builds brand awareness and values over the long term. Example: Olympics sponsors receive $5.40 media value for every $1 spent."
+        },
+        {
+            "question": "Which statement about Job Production is CORRECT?",
+            "options": [
+                "A) It produces large volumes of identical products at low unit cost",
+                "B) It involves producing one unique item at a time with high worker skill",
+                "C) It requires machines to reset between groups of identical products",
+                "D) It combines high volume with customer personalisation at the final stage"
+            ],
+            "correct": 1,
+            "explanation": "Job Production = one unique item fully completed before the next begins. High unit cost, high skill, strong worker motivation and pride. Examples: Aston Martin DB11, bespoke wedding cakes, custom suits, bridge construction."
         },
     ],
 }
