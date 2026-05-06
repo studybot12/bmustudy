@@ -10,7 +10,7 @@ from telegram.ext import (
     ContextTypes, filters, ConversationHandler
 )
 from database import db
-from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos
+from content import SUBJECTS, get_subject_info, get_flashcards, get_quiz_questions, get_cheatsheet, get_glossary, get_true_false, get_videos, get_mocks, get_mock_solutions, MOCK_COURSE_SUBJECTS
 from config import ADMIN_ID
 try:
     from google import genai as genai_client
@@ -60,7 +60,7 @@ def check_ai_rate_limit(user_id: int) -> float:
 (CHOOSING_LANG, MAIN_MENU, CHOOSING_SUBJECT,
  SUBJECT_MENU, QUIZ_SESSION, FLASHCARD_SESSION, TRIAL_SESSION,
  AI_CHAT_SESSION, BOOKMARKS_SESSION, TF_SESSION, EXAM_DATE_INPUT,
- ONBOARDING) = range(12)
+ ONBOARDING, MOCK_SESSION) = range(13)
 
 QUIZ_QUESTIONS_COUNT = 20
 FREE_QUESTIONS = 3  # количество вопросов в демо-тесте
@@ -219,8 +219,19 @@ TEXTS = {
         "choose_course": "🎓 *Выберите курс:*\n\n━━━━━━━━━━━━━━━\nКакой курс вы проходите?",
         "course_1": "📗 1 Курс",
         "course_2": "📘 2 Курс",
-        # AI Humanizer
-        # AI Detector
+        # MOCK exams
+        "mock_exams": "📝 MOCK тесты",
+        "mock_menu": "📝 *MOCK Экзамены*\n\n━━━━━━━━━━━━━━━\n🎓 Практические финальные тесты по реальным вопросам.\n\n_Выберите курс:_",
+        "mock_course_select": "📝 *MOCK — {course}*\n\n━━━━━━━━━━━━━━━\nВыберите предмет:",
+        "mock_subject_select": "📝 *MOCK — {subject}*\n\n━━━━━━━━━━━━━━━\nЧто хотите открыть?",
+        "mock_view": "📄 Открыть MOCK",
+        "mock_solution": "✅ Решение MOCK",
+        "mock_page": "📄 *{title}*\n_Страница {page} из {total}_\n\n━━━━━━━━━━━━━━━\n",
+        "mock_next": "➡️ Далее",
+        "mock_prev": "⬅️ Назад",
+        "mock_finish": "✅ Готово",
+        "mock_done": "🎓 *MOCK завершён!*\n\n━━━━━━━━━━━━━━━\nУдачи на настоящем экзамене! 💪",
+        "mock_no_exams": "📝 Для этого предмета пока нет MOCK тестов.",
     },
     "en": {
         "welcome": "✨ *Welcome to BMU Study Hub!*\n\n🎓 Smart exam preparation\n📚 Notes · Tests · Flashcards · AI\n\n━━━━━━━━━━━━━━━\n🌐 Choose your language:",
@@ -374,6 +385,19 @@ TEXTS = {
         "choose_course": "🎓 *Choose your year:*\n\n━━━━━━━━━━━━━━━\nWhich year are you in?",
         "course_1": "📗 Year 1",
         "course_2": "📘 Year 2",
+        # MOCK exams
+        "mock_exams": "📝 MOCK Exams",
+        "mock_menu": "📝 *MOCK Exams*\n\n━━━━━━━━━━━━━━━\n🎓 Practice final exams based on real questions.\n\n_Choose a year:_",
+        "mock_course_select": "📝 *MOCK — {course}*\n\n━━━━━━━━━━━━━━━\nChoose a subject:",
+        "mock_subject_select": "📝 *MOCK — {subject}*\n\n━━━━━━━━━━━━━━━\nWhat would you like to open?",
+        "mock_view": "📄 Open MOCK",
+        "mock_solution": "✅ MOCK Solutions",
+        "mock_page": "📄 *{title}*\n_Page {page} of {total}_\n\n━━━━━━━━━━━━━━━\n",
+        "mock_next": "➡️ Next",
+        "mock_prev": "⬅️ Back",
+        "mock_finish": "✅ Done",
+        "mock_done": "🎓 *MOCK Complete!*\n\n━━━━━━━━━━━━━━━\nGood luck on the real exam! 💪",
+        "mock_no_exams": "📝 No MOCK exams available for this subject yet.",
         # AI Humanizer
         # AI Detector
     }
@@ -498,6 +522,7 @@ async def show_main_menu(message, user_id, edit=False):
     keyboard = [
         [InlineKeyboardButton(t(user_id, "course_1"), callback_data="course_study_1")],
         [InlineKeyboardButton(t(user_id, "course_2"), callback_data="course_study_2")],
+        [InlineKeyboardButton(t(user_id, "mock_exams"), callback_data="menu_mock")],
         [InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard"),
          InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks")],
         [InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang"),
@@ -785,6 +810,93 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif action == "menu_bookmarks":
         await show_bookmarks(query.message, user_id, edit=True)
         return BOOKMARKS_SESSION
+
+    elif action == "menu_mock":
+        lang = db.get_user_lang(user_id) or "en"
+        course_names = COURSE_NAMES[lang]
+        buttons = []
+        for course_key, subjects in MOCK_COURSE_SUBJECTS.items():
+            if subjects:
+                label = f"📘 {course_names.get(course_key, f'Year {course_key}')}"
+                buttons.append([InlineKeyboardButton(label, callback_data=f"mock_course_{course_key}")])
+        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+        await query.message.edit_text(t(user_id, "mock_menu"), parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(buttons))
+        return MOCK_SESSION
+
+    elif action.startswith("mock_course_"):
+        course_key = action.split("mock_course_")[1]
+        lang = db.get_user_lang(user_id) or "en"
+        course_name = COURSE_NAMES[lang].get(course_key, f"Year {course_key}")
+        subject_keys = MOCK_COURSE_SUBJECTS.get(course_key, [])
+        buttons = []
+        for sk in subject_keys:
+            if sk in SUBJECTS:
+                buttons.append([InlineKeyboardButton(
+                    f"📘 {SUBJECTS[sk]['name']}",
+                    callback_data=f"mock_subj_{course_key}_{sk}"
+                )])
+        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="menu_mock")])
+        text = t(user_id, "mock_course_select", course=course_name)
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(buttons))
+        return MOCK_SESSION
+
+    elif action.startswith("mock_subj_"):
+        parts = action.split("_")
+        # mock_subj_{course}_{subject}
+        course_key = parts[2]
+        subject_key = parts[3]
+        subject_name = SUBJECTS.get(subject_key, {}).get("name", subject_key)
+        buttons = [
+            [InlineKeyboardButton(t(user_id, "mock_view"), callback_data=f"mock_open_{subject_key}_0")],
+            [InlineKeyboardButton(t(user_id, "mock_solution"), callback_data=f"mock_sol_{subject_key}_0")],
+            [InlineKeyboardButton(t(user_id, "back"), callback_data=f"mock_course_{course_key}")],
+        ]
+        text = t(user_id, "mock_subject_select", subject=subject_name)
+        await query.message.edit_text(text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(buttons))
+        return MOCK_SESSION
+
+    elif action.startswith("mock_open_") or action.startswith("mock_sol_"):
+        is_solution = action.startswith("mock_sol_")
+        prefix = "mock_sol_" if is_solution else "mock_open_"
+        rest = action[len(prefix):]
+        parts = rest.rsplit("_", 1)
+        subject_key = parts[0]
+        page_idx = int(parts[1])
+
+        mocks_list = get_mock_solutions(subject_key) if is_solution else get_mocks(subject_key)
+        if not mocks_list:
+            await query.answer(t(user_id, "mock_no_exams"), show_alert=True)
+            return MOCK_SESSION
+
+        mock = mocks_list[0]
+        pages = mock["pages"]
+        total = len(pages)
+        page_idx = max(0, min(page_idx, total - 1))
+        page = pages[page_idx]
+
+        header = t(user_id, "mock_page", title=mock["title"], page=page_idx + 1, total=total)
+        full_text = header + page["text"]
+
+        nav_buttons = []
+        row = []
+        nav_prefix = "mock_sol_" if is_solution else "mock_open_"
+        if page_idx > 0:
+            row.append(InlineKeyboardButton(t(user_id, "mock_prev"), callback_data=f"{nav_prefix}{subject_key}_{page_idx - 1}"))
+        if page_idx < total - 1:
+            row.append(InlineKeyboardButton(t(user_id, "mock_next"), callback_data=f"{nav_prefix}{subject_key}_{page_idx + 1}"))
+        if row:
+            nav_buttons.append(row)
+
+        # Determine course key for back button
+        course_key = mock.get("course", "2")
+        nav_buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data=f"mock_subj_{course_key}_{subject_key}")])
+
+        await query.message.edit_text(full_text, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(nav_buttons))
+        return MOCK_SESSION
 
     elif action == "back_main":
         await show_main_menu(query.message, user_id, edit=True)
@@ -1888,6 +2000,7 @@ def main():
             ],
             BOOKMARKS_SESSION: [CallbackQueryHandler(bookmarks_handler)],
             TF_SESSION: [CallbackQueryHandler(tf_handler)],
+            MOCK_SESSION: [CallbackQueryHandler(main_menu_handler)],
             EXAM_DATE_INPUT: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, fallback),
                 CallbackQueryHandler(subject_menu_handler),
