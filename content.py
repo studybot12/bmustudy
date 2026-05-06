@@ -1241,143 +1241,143 @@ MATERIALS = {
             {
                 "title": "Week 7 · Binomial Distribution",
                 "content": (
-                    "*Binomial Distribution* — a discrete distribution for n independent trials.\n\n"
-                    "🔹 *Bernoulli Conditions:*\n"
-                    "• n identical independent trials\n"
-                    "• Only two outcomes: Success (S) or Failure (F)\n"
-                    "• P(S) = π = constant for each trial\n"
-                    "• x = number of successes out of n trials\n\n"
-                    "🔹 *Binomial Formula:*\n"
+                    "*Binomial Distribution* — дискретное распределение для n независимых испытаний.\n\n"
+                    "🔹 *Условия Бернулли:*\n"
+                    "• n одинаковых независимых испытаний\n"
+                    "• Только два исхода: Успех (S) или Неудача (F)\n"
+                    "• P(S) = π = const для каждого испытания\n"
+                    "• x = количество успехов из n испытаний\n\n"
+                    "🔹 *Формула биномиального распределения:*\n"
                     "P(x) = C(n,x) · pˣ · (1−p)ⁿ⁻ˣ\n"
-                    "• C(n,x) = n! / [x!(n−x)!] — number of combinations\n"
-                    "• p = probability of success on a single trial\n\n"
-                    "🔹 *Key Measures:*\n"
-                    "• Mean = np\n"
-                    "• Variance = np(1−p)\n"
-                    "• Standard Deviation = √[np(1−p)]\n\n"
-                    "🔹 *Example:* A coin is tossed 20 times, p = 0.6\n"
+                    "• C(n,x) = n! / [x!(n−x)!] — число комбинаций\n"
+                    "• p = вероятность успеха в одном испытании\n\n"
+                    "🔹 *Числовые характеристики:*\n"
+                    "• Среднее (Mean) = np\n"
+                    "• Дисперсия (Variance) = np(1−p)\n"
+                    "• Стандартное отклонение = √[np(1−p)]\n\n"
+                    "🔹 *Пример:* Монета подбрасывается 20 раз, p = 0.6\n"
                     "Mean = 20 × 0.6 = 12\n"
                     "Variance = 20 × 0.6 × 0.4 = 4.8\n"
                     "SD = √4.8 ≈ 2.19\n\n"
-                    "🔹 *Important:* For large n, the binomial distribution approximates the normal distribution.\n\n"
-                    "🔹 *Poisson Distribution (Optional):*\n"
-                    "For rare events in a fixed interval.\n"
+                    "🔹 *Важно:* При больших n биномиальное распределение приближается к нормальному.\n\n"
+                    "🔹 *Распределение Пуассона (Optional):*\n"
+                    "Для редких событий в фиксированном интервале.\n"
                     "Mean = Variance = λ"
                 )
             },
             {
-                "title": "Week 8 · Continuous Random Variables",
+                "title": "Week 8 · Непрерывные случайные величины",
                 "content": (
-                    "*Continuous random variable* — takes any value within an interval.\n\n"
-                    "🔹 *PDF and CDF:*\n"
-                    "• PDF (Probability Density Function) — curve f(x): area under the curve = probability\n"
-                    "• CDF (Cumulative Distribution Function) — P(X ≤ x): values range from 0 to 1\n\n"
-                    "🔹 *Uniform Distribution:*\n"
-                    "f(x) = 1/(d−c) for c ≤ x ≤ d\n"
+                    "*Непрерывная случайная величина* — принимает любое значение в интервале.\n\n"
+                    "🔹 *PDF и CDF:*\n"
+                    "• PDF (Probability Density Function) — кривая f(x): площадь под кривой = вероятность\n"
+                    "• CDF (Cumulative Distribution Function) — P(X ≤ x): значения от 0 до 1\n\n"
+                    "🔹 *Равномерное распределение (Uniform):*\n"
+                    "f(x) = 1/(d−c) для c ≤ x ≤ d\n"
                     "• Mean = (c + d) / 2\n"
                     "• Variance = (d−c)² / 12\n"
                     "• P(a < x < b) = (b−a) / (d−c)\n\n"
-                    "Examples: lotteries, fair dice, random waiting times\n\n"
-                    "🔹 *Normal Distribution:*\n"
-                    "Symmetric bell-shaped curve, defined by μ and σ.\n"
-                    "Empirical rule: 68% within ±1σ · 95% within ±2σ · 99.7% within ±3σ\n"
-                    "Examples: human height, IQ, stock returns\n\n"
-                    "🔹 *Z-transformation (Standardisation):*\n"
+                    "Примеры: лотереи, честный кубик, случайное время ожидания\n\n"
+                    "🔹 *Нормальное распределение:*\n"
+                    "Симметричная колоколообразная кривая, задаётся μ и σ.\n"
+                    "Эмпирическое правило: 68% в ±1σ · 95% в ±2σ · 99.7% в ±3σ\n"
+                    "Примеры: рост людей, IQ, доходность акций\n\n"
+                    "🔹 *Z-преобразование (Стандартизация):*\n"
                     "Z = (X − μ) / σ\n"
-                    "Converts any normal variable to N(0,1).\n"
-                    "Steps: 1) Calculate Z  2) Find P(Z < z) from the table\n\n"
-                    "🔹 *Example:* P(−0.5 < Z < 1.25)\n"
+                    "Переводит любую нормальную переменную в N(0,1).\n"
+                    "Шаги: 1) Вычислить Z  2) Найти P(Z < z) по таблице\n\n"
+                    "🔹 *Пример:* P(−0.5 < Z < 1.25)\n"
                     "= P(Z < 1.25) − P(Z < −0.5)\n"
                     "= 0.8944 − 0.3085 = 0.5859\n\n"
-                    "🔹 *Exponential Distribution:*\n"
-                    "Time between events (car arrivals, machine failures).\n"
+                    "🔹 *Показательное распределение (Exponential):*\n"
+                    "Время между событиями (приезд машин, поломки).\n"
                     "P(X ≤ x) = 1 − e^(−x/μ)"
                 )
             },
             {
-                "title": "Week 9 · Sampling Distributions & CLT",
+                "title": "Week 9 · Выборочные распределения и ЦПТ",
                 "content": (
-                    "*Sampling distribution* — the distribution of a statistic (e.g. x̄) across all possible samples.\n\n"
-                    "🔹 *Why sample instead of studying the full population?*\n"
-                    "• Studying the entire population is costly and time-consuming\n"
-                    "• Sometimes physically impossible (destructive testing)\n"
-                    "• A representative sample is sufficient\n\n"
-                    "🔹 *Random Sample:*\n"
-                    "X₁, X₂, ..., Xₙ — independent, identically distributed.\n"
-                    "E[X̄] = μ  (unbiased estimator)\n"
+                    "*Выборочное распределение* — распределение статистики (напр. x̄) по всем возможным выборкам.\n\n"
+                    "🔹 *Зачем выборка, а не вся совокупность?*\n"
+                    "• Дорого и долго изучать всю совокупность\n"
+                    "• Физическая невозможность (разрушающий контроль)\n"
+                    "• Достаточно репрезентативной выборки\n\n"
+                    "🔹 *Случайная выборка:*\n"
+                    "X₁, X₂, ..., Xₙ — независимые, одинаково распределённые.\n"
+                    "E[X̄] = μ  (несмещённая оценка)\n"
                     "V[X̄] = σ²/n\n\n"
-                    "🔹 *Standard Error (SE):*\n"
+                    "🔹 *Стандартная ошибка (SE):*\n"
                     "SE = σ / √n\n"
-                    "Larger n → smaller SE → more precise estimate\n\n"
-                    "🔹 *Central Limit Theorem (CLT):*\n"
-                    "For n ≥ 30, the distribution of x̄ approximates normal,\n"
-                    "REGARDLESS of the shape of the population distribution.\n"
+                    "Чем больше n → тем меньше SE → тем точнее оценка\n\n"
+                    "🔹 *Центральная предельная теорема (ЦПТ):*\n"
+                    "При n ≥ 30 распределение x̄ приближается к нормальному,\n"
+                    "НЕЗАВИСИМО от формы распределения генеральной совокупности.\n"
                     "X̄ ~ N(μ, σ²/n)\n\n"
-                    "🔹 *Unbiased vs Biased:*\n"
-                    "• Unbiased estimator: E[statistic] = population parameter\n"
-                    "• Biased: sample mean ≠ parameter\n\n"
-                    "🔹 *Sampling Methods:*\n"
-                    "Simple random · Systematic · Stratified · Cluster"
+                    "🔹 *Несмещённость vs смещённость:*\n"
+                    "• Несмещённая оценка: E[статистики] = параметр совокупности\n"
+                    "• Смещённая: среднее выборки ≠ параметру\n\n"
+                    "🔹 *Методы выборки:*\n"
+                    "Простая случайная · Систематическая · Стратифицированная · Кластерная"
                 )
             },
             {
-                "title": "Week 10 · Confidence Intervals",
+                "title": "Week 10 · Доверительные интервалы",
                 "content": (
-                    "*Confidence Interval (CI)* — a range of values that contains the true parameter with a given probability.\n\n"
-                    "🔹 *Two types of estimation:*\n"
-                    "• Point estimate: x̄ — a single best value\n"
-                    "• Interval estimate: x̄ ± margin of error\n\n"
-                    "🔹 *CI for μ when σ is known or n > 30 (Z-interval):*\n"
+                    "*Доверительный интервал (ДИ)* — диапазон значений, который с заданной вероятностью содержит истинный параметр.\n\n"
+                    "🔹 *Два вида оценки:*\n"
+                    "• Точечная (point): x̄ — одно лучшее значение\n"
+                    "• Интервальная (interval): x̄ ± погрешность\n\n"
+                    "🔹 *ДИ для μ при известном σ или n > 30 (Z-интервал):*\n"
                     "x̄ ± Z_α · (σ / √n)\n\n"
-                    "Standard Z-values:\n"
+                    "Стандартные Z-значения:\n"
                     "• 80% → Z = 1.282\n"
                     "• 90% → Z = 1.645\n"
                     "• 95% → Z = 1.960\n"
                     "• 99% → Z = 2.576\n"
                     "• 99.9% → Z = 3.291\n\n"
-                    "🔹 *CI for μ when σ is unknown or n < 30 (t-interval):*\n"
+                    "🔹 *ДИ для μ при неизвестном σ или n < 30 (t-интервал):*\n"
                     "x̄ ± t_α · (s / √n),  df = n − 1\n"
-                    "t-distribution is wider than normal; converges to Z as n → ∞.\n\n"
-                    "🔹 *CI for proportion p (n > 30):*\n"
+                    "t-распределение шире нормального; при n → ∞ совпадает с Z.\n\n"
+                    "🔹 *ДИ для пропорции p (n > 30):*\n"
                     "p̂ ± Z_α · √[p̂(1−p̂)/n]\n\n"
-                    "🔹 *Example (Z):* n=712, σ=40, x̄=183, 95% CI:\n"
+                    "🔹 *Пример (Z):* n=712, σ=40, x̄=183, 95% CI:\n"
                     "183 ± 1.960 × (40/√712) = 183 ± 2.94 → (180.06, 185.94)\n\n"
-                    "🔹 *Interpretation:*\n"
-                    "'We are 95% confident that the true mean lies within this interval.'\n"
-                    "❌ NOT: '95% probability that μ is in the interval' (μ is a fixed number)"
+                    "🔹 *Интерпретация:*\n"
+                    "'Мы на 95% уверены, что истинное среднее находится в этом интервале.'\n"
+                    "❌ НЕ: 'вероятность 95%, что μ в интервале' (μ — фиксированное число)"
                 )
             },
             {
-                "title": "Week 11 · Hypothesis Testing",
+                "title": "Week 11 · Проверка гипотез",
                 "content": (
-                    "*Hypothesis testing* — a formal decision-making procedure based on sample data.\n\n"
-                    "🔹 *7 elements of a test:*\n"
-                    "1. H₀ (null): status quo, e.g. μ = 0.5\n"
-                    "2. H₁ (alternative): what we want to prove\n"
-                    "3. Test statistic (Z or t)\n"
-                    "4. Rejection region\n"
-                    "5. Assumptions about the data\n"
-                    "6. Calculate the test statistic\n"
-                    "7. Conclusion\n\n"
-                    "🔹 *Test statistics:*\n"
-                    "Z = (x̄ − μ₀) / (σ/√n)  — σ known or n ≥ 30\n"
-                    "t = (x̄ − μ₀) / (s/√n)  — σ unknown, n < 30; df = n−1\n"
-                    "Z = (p̂ − p₀) / √[p₀(1−p₀)/n]  — for proportions\n\n"
-                    "🔹 *Types of alternatives:*\n"
-                    "• Two-tailed: H₁: μ ≠ μ₀  → rejection region in both tails\n"
-                    "• Upper-tailed: H₁: μ > μ₀\n"
-                    "• Lower-tailed: H₁: μ < μ₀\n\n"
-                    "🔹 *p-value:*\n"
-                    "Probability of obtaining this result (or more extreme) assuming H₀ is true.\n"
-                    "p < α → reject H₀ (statistically significant)\n"
-                    "p ≥ α → fail to reject H₀\n\n"
-                    "🔹 *Errors:*\n"
-                    "• Type I error (α): reject a true H₀ (false positive)\n"
-                    "• Type II error (β): fail to reject a false H₀ (false negative)\n"
-                    "• Power of the test = 1 − β\n\n"
-                    "🔹 *Example:* A machine should produce parts at μ = 0.5 inches.\n"
-                    "H₀: μ = 0.5  vs  H₁: μ ≠ 0.5  (two-tailed, α = 0.05)\n"
-                    "If |Z| > 1.96 → reject H₀ → process is out of control"
+                    "*Проверка гипотез* — формальная процедура принятия решений на основе выборочных данных.\n\n"
+                    "🔹 *7 элементов теста:*\n"
+                    "1. H₀ (нулевая): статус-кво, напр. μ = 0.5\n"
+                    "2. H₁ (альтернативная): что хотим доказать\n"
+                    "3. Тест-статистика (Z или t)\n"
+                    "4. Область отклонения (rejection region)\n"
+                    "5. Допущения о данных\n"
+                    "6. Вычисление тест-статистики\n"
+                    "7. Вывод\n\n"
+                    "🔹 *Тест-статистики:*\n"
+                    "Z = (x̄ − μ₀) / (σ/√n)  — σ известна или n ≥ 30\n"
+                    "t = (x̄ − μ₀) / (s/√n)  — σ неизвестна, n < 30; df = n−1\n"
+                    "Z = (p̂ − p₀) / √[p₀(1−p₀)/n]  — для пропорций\n\n"
+                    "🔹 *Типы альтернатив:*\n"
+                    "• Двусторонний (two-tailed): H₁: μ ≠ μ₀  → критическая область в обоих хвостах\n"
+                    "• Правосторонний (upper-tailed): H₁: μ > μ₀\n"
+                    "• Левосторонний (lower-tailed): H₁: μ < μ₀\n\n"
+                    "🔹 *p-значение:*\n"
+                    "Вероятность получить данный результат (или более экстремальный) при истинной H₀.\n"
+                    "p < α → отклоняем H₀ (статистически значимо)\n"
+                    "p ≥ α → не отклоняем H₀\n\n"
+                    "🔹 *Ошибки:*\n"
+                    "• Ошибка I рода (α): отклонить истинную H₀ (ложноположительный)\n"
+                    "• Ошибка II рода (β): не отклонить ложную H₀ (ложноотрицательный)\n"
+                    "• Мощность теста = 1 − β\n\n"
+                    "🔹 *Пример:* Машина должна производить детали μ = 0.5 дюйма.\n"
+                    "H₀: μ = 0.5  vs  H₁: μ ≠ 0.5  (двусторонний, α = 0.05)\n"
+                    "Если |Z| > 1.96 → отклоняем H₀ → процесс вышел из строя"
                 )
             },
             {
@@ -3909,258 +3909,3 @@ def get_true_false(subject_key):
 
 def get_videos(subject_key):
     return VIDEOS.get(subject_key, [])
-
-
-# ─── MOCK EXAMS ───────────────────────────────────────────────────────────────
-# Structure: subject_key -> list of mock exams
-# Each mock: { "title", "course", "subject", "pages": [...] }
-# Each page: { "text": str }  (Markdown-formatted, sent as one message)
-# Solutions: same structure under MOCK_SOLUTIONS
-
-MOCKS = {
-    "macro": [
-        {
-            "title": "📄 Macroeconomics — Final MOCK 2026",
-            "course": "2",
-            "subject": "macro",
-            "pages": [
-                {
-                    "text": (
-                        "📋 *BRITISH MANAGEMENT UNIVERSITY*\n"
-                        "*PRINCIPLES OF MACROECONOMICS*\n"
-                        "*MOCK FINAL TEST — FOR PRACTICE ONLY*\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "📌 *Section A — MCQ* _(3 marks each · Total: 30)_\n\n"
-                        "*1.* Which of the following does *NOT* add to U.S. GDP?\n\n"
-                        "a) Air France buys a plane from Boeing\n"
-                        "b) General Motors builds a new factory in North Carolina\n"
-                        "c) New York pays a salary to a policeman\n"
-                        "d) The federal government sends a Social Security check to your grandmother\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*2.* If all quantities rise by 10% and all prices fall by 10%, which occurs?\n\n"
-                        "a) Real GDP +10%, nominal GDP −10%\n"
-                        "b) Real GDP +10%, nominal GDP ≈ unchanged\n"
-                        "c) Real GDP unchanged, nominal GDP +10%\n"
-                        "d) Real GDP unchanged, nominal GDP −10%\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*3.* Because consumers can substitute cheaper goods for those that rose in price:\n\n"
-                        "a) The CPI overstates inflation\n"
-                        "b) The CPI understates inflation\n"
-                        "c) The GDP deflator overstates inflation\n"
-                        "d) The GDP deflator understates inflation\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*4.* Structural unemployment is most likely caused by:\n\n"
-                        "a) Workers temporarily searching for better jobs\n"
-                        "b) A mismatch between workers' skills and available jobs\n"
-                        "c) A short-run fall in aggregate demand during a recession\n"
-                        "d) A central bank reducing the money supply\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*5.* Which factor would *directly* increase labour productivity in the long run?\n\n"
-                        "a) More human capital and better technology\n"
-                        "b) A temporary fall in consumer confidence\n"
-                        "c) A higher inflation rate only\n"
-                        "d) A decrease in exports"
-                    )
-                },
-                {
-                    "text": (
-                        "📌 *Section A — MCQ continued*\n\n"
-                        "*6.* If the reserve requirement increases, the money supply will:\n\n"
-                        "a) Increase\nb) Decrease\nc) Stay the same\nd) Become unpredictable\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*7.* An increase in investment optimism will usually:\n\n"
-                        "a) Shift aggregate demand to the right\n"
-                        "b) Shift aggregate demand to the left\n"
-                        "c) Shift LRAS immediately to the left\n"
-                        "d) Reduce the price level and output in the short run\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*8.* Which policy is most appropriate during a boom with high inflation?\n\n"
-                        "a) Expansionary fiscal policy\nb) Contractionary fiscal policy\n"
-                        "c) Increasing subsidies\nd) Increasing government spending\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*9.* If a nation's currency doubles in value on foreign exchange markets, the currency is said to ________, "
-                        "reflecting a change in the ________ exchange rate.\n\n"
-                        "a) Appreciate, nominal\nb) Appreciate, real\n"
-                        "c) Depreciate, nominal\nd) Depreciate, real\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*10.* A tariff differs from a quota because:\n\n"
-                        "a) It limits quantity directly\nb) It generates government revenue\n"
-                        "c) It fixes exchange rates\nd) It reduces exports"
-                    )
-                },
-                {
-                    "text": (
-                        "📌 *Section B — Fill in the Gaps* _(3 marks each · Total: 15)_\n\n"
-                        "Use only 5 words/phrases from the box below. Spelling must be correct.\n\n"
-                        "📦 *Word Box:*\n"
-                        "_Aggregate supply · recessionary gap · deficit · natural · money multiplier · "
-                        "fiscal · floating exchange rate · inflation · net exports · crowding out · business cycle_\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*11.* A situation where actual output is below potential output is called a ___________.\n\n"
-                        "*12.* When a government spends more than it collects in taxes, it runs a budget ___________.\n\n"
-                        "*13.* A rise in the general price level over time is called ___________.\n\n"
-                        "*14.* The unemployment rate that exists even at full employment is known as the ___________ rate of unemployment.\n\n"
-                        "*15.* Higher government borrowing can raise interest rates and reduce private investment; this effect is called ___________."
-                    )
-                },
-                {
-                    "text": (
-                        "📌 *Section C — Extended Questions* _(Total: 55 marks)_\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "❓ *Question 16* _(25 marks)_\n\n"
-                        "An economy begins at long-run equilibrium. Then imagine a housing market collapse reducing consumption.\n\n"
-                        "a) Identify the type of short-run macroeconomic problem/gap that may arise.\n\n"
-                        "b) Explain the likely short-run and long-run effects on real GDP, unemployment, and the price level.\n\n"
-                        "c) Choose one stabilisation policy that could reduce the fall in output and describe how it is implemented. "
-                        "Explain its short-run and long-run effects on real GDP, unemployment, and the price level.\n\n"
-                        "d) Describe the AD-SRAS-LRAS diagram conceptually.\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "❓ *Question 17* _(5 marks)_\n\n"
-                        "In an open economy:\n"
-                        "• Private saving = $520 billion\n"
-                        "• Government budget deficit = $80 billion\n"
-                        "• Net capital outflow = $150 billion\n\n"
-                        "Calculate *national saving* and *investment*.\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "❓ *Question 18* _(25 marks)_\n\n"
-                        "Economists in Funlandia (closed economy) have:\n\n"
-                        "Y = 9,000\n"
-                        "C = 500 + 0.75Yd\n"
-                        "T = 2,000\n"
-                        "G = 2,500\n"
-                        "I = 2,500 − 120r _(r = real interest rate in %)_\n\n"
-                        "Calculate: private saving, public saving, national saving, investment, and the equilibrium real interest rate."
-                    )
-                },
-            ]
-        }
-    ]
-}
-
-MOCK_SOLUTIONS = {
-    "macro": [
-        {
-            "title": "✅ Macroeconomics — MOCK 2026 Solutions",
-            "course": "2",
-            "subject": "macro",
-            "pages": [
-                {
-                    "text": (
-                        "✅ *MOCK SOLUTIONS — MACROECONOMICS 2026*\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "📌 *Section A — Answer Key*\n\n"
-                        "| Q | Answer | Key Reason |\n"
-                        "|---|--------|------------|\n"
-                        "| 1 | *D* | Social Security = transfer payment, not production |\n"
-                        "| 2 | *B* | Real GDP ↑10% (more quantity); Nominal ≈ unchanged (price↓ offsets quantity↑) |\n"
-                        "| 3 | *A* | CPI uses fixed basket → ignores substitution → overstates inflation |\n"
-                        "| 4 | *B* | Structural = skill mismatch |\n"
-                        "| 5 | *A* | Human capital + technology = long-run productivity drivers |\n"
-                        "| 6 | *B* | Higher reserve req → less lending → money supply ↓ |\n"
-                        "| 7 | *A* | Investment optimism → I↑ → AD shifts right |\n"
-                        "| 8 | *B* | Boom + high inflation → contractionary fiscal policy |\n"
-                        "| 9 | *A* | Currency doubles in value = *appreciation*, nominal exchange rate |\n"
-                        "| 10 | *B* | Tariff = tax → generates government revenue; quota does not |"
-                    )
-                },
-                {
-                    "text": (
-                        "✅ *Section B — Fill in the Gaps Answers*\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*11.* Recessionary gap\n"
-                        "💡 Actual output < potential output = recessionary gap\n\n"
-                        "*12.* Deficit\n"
-                        "💡 Spending > Revenue = budget deficit\n\n"
-                        "*13.* Inflation\n"
-                        "💡 General price level rising over time = inflation\n\n"
-                        "*14.* Natural\n"
-                        "💡 Natural rate of unemployment = frictional + structural (exists even at 'full employment')\n\n"
-                        "*15.* Crowding out\n"
-                        "💡 Government borrows → interest rates ↑ → private investment ↓ = crowding out"
-                    )
-                },
-                {
-                    "text": (
-                        "✅ *Section C — Q16 Solution* _(25 marks)_\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*a) Type of gap:*\n"
-                        "A *recessionary gap* arises. The housing collapse reduces consumption (C↓) → AD shifts left → actual output falls below potential output (Y < Y*).\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*b) Short-run & Long-run effects:*\n\n"
-                        "📉 *Short run:*\n"
-                        "• AD shifts left → Real GDP ↓\n"
-                        "• Unemployment ↑ (cyclical)\n"
-                        "• Price level ↓\n\n"
-                        "🔄 *Long run (self-correction):*\n"
-                        "• Workers accept lower wages → SRAS shifts right\n"
-                        "• Economy returns to Y* at lower price level\n"
-                        "• Unemployment returns to natural rate\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*c) Stabilisation policy — Expansionary Fiscal Policy:*\n\n"
-                        "*Implementation:* Government ↑ spending (G) and/or ↓ taxes (T)\n"
-                        "→ Disposable income ↑ → C↑ → AD shifts right → closes recessionary gap\n\n"
-                        "📈 *Short run:* Real GDP ↑, unemployment ↓, price level ↑\n"
-                        "📊 *Long run:* Economy returns to Y*; risk of crowding out and higher debt\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*d) AD-SRAS-LRAS Diagram:*\n\n"
-                        "• LRAS is *vertical* at Y* (full employment output)\n"
-                        "• Initial equilibrium: AD₁ ∩ SRAS₁ ∩ LRAS at P₁, Y*\n"
-                        "• Housing collapse: AD shifts left to AD₂ → new SR equilibrium at P₂ < P₁, Y₂ < Y*\n"
-                        "• Policy response: AD shifts back right to AD₃ ≈ AD₁ → returns to Y*, P₃"
-                    )
-                },
-                {
-                    "text": (
-                        "✅ *Section C — Q17 Solution* _(5 marks)_\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*Given:*\n"
-                        "• Private saving (Sₚ) = $520 bn\n"
-                        "• Budget deficit = $80 bn → Public saving (Sᵍ) = −$80 bn\n"
-                        "• Net capital outflow (NCO) = $150 bn\n\n"
-                        "*Formula:*\n"
-                        "National saving = Sₚ + Sᵍ = 520 + (−80) = *$440 billion* ✅\n\n"
-                        "Investment = National saving − NCO = 440 − 150 = *$290 billion* ✅\n\n"
-                        "💡 In an open economy: S = I + NCO → I = S − NCO"
-                    )
-                },
-                {
-                    "text": (
-                        "✅ *Section C — Q18 Solution* _(25 marks)_\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*Given:* Y=9000 · C=500+0.75Yd · T=2000 · G=2500 · I=2500−120r\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "*Step 1 — Disposable income:*\n"
-                        "Yd = Y − T = 9000 − 2000 = *7,000*\n\n"
-                        "*Step 2 — Consumption:*\n"
-                        "C = 500 + 0.75 × 7000 = 500 + 5250 = *5,750*\n\n"
-                        "*Step 3 — Private saving:*\n"
-                        "Sₚ = Yd − C = 7000 − 5750 = *1,250* ✅\n\n"
-                        "*Step 4 — Public saving:*\n"
-                        "Sᵍ = T − G = 2000 − 2500 = *−500* ✅ _(budget deficit)_\n\n"
-                        "*Step 5 — National saving:*\n"
-                        "S = Sₚ + Sᵍ = 1250 + (−500) = *750* ✅\n\n"
-                        "*Step 6 — Investment (closed economy → S = I):*\n"
-                        "I = *750* ✅\n\n"
-                        "*Step 7 — Equilibrium real interest rate:*\n"
-                        "I = 2500 − 120r → 750 = 2500 − 120r\n"
-                        "120r = 2500 − 750 = 1750\n"
-                        "r = 1750 ÷ 120 = *14.58%* ✅\n\n"
-                        "━━━━━━━━━━━━━━━\n"
-                        "🎓 *All solutions complete. Good luck on your exam!*"
-                    )
-                },
-            ]
-        }
-    ]
-}
-
-# Mock subjects per course (for navigation)
-MOCK_COURSE_SUBJECTS = {
-    "2": ["macro"],
-}
-
-def get_mocks(subject_key):
-    return MOCKS.get(subject_key, [])
-
-def get_mock_solutions(subject_key):
-    return MOCK_SOLUTIONS.get(subject_key, [])
