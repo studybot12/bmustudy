@@ -46,6 +46,10 @@ COURSE_NAMES = {
 # https://raw.githubusercontent.com/ТВО_АККАУНТ/ТВО_РЕПО/main/mocks/ИМЯ_ФАЙЛА.pdf
 GITHUB_MOCK_BASE = "https://raw.githubusercontent.com/studybot12/bmustudy/main/"
 
+def get_mock_url(filename):
+    import time
+    return GITHUB_MOCK_BASE + filename + f"?v={int(time.time())}"
+
 MOCK_FILES = {
     "f1":    "f1_mock.pdf",
     "f3":    "f3_mock.pdf",
@@ -802,7 +806,7 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not filename:
             await query.answer("Mock недоступен для этого предмета.", show_alert=True)
             return MAIN_MENU
-        url = GITHUB_MOCK_BASE + filename
+        url = get_mock_url(filename)
         subject_name = SUBJECTS[subject_key]["name"]
         lang = db.get_user_lang(user_id) or "ru"
         if lang == "ru":
