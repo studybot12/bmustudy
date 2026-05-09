@@ -441,11 +441,12 @@ class Database:
                 (user_id,)
             ).fetchone()
             if not row:
+                today = date.today()
                 con.execute(
-                    "INSERT OR IGNORE INTO user_xp (user_id, xp, level, streak, last_activity) VALUES (?, 0, 1, 0, date('now'))",
-                    (user_id,)
+                    "INSERT OR IGNORE INTO user_xp (user_id, xp, level, streak, last_activity) VALUES (?, 0, 1, 0, ?)",
+                    (user_id, today)
                 )
-                return {"xp": 0, "level": 1, "streak": 0, "last_activity": None}
+                return {"xp": 0, "level": 1, "streak": 0, "last_activity": str(today)}
             return {"xp": row[0], "level": row[1], "streak": row[2], "last_activity": row[3]}
  
     def add_xp(self, user_id, amount):

@@ -41,6 +41,21 @@ COURSE_NAMES = {
     "en": {"1": "Year 1", "2": "Year 2"},
 }
 
+# ─── MOCK EXAM PDF (GitHub) ────────────────────────────────────────────────────
+# Загрузи PDF в репозиторий и укажи имя файла. Формат ссылки:
+# https://raw.githubusercontent.com/ТВО_АККАУНТ/ТВО_РЕПО/main/mocks/ИМЯ_ФАЙЛА.pdf
+GITHUB_MOCK_BASE = "https://raw.githubusercontent.com/studybot12/bmustudy/main/"
+
+MOCK_FILES = {
+    "f1":    "f1_mock.pdf",
+    "f3":    "f3_mock.pdf",
+    "fm":    "fm_mock.pdf",
+    "macro": "macro_mock.pdf",
+    "hrm":   "hrm_mock.pdf",
+    "qm":    "qm_mock.pdf",
+    "ibm":   "ibm_mock.pdf",
+}
+
 logger = logging.getLogger(__name__)
 
 # ── RATE LIMITER (AI tools cooldown) ─────────────────────────────────────────
@@ -90,7 +105,7 @@ TEXTS = {
             "🤖 ИИ-преподаватель 24/7\n"
             "📊 Прогресс и статистика\n\n"
             "━━━━━━━━━━━━━━━\n"
-            "🆓 *Бесплатно:* AI Humanizer · AI Detector · Демо-тест\n\n"
+            "🆓 *Бесплатно:* Демо-тест\n\n"
             "_2 из 3_"
         ),
         "onboarding_3": (
@@ -246,7 +261,7 @@ TEXTS = {
             "🤖 AI Tutor available 24/7\n"
             "📊 Progress and statistics\n\n"
             "━━━━━━━━━━━━━━━\n"
-            "🆓 *Free:* AI Humanizer · AI Detector · Demo Test\n\n"
+            "🆓 *Free:* Demo Test\n\n"
             "_2 of 3_"
         ),
         "onboarding_3": (
@@ -498,6 +513,7 @@ async def show_main_menu(message, user_id, edit=False):
     keyboard = [
         [InlineKeyboardButton(t(user_id, "course_1"), callback_data="course_study_1")],
         [InlineKeyboardButton(t(user_id, "course_2"), callback_data="course_study_2")],
+        [InlineKeyboardButton("📝 Mock Exam", callback_data="menu_mock")],
         [InlineKeyboardButton(t(user_id, "leaderboard"), callback_data="menu_leaderboard"),
          InlineKeyboardButton(t(user_id, "bookmarks"), callback_data="menu_bookmarks")],
         [InlineKeyboardButton(t(user_id, "change_lang"), callback_data="menu_change_lang"),
@@ -540,13 +556,19 @@ async def admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not users:
         await update.message.reply_text("Нет студентов.")
         return
-    text = "👥 *Список студентов:*\n\n"
-    for u in users[:30]:
+    await update.message.reply_text(f"👥 *Всего студентов: {len(users)}*", parse_mode="Markdown")
+    chunk = ""
+    for u in users:
         name = _safe(u["first_name"] or "—")
         username = f"@{_safe(u['username'])}" if u["username"] else "без username"
         subjects = ", ".join(u["subjects"]) if u["subjects"] else "нет"
-        text += f"• {name} ({username}) — {subjects}\n"
-    await update.message.reply_text(text, parse_mode="Markdown")
+        line = f"• {name} ({username}) — {subjects}\n"
+        if len(chunk) + len(line) > 3800:
+            await update.message.reply_text(chunk, parse_mode="Markdown")
+            chunk = ""
+        chunk += line
+    if chunk:
+        await update.message.reply_text(chunk, parse_mode="Markdown")
 
 async def admin_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
@@ -746,6 +768,68 @@ async def main_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                       reply_markup=InlineKeyboardMarkup(buttons))
         return CHOOSING_SUBJECT
 
+
+    elif action == "menu_mock":
+        import urllib.request
+        lang = db.get_user_lang(user_id) or "ru"
+        title = "📝 *Mock Exam*\n\nВыберите предмет:" if lang == "ru" else "📝 *Mock Exam*\n\nChoose a subject:"
+        buttons = []
+        for key, filename in MOCK_FILES.items():
+            if key not in SUBJECTS:
+                continue
+            url = GITHUB_MOCK_BASE + filename
+            try:
+                req = urllib.request.Request(url, method="HEAD")
+                urllib.request.urlopen(req, timeout=3)
+                buttons.append([InlineKeyboardButton(
+                    f"📘 {SUBJECTS[key]['name']}",
+                    callback_data=f"mock_subject_{key}"
+                )])
+            except Exception:
+                pass
+        if not buttons:
+            no_mocks = "📝 Mock экзамены пока недоступны." if lang == "ru" else "📝 No mock exams available yet."
+            await query.answer(no_mocks, show_alert=True)
+            return MAIN_MENU
+        buttons.append([InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")])
+        await query.message.edit_text(title, parse_mode="Markdown",
+                                      reply_markup=InlineKeyboardMarkup(buttons))
+        return MAIN_MENU
+
+    elif action.startswith("mock_subject_"):
+        subject_key = action.split("mock_subject_")[1]
+        filename = MOCK_FILES.get(subject_key)
+        if not filename:
+            await query.answer("Mock недоступен для этого предмета.", show_alert=True)
+            return MAIN_MENU
+        url = GITHUB_MOCK_BASE + filename
+        subject_name = SUBJECTS[subject_key]["name"]
+        lang = db.get_user_lang(user_id) or "ru"
+        if lang == "ru":
+            caption = (
+                f"📝 *Mock Exam — {subject_name}*\n\n"
+                f"━━━━━━━━━━━━━━━\n"
+                f"Удачи на экзамене! 💪\n\n"
+                f"📢 Разбор и решение этого мока будут опубликованы в нашем канале:\n"
+                f"👉 [BMU Study Hub](https://t.me/+uVQgj1fNs5s2YzYy)\n\n"
+                f"_Подпишись, чтобы не пропустить!_"
+            )
+        else:
+            caption = (
+                f"📝 *Mock Exam — {subject_name}*\n\n"
+                f"━━━━━━━━━━━━━━━\n"
+                f"Good luck! 💪\n\n"
+                f"📢 The solution and breakdown will be posted in our channel:\n"
+                f"👉 [BMU Study Hub](https://t.me/+uVQgj1fNs5s2YzYy)\n\n"
+                f"_Subscribe so you don't miss it!_"
+            )
+        try:
+            await query.message.reply_document(document=url, caption=caption, parse_mode="Markdown")
+        except Exception:
+            lang = db.get_user_lang(user_id) or "ru"
+            msg = "❌ Файл не найден. Проверьте что PDF загружен в репозиторий." if lang == "ru" else "❌ File not found. Make sure the PDF is uploaded to the repository."
+            await query.answer(msg, show_alert=True)
+        return MAIN_MENU
 
     elif action == "menu_help":
         keyboard = [[InlineKeyboardButton(t(user_id, "back"), callback_data="back_main")]]
@@ -990,7 +1074,7 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         )
         return AI_CHAT_SESSION
 
-    if data.startswith("tf_"):
+    if data.startswith("tf_") and not data.startswith("tf_ans_") and data != "tf_next":
         subject_key = data.split("tf_")[1]
         questions = get_true_false(subject_key)
         if not questions:
@@ -1070,7 +1154,12 @@ async def subject_menu_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         await show_flashcard(query.message, user_id, subject_key, 0, False, edit=True)
         return FLASHCARD_SESSION
 
-    if data.startswith("quiz_"):
+    if data.startswith("quiz_restart_"):
+        subject_key = data.split("quiz_restart_")[1]
+        await start_quiz(query.message, context, user_id, subject_key, edit=True)
+        return QUIZ_SESSION
+
+    if data.startswith("quiz_") and not data.startswith("quiz_ans_") and data != "quiz_next":
         subject_key = data.split("_", 1)[1]
         await start_quiz(query.message, context, user_id, subject_key, edit=True)
         return QUIZ_SESSION
@@ -1180,7 +1269,15 @@ async def flashcard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def start_quiz(message, context, user_id, subject_key, edit=False):
     all_q = get_quiz_questions(subject_key)
-    questions = random.sample(all_q, min(QUIZ_QUESTIONS_COUNT, len(all_q)))
+    raw_questions = random.sample(all_q, min(QUIZ_QUESTIONS_COUNT, len(all_q)))
+    # Перемешиваем варианты ответов, пересчитывая индекс правильного
+    questions = []
+    for q in raw_questions:
+        options = list(q["options"])
+        correct_text = options[q["correct"]]
+        random.shuffle(options)
+        new_correct = options.index(correct_text)
+        questions.append({**q, "options": options, "correct": new_correct})
     context.user_data["quiz_questions"] = questions
     context.user_data["quiz_index"] = 0
     context.user_data["quiz_score"] = 0
@@ -1448,7 +1545,7 @@ async def ai_chat_message_handler(update: Update, context: ContextTypes.DEFAULT_
             config=genai_types.GenerateContentConfig(system_instruction=system_prompt),
         )
         ai_reply = response.text
-        db.save_ai_message(user_id, subject_key, "assistant", ai_reply)
+        db.save_ai_message(user_id, subject_key, "model", ai_reply)
 
         keyboard = [
             [InlineKeyboardButton(t(user_id, "ai_clear"), callback_data=f"ai_clear_{subject_key}")],
