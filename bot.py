@@ -1641,7 +1641,7 @@ def xp_progress_bar(xp, level):
     return f"[{bar}]"
 
 async def show_leaderboard(message, user_id, edit=False):
-    leaders = db.get_leaderboard(10)
+    leaders = db.get_leaderboard(25)
     lang = db.get_user_lang(user_id) or "en"
     title = TEXTS[lang]["leaderboard_title"]
     text = title
